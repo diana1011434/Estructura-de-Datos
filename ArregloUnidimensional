@@ -1,0 +1,89 @@
+//Código Java con Caso de Uso de un Arreglo Unidimensional:
+
+public class Arreglos {
+
+
+	    public static void main(String[] args) {
+	        
+	        // Crear un arreglo unidimensional de tamaño 5
+	        int arreglo[] = new int[5];
+
+	        // Llenar el arreglo con valores
+	        llenarArreglo(arreglo);
+
+	        // Mostrar los elementos del arreglo
+	        System.out.println("Elementos del arreglo:");
+	        mostrarArreglo(arreglo);
+
+	        // Buscar un valor en el arreglo
+	        int valorABuscar = 30;
+	        int indice = buscarValor(arreglo, valorABuscar);
+
+	        if (indice != -1) {
+	            System.out.println("El valor " + valorABuscar + " se encuentra en el índice: " + indice);
+	        } else {
+	            System.out.println("El valor " + valorABuscar + " no se encuentra en el arreglo.");
+	        }
+
+	        // Modificar un valor en el arreglo
+	        System.out.println("\nModificando el valor en el índice 2...");
+	        modificarValor(arreglo, 2, 100);
+	        mostrarArreglo(arreglo);
+	    }
+
+	    /**
+	     * Método para llenar un arreglo con valores.
+	     * En este caso, llenamos el arreglo con números consecutivos.
+	     * 
+	     * @param arreglo El arreglo a llenar
+	     */
+	    public static void llenarArreglo(int[] arreglo) {
+	        for (int i = 0; i < arreglo.length; i++) {
+	            arreglo[i] = (i + 1) * 10;  // Llenamos el arreglo con múltiplos de 10
+	        }
+	    }
+
+	    /**
+	     * Método para mostrar los elementos de un arreglo.
+	     * 
+	     * @param arreglo El arreglo cuyos elementos se desean mostrar
+	     */
+	    public static void mostrarArreglo(int[] arreglo) {
+	        for (int i = 0; i < arreglo.length; i++) {
+	            System.out.print(arreglo[i] + " ");
+	        }
+	        System.out.println();
+	    }
+
+	    /**
+	     * Método para buscar un valor en un arreglo.
+	     * Devuelve el índice del valor encontrado, o -1 si no se encuentra.
+	     * 
+	     * @param arreglo El arreglo donde se busca el valor
+	     * @param valor El valor que se busca en el arreglo
+	     * @return El índice del valor, o -1 si no se encuentra
+	     */
+	    public static int buscarValor(int[] arreglo, int valor) {
+	        for (int i = 0; i < arreglo.length; i++) {
+	            if (arreglo[i] == valor) {
+	                return i;  // Retorna el índice donde se encuentra el valor
+	            }
+	        }
+	        return -1;  // Si el valor no se encuentra, retorna -1
+	    }
+
+	    /**
+	     * Método para modificar un valor en el arreglo en un índice específico.
+	     * 
+	     * @param arreglo El arreglo donde se modificará el valor
+	     * @param indice El índice donde se modificará el valor
+	     * @param nuevoValor El nuevo valor que se pondrá en el índice
+	     */
+	    public static void modificarValor(int[] arreglo, int indice, int nuevoValor) {
+	        if (indice >= 0 && indice < arreglo.length) {
+	            arreglo[indice] = nuevoValor;  // Asignamos el nuevo valor al índice indicado
+	        } else {
+	            System.out.println("Índice fuera de rango.");
+	        }
+	    }
+	}
