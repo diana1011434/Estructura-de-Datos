@@ -1,0 +1,136 @@
+Código con Caso de Uso (Interacción con el Usuario):
+import java.util.Scanner;
+
+public class Matrizz {
+
+	public static void main(String [] args) {
+	
+		        Scanner scanner = new Scanner(System.in);
+
+		        // Solicitar las dimensiones de las matrices
+		        System.out.print("Introduce el número de filas de las matrices: ");
+		        int filas = scanner.nextInt();
+		        System.out.print("Introduce el número de columnas de las matrices: ");
+		        int columnas = scanner.nextInt();
+
+		        // Crear las matrices de acuerdo con las dimensiones proporcionadas
+		        int[][] matrizA = new int[filas][columnas];
+		        int[][] matrizB = new int[filas][columnas];
+
+		        // Llenar la primera matriz
+		        System.out.println("Introduce los elementos de la Matriz A:");
+		        llenarMatriz(matrizA, scanner);
+
+		        // Llenar la segunda matriz
+		        System.out.println("Introduce los elementos de la Matriz B:");
+		        llenarMatriz(matrizB, scanner);
+
+		        // Imprimir las matrices introducidas
+		        System.out.println("\nMatriz A:");
+		        imprimirMatriz(matrizA);
+		        System.out.println("Matriz B:");
+		        imprimirMatriz(matrizB);
+
+		        // Sumar las matrices
+		        int[][] resultadoSuma = sumarMatrices(matrizA, matrizB);
+		        System.out.println("\nResultado de la suma de matrices A y B:");
+		        imprimirMatriz(resultadoSuma);
+
+		        // Multiplicar las matrices
+		        int[][] resultadoMultiplicacion = multiplicarMatrices(matrizA, matrizB);
+		        System.out.println("\nResultado de la multiplicación de matrices A y B:");
+		        imprimirMatriz(resultadoMultiplicacion);
+
+		        scanner.close();
+		    }
+
+		    /**
+		     * Método para imprimir una matriz.
+		     * Este método recorre la matriz y la imprime fila por fila.
+		     *
+		     * @param matriz La matriz que se desea imprimir
+		     */
+		    public static void imprimirMatriz(int[][] matriz) {
+		        for (int i = 0; i < matriz.length; i++) {
+		            for (int j = 0; j < matriz[i].length; j++) {
+		                System.out.print(matriz[i][j] + " ");
+		            }
+		            System.out.println();
+		        }
+		    }
+
+		    /**
+		     * Método para llenar una matriz solicitando los elementos al usuario.
+		     *
+		     * @param matriz La matriz que se desea llenar
+		     * @param scanner El objeto Scanner para leer entradas desde el teclado
+		     */
+		    public static void llenarMatriz(int[][] matriz, Scanner scanner) {
+		        for (int i = 0; i < matriz.length; i++) {
+		            for (int j = 0; j < matriz[i].length; j++) {
+		                System.out.print("Introduce el elemento de la posición (" + i + "," + j + "): ");
+		                matriz[i][j] = scanner.nextInt();
+		            }
+		        }
+		    }
+
+		    /**
+		     * Método para sumar dos matrices de igual tamaño.
+		     * Asume que ambas matrices tienen el mismo número de filas y columnas.
+		     *
+		     * @param matrizA La primera matriz
+		     * @param matrizB La segunda matriz
+		     * @return La matriz resultante de la suma
+		     */
+		    public static int[][] sumarMatrices(int[][] matrizA, int[][] matrizB) {
+		        int filas = matrizA.length;
+		        int columnas = matrizA[0].length;
+		        int[][] resultado = new int[filas][columnas];
+
+		        // Sumar las matrices elemento por elemento
+		        for (int i = 0; i < filas; i++) {
+		            for (int j = 0; j < columnas; j++) {
+		                resultado[i][j] = matrizA[i][j] + matrizB[i][j];
+		            }
+		        }
+
+		        return resultado;
+		    }
+
+		    /**
+		     * Método para multiplicar dos matrices.
+		     * La multiplicación de matrices solo es posible si el número de columnas
+		     * de la primera matriz es igual al número de filas de la segunda matriz.
+		     *
+		     * @param matrizA La primera matriz
+		     * @param matrizB La segunda matriz
+		     * @return La matriz resultante de la multiplicación
+		     */
+		    public static int[][] multiplicarMatrices(int[][] matrizA, int[][] matrizB) {
+		        int filasA = matrizA.length;
+		        int columnasA = matrizA[0].length;
+		        int filasB = matrizB.length;
+		        int columnasB = matrizB[0].length;
+
+		        // Verificar si las matrices son multiplicables
+		        if (columnasA != filasB) {
+		            throw new IllegalArgumentException("El número de columnas de la primera matriz debe ser igual al número de filas de la segunda.");
+		        }
+
+		        int[][] resultado = new int[filasA][columnasB];
+
+		        // Multiplicar las matrices
+		        for (int i = 0; i < filasA; i++) {
+		            for (int j = 0; j < columnasB; j++) {
+		                for (int k = 0; k < columnasA; k++) {
+		                    resultado[i][j] += matrizA[i][k] * matrizB[k][j];
+		                }
+		            }
+		        }
+
+		        return resultado;
+		    }
+	
+	
+	}
+
