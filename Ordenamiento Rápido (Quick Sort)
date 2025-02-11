@@ -1,0 +1,57 @@
+Ordenamiento Rápido (Quick Sort)
+
+Caso de Uso: Ordenar una lista de precios de productos para facilitar la comparación de precios.
+
+public class QuickSortExample {
+    // Método principal para ordenar un array usando Quick Sort
+    public static void quickSort(int[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high); // Obtiene el índice de partición
+            quickSort(arr, low, pi - 1); // Ordena la parte izquierda
+            quickSort(arr, pi + 1, high); // Ordena la parte derecha
+        }
+    }
+
+    // Método para particionar el array
+    private static int partition(int[] arr, int low, int high) {
+        int pivot = arr[high]; // Elige el último elemento como pivote
+        int i = (low - 1); // Índice del elemento más pequeño
+        for (int j = low; j < high; j++) {
+            if (arr[j] <= pivot) { // Compara con el pivote
+                i++;
+                // Intercambia los elementos
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        // Intercambia el pivote con el elemento en la posición correcta
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+        return i + 1; // Devuelve el índice de partición
+    }
+
+    public static void main(String[] args) {
+        int[] prices = {200, 50, 120, 30, 80}; // Array de precios
+        quickSort(prices, 0, prices.length - 1); // Ordena el array usando Quick Sort
+        System.out.println("Precios ordenados: " + Arrays.toString(prices));
+    }
+}
+
+
+Explicación:
+•	public static void quickSort(int[] arr, int low, int high): Define el método de Quick Sort.
+•	if (low < high): Verifica si hay más de un elemento.
+•	int pi = partition(arr, low, high);: Obtiene el índice de partición.
+•	quickSort(arr, low, pi - 1);: Ordena la parte izquierda.
+•	quickSort(arr, pi + 1, high);: Ordena la parte derecha.
+•	private static int partition(int[] arr, int low, int high): Método de partición.
+•	int pivot = arr[high];: Elige el pivote.
+•	for (int j = low; j < high; j++): Compara elementos con el pivote.
+•	if (arr[j] <= pivot): Compara cada elemento con el pivote.
+•	int temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;: Intercambia elementos.
+•	int temp = arr[i + 1]; arr[i + 1] = arr[high]; arr[high] = temp;: Coloca el pivote en la posición correcta.
+•	int[] prices = {200, 50, 120, 30, 80};: Declara e inicializa el array de precios.
+•	quickSort(prices, 0, prices.length - 1);: Ordena el array de precios.
+•	System.out.println("Precios ordenados: " + Arrays.toString(prices));: Imprime el array de precios ordenados.
