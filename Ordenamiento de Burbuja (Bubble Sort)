@@ -1,0 +1,41 @@
+Ordenamiento de Burbuja (Bubble Sort)
+
+Caso de Uso: Ordenar una lista de edades para encontrar la lista de edad en orden ascendente.
+
+
+public class BubbleSortExample {
+    // Método para ordenar un array usando el algoritmo de burbuja
+    public static void bubbleSort(int[] arr) {
+        int n = arr.length; // Obtiene la longitud del array
+        for (int i = 0; i < n - 1; i++) { // Itera sobre cada elemento
+            for (int j = 0; j < n - i - 1; j++) { // Compara elementos adyacentes
+                if (arr[j] > arr[j + 1]) { // Si el elemento es mayor que el siguiente
+                    // Intercambia los elementos
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }f
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] ages = {23, 18, 34, 22, 30}; // Array de edades
+        bubbleSort(ages); // Ordena las edades
+        System.out.println("Edades ordenadas: " + Arrays.toString(ages));
+    }
+}
+
+
+
+Explicación:
+•	int n = arr.length;: Obtiene la longitud del array.
+•	for (int i = 0; i < n - 1; i++): Itera sobre cada elemento del array.
+•	for (int j = 0; j < n - i - 1; j++): Compara elementos adyacentes dentro del rango no ordenado.
+•	if (arr[j] > arr[j + 1]): Verifica si el elemento actual es mayor que el siguiente.
+•	int temp = arr[j]; arr[j] = arr[j + 1]; arr[j + 1] = temp;: Intercambia los elementos si están en el orden incorrecto.
+•	int[] ages = {23, 18, 34, 22, 30};: Declara e inicializa el array de edades.
+•	bubbleSort(ages);: Ordena el array de edades.
+•	System.out.println("Edades ordenadas: " + Arrays.toString(ages));: Imprime el array de edades ordenadas.
+
+
