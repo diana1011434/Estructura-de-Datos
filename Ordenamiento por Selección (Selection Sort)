@@ -1,0 +1,42 @@
+
+Caso de Uso: Ordenar una lista de números de productos para mostrar el inventario en orden ascendente.
+
+public class SelectionSortExample {
+    // Método para ordenar un array usando el algoritmo de selección
+    public static void selectionSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            int minIndex = i; // Inicializa el índice del mínimo
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[minIndex]) { // Encuentra el índice del mínimo
+                    minIndex = j;
+                }
+            }
+            // Intercambia el elemento mínimo encontrado con el primer elemento no ordenado
+            int temp = arr[minIndex];
+            arr[minIndex] = arr[i];
+            arr[i] = temp;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] numbers = {29, 10, 14, 37, 13}; // Array de números de productos
+        selectionSort(numbers); // Ordena los números usando Selection Sort
+        System.out.println("Números ordenados: " + Arrays.toString(numbers));
+    }
+}
+
+
+Explicación:
+•	public static void selectionSort(int[] arr): Define el método de Selection Sort.
+•	for (int i = 0; i < n - 1; i++): Itera sobre el array para encontrar el mínimo en cada paso.
+•	int minIndex = i;: Inicializa el índice del mínimo.
+•	for (int j = i + 1; j < n; j++): Busca el índice del mínimo en el sub-array no ordenado.
+•	if (arr[j] < arr[minIndex]): Encuentra el índice del mínimo elemento.
+•	int temp = arr[minIndex]; arr[minIndex] = arr[i]; arr[i] = temp;: Intercambia el elemento mínimo con el primer elemento no ordenado.
+•	int[] numbers = {29, 10, 14, 37, 13};: Declara e inicializa el array de números.
+•	selectionSort(numbers);: Ordena el array de números.
+•	System.out.println("Números ordenados: " + Arrays.toString(numbers));: Imprime el array de números ordenados.
+
+
+
