@@ -1,0 +1,35 @@
+Caso de Uso: Ordenar una lista de edades de una pequeña encuesta para presentarla en un informe
+
+public class InsertionSortExample {
+    // Método para ordenar un array usando el algoritmo de inserción
+    public static void insertionSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 1; i < n; i++) {
+            int key = arr[i]; // Elemento a insertar
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key) { // Mueve elementos mayores a la derecha
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key; // Inserta el elemento en la posición correcta
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] ages = {23, 30, 18, 25, 27}; // Array de edades
+        insertionSort(ages); // Ordena las edades usando Insertion Sort
+        System.out.println("Edades ordenadas: " + Arrays.toString(ages));
+    }
+}
+
+Explicación:
+•	public static void insertionSort(int[] arr): Define el método de Insertion Sort.
+•	for (int i = 1; i < n; i++): Itera desde el segundo elemento.
+•	int key = arr[i];: Elemento a insertar en la posición correcta.
+•	while (j >= 0 && arr[j] > key): Mueve elementos mayores a la derecha.
+•	arr[j + 1] = arr[j];: Desplaza el elemento a la derecha.
+•	arr[j + 1] = key;: Inserta el elemento en la posición correcta.
+•	int[] ages = {23, 30, 18, 25, 27};: Declara e inicializa el array de edades.
+•	insertionSort(ages);: Ordena el array de edades.
+•	System.out.println("Edades ordenadas: " + Arrays.toString(ages));: Imprime el array de edades ordenadas.
+
