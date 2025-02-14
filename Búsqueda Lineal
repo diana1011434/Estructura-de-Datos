@@ -1,0 +1,24 @@
+
+Búsqueda Lineal
+La búsqueda lineal, también conocida como búsqueda secuencial, revisa cada elemento de la lista hasta encontrar el elemento objetivo o llegar al final de la lista.
+
+public class BusquedaLineal {
+    public static int buscar(int[] arreglo, int objetivo) {
+        for (int i = 0; i < arreglo.length; i++) {
+            if (arreglo[i] == objetivo) {
+                return i; // Elemento encontrado en el índice i
+            }
+        }
+        return -1; // Elemento no encontrado
+    }
+
+    public static void main(String[] args) {
+        int[] arreglo = {2, 4, 6, 8, 10};
+        int objetivo = 6;
+        int resultado = buscar(arreglo, objetivo);
+        if (resultado != -1) {
+            System.out.println("Elemento encontrado en el índice: " + resultado);
+        } else {
+            System.out.println("Elemento no encontrado.");
+        }
+    }
