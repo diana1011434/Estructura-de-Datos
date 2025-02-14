@@ -1,0 +1,42 @@
+Caso de Uso: Ordenar una lista de calificaciones de exámenes para evaluar el rendimiento de los estudiantes.
+
+
+public class ShellSortExample {
+    // Método para ordenar un array usando el algoritmo Shell Sort
+    public static void shellSort(int[] arr) {
+        int n = arr.length;
+        for (int gap = n / 2; gap > 0; gap /= 2) { // Inicializa y reduce el intervalo
+            for (int i = gap; i < n; i++) {
+                int temp = arr[i]; // Elemento a insertar
+                int j;
+                for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                    arr[j] = arr[j - gap]; // Desplaza el elemento hacia la derecha
+                }
+                arr[j] = temp; // Inserta el elemento en la posición correcta
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] grades = {88, 92, 74, 85, 79}; // Array de calificaciones
+        shellSort(grades); // Ordena las calificaciones usando Shell Sort
+        System.out.println("Calificaciones ordenadas: " + Arrays.toString(grades));
+    }
+}
+
+
+Explicación:
+•	public static void shellSort(int[] arr): Define el método de Shell Sort.
+•	for (int gap = n / 2; gap > 0; gap /= 2): Itera sobre intervalos reducidos.
+•	for (int i = gap; i < n; i++): Ordena elementos en función del intervalo.
+•	int temp = arr[i];: Elemento a insertar.
+•	for (j = i; j >= gap && arr[j - gap] > temp; j -= gap): Desplaza elementos mayores.
+•	arr[j] = temp;: Inserta el elemento en la posición correcta.
+•	int[] grades = {88, 92, 74, 85, 79};: Declara e inicializa el array de calificaciones.
+•	shellSort(grades);: Ordena el array de calificaciones.
+•	System.out.println("Calificaciones ordenadas: " + Arrays.toString(grades));: Imprime el array de calificaciones ordenadas.
+
+
+
+
+
