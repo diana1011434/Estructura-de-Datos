@@ -1,0 +1,185 @@
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.util.Arrays;
+import java.util.Random;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+public class OrdenamientoBusquedaGUI extends JFrame {
+    private final JTextArea textArea;
+    private final JButton bubbleSortBtn;
+    private final JButton insertionSortBtn;
+    private final JButton selectionSortBtn;
+    private final JButton mergeSortBtn;
+    private final JButton quickSortBtn;
+    private final JButton heapSortBtn;
+    private final JButton busquedaLinealBtn;
+    private final JButton busquedaBinariaBtn;
+    private int[] datos;
+
+    public OrdenamientoBusquedaGUI() {
+        setTitle("Ordenamiento y Búsqueda");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        textArea = new JTextArea();
+        textArea.setFont(new Font("Monospaced", Font.BOLD, 14));
+        textArea.setEditable(false);
+        add(new JScrollPane(textArea), BorderLayout.CENTER);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(4, 2));
+        
+        bubbleSortBtn = new JButton("Bubble Sort");
+        insertionSortBtn = new JButton("Insertion Sort");
+        selectionSortBtn = new JButton("Selection Sort");
+        mergeSortBtn = new JButton("Merge Sort");
+        quickSortBtn = new JButton("Quick Sort");
+        heapSortBtn = new JButton("Heap Sort");
+        busquedaLinealBtn = new JButton("Búsqueda Lineal");
+        busquedaBinariaBtn = new JButton("Búsqueda Binaria");
+        
+        panel.add(bubbleSortBtn);
+        panel.add(insertionSortBtn);
+        panel.add(selectionSortBtn);
+        panel.add(mergeSortBtn);
+        panel.add(quickSortBtn);
+        panel.add(heapSortBtn);
+        panel.add(busquedaLinealBtn);
+        panel.add(busquedaBinariaBtn);
+
+        add(panel, BorderLayout.SOUTH);
+
+        inicializarEventos();
+        generarDatos();
+        reproducirMusica("music.wav");
+    }
+
+    private void inicializarEventos() {
+        bubbleSortBtn.addActionListener(e -> ordenarYMostrar("Bubble Sort", this::bubbleSort));
+        insertionSortBtn.addActionListener(e -> ordenarYMostrar("Insertion Sort", this::insertionSort));
+        selectionSortBtn.addActionListener(e -> ordenarYMostrar("Selection Sort", this::selectionSort));
+        mergeSortBtn.addActionListener(e -> ordenarYMostrar("Merge Sort", arr -> mergeSort(arr, 0, arr.length - 1)));
+        quickSortBtn.addActionListener(e -> ordenarYMostrar("Quick Sort", arr -> quickSort(arr, 0, arr.length - 1)));
+        heapSortBtn.addActionListener(e -> ordenarYMostrar("Heap Sort", this::heapSort));
+        busquedaLinealBtn.addActionListener(e -> buscarElemento(true));
+        busquedaBinariaBtn.addActionListener(e -> buscarElemento(false));
+    }
+
+    private void generarDatos() {
+        Random rand = new Random();
+        datos = new int[10];
+        for (int i = 0; i < datos.length; i++) {
+            datos[i] = rand.nextInt(100);
+        }
+        textArea.setText("Datos generados:\n" + Arrays.toString(datos));
+    }
+
+    private void ordenarYMostrar(String metodo, Ordenamiento ordenamiento) {
+        int[] copia = Arrays.copyOf(datos, datos.length);
+        ordenamiento.ordenar(copia);
+        textArea.setText(metodo + " aplicado:\n" + Arrays.toString(copia));
+    }
+
+    private void buscarElemento(boolean esLineal) {
+        int buscar = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número a buscar:"));
+        int resultado = esLineal ? busquedaLineal(datos, buscar) : busquedaBinaria(datos, buscar);
+        textArea.setText("Resultado de " + (esLineal ? "Búsqueda Lineal" : "Búsqueda Binaria") + ": " + resultado);
+    }
+
+    private void reproducirMusica(String ruta) {
+        try {
+            File archivo = new File(ruta);
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(archivo));
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+            System.out.println("No se pudo reproducir la música: " + e.getMessage());
+        }
+    }
+
+    interface Ordenamiento {
+        void ordenar(int[] arr);
+    }
+
+    private void bubbleSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    private void insertionSort(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int key = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
+        }
+    }
+
+    private void selectionSort(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            int minIdx = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[j] < arr[minIdx]) {
+                    minIdx = j;
+                }
+            }
+            int temp = arr[minIdx];
+            arr[minIdx] = arr[i];
+            arr[i] = temp;
+        }
+    }
+
+    private void mergeSort(int[] arr, int l, int r) {
+        // Implementación completa aquí
+    }
+
+    private void quickSort(int[] arr, int low, int high) {
+        // Implementación completa aquí
+    }
+
+    private void heapSort(int[] arr) {
+        // Implementación completa aquí
+    }
+
+    private int busquedaLineal(int[] arr, int x) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == x) return i;
+        }
+        return -1;
+    }
+
+    private int busquedaBinaria(int[] arr, int x) {
+        Arrays.sort(arr);
+        int low = 0, high = arr.length - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (arr[mid] == x) return mid;
+            if (arr[mid] < x) low = mid + 1;
+            else high = mid - 1;
+        }
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new OrdenamientoBusquedaGUI().setVisible(true));
+    }
+}
+
+
