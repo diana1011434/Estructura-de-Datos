@@ -1,0 +1,195 @@
+package MetodosOrdenamientoBusqueda; // Define el paquete (solo si estás usando un paquete específico)
+
+import java.util.*; // Importa todas las utilidades de Java (Scanner, Random y Arrays)
+
+public class MetodosOrdenamientoBusqueda {
+
+    private static long operationCount; // Contador de operaciones para medir la eficiencia
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in); // Objeto para leer la entrada del usuario
+        Random random = new Random(); // Generador de números aleatorios
+
+        System.out.print("Ingrese la cantidad de elementos: "); // Solicita la cantidad de elementos
+        int n = scanner.nextInt(); // Captura la cantidad ingresada
+        int[] array = new int[n]; // Crea un arreglo de tamaño n
+
+        // Llena el arreglo con números aleatorios entre 0 y 999
+        for (int i = 0; i < n; i++) {
+            array[i] = random.nextInt(1000);
+        }
+
+        int option; // Variable para almacenar la opción del usuario
+        do {
+            // Menú de opciones para ordenar o buscar
+            System.out.println("\nSeleccione un método:");
+            System.out.println("1. Bubble Sort");
+            System.out.println("2. Insertion Sort");
+            System.out.println("3. Selection Sort");
+            System.out.println("4. Merge Sort");
+            System.out.println("5. Quick Sort");
+            System.out.println("6. Heap Sort");
+            System.out.println("7. Búsqueda Lineal");
+            System.out.println("8. Búsqueda Binaria (Requiere lista ordenada)");
+            System.out.println("9. Salir");
+            System.out.print("Opción: ");
+            option = scanner.nextInt(); // Lee la opción ingresada
+
+            // Copia del arreglo original para no modificarlo directamente
+            int[] copy = Arrays.copyOf(array, array.length);
+            operationCount = 0; // Reinicia el contador de operaciones
+            long startTime = System.nanoTime(); // Marca el inicio de la medición de tiempo
+
+            // Ejecuta el método seleccionado
+            switch (option) {
+                case 1 -> bubbleSort(copy);
+                case 2 -> insertionSort(copy);
+                case 3 -> selectionSort(copy);
+                case 4 -> mergeSort(copy, 0, copy.length - 1);
+                case 5 -> quickSort(copy, 0, copy.length - 1);
+                case 6 -> heapSort(copy);
+                case 7 -> {
+                    System.out.print("Ingrese número a buscar: ");
+                    int target = scanner.nextInt();
+                    linearSearch(copy, target);
+                }
+                case 8 -> {
+                    System.out.print("Ingrese número a buscar: ");
+                    int target = scanner.nextInt();
+                    Arrays.sort(copy); // Asegurar que el array esté ordenado antes de la búsqueda binaria
+                    binarySearch(copy, target);
+                }
+            }
+
+            long endTime = System.nanoTime(); // Marca el tiempo de finalización
+            System.out.println("Tiempo de ejecución: " + (endTime - startTime) + " nanosegundos");
+            System.out.println("Cantidad de operaciones: " + operationCount);
+        } while (option != 9);
+
+        scanner.close(); // Cierra el scanner
+    }
+
+    // Bubble Sort (Ordenamiento Burbuja)
+    private static void bubbleSort(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                operationCount++;
+                if (arr[j] > arr[j + 1]) { // Intercambia si el anterior es mayor que el siguiente
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    // Insertion Sort (Ordenamiento por Inserción)
+    private static void insertionSort(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int key = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key) {
+                operationCount++;
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
+        }
+    }
+
+    // Selection Sort (Ordenamiento por Selección)
+    private static void selectionSort(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                operationCount++;
+                if (arr[j] < arr[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            int temp = arr[minIndex];
+            arr[minIndex] = arr[i];
+            arr[i] = temp;
+        }
+    }
+
+    // Merge Sort (Ordenamiento por Mezcla)
+    private static void mergeSort(int[] arr, int left, int right) {
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+            mergeSort(arr, left, mid);
+            mergeSort(arr, mid + 1, right);
+            merge(arr, left, mid, right);
+        }
+    }
+
+    private static void merge(int[] arr, int left, int mid, int right) {
+        int[] temp = Arrays.copyOfRange(arr, left, right + 1);
+        int i = 0, j = mid - left + 1, k = left;
+        while (i <= mid - left && j < temp.length) {
+            operationCount++;
+            arr[k++] = (temp[i] <= temp[j]) ? temp[i++] : temp[j++];
+        }
+        while (i <= mid - left) arr[k++] = temp[i++];
+        while (j < temp.length) arr[k++] = temp[j++];
+    }
+
+    // Quick Sort (Ordenamiento Rápido)
+    private static void quickSort(int[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+    private static int partition(int[] arr, int low, int high) {
+        int pivot = arr[high], i = low - 1;
+        for (int j = low; j < high; j++) {
+            operationCount++;
+            if (arr[j] <= pivot) {
+                int temp = arr[++i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+        return i + 1;
+    }
+
+    // Heap Sort (Ordenamiento por Montículos)
+    private static void heapSort(int[] arr) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        for (int num : arr) {
+            heap.add(num);
+            operationCount++;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = heap.poll();
+            operationCount++;
+        }
+    }
+
+    // Búsqueda Lineal
+    private static void linearSearch(int[] arr, int target) {
+        for (int num : arr) {
+            operationCount++;
+            if (num == target) break;
+        }
+    }
+
+    // Búsqueda Binaria
+    private static void binarySearch(int[] arr, int target) {
+        int left = 0, right = arr.length - 1;
+        while (left <= right) {
+            operationCount++;
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) return;
+            else if (arr[mid] < target) left = mid + 1;
+            else right = mid - 1;
+        }
+    }
+}
+
