@@ -1,0 +1,68 @@
+/**
+ * Programa 2: Sistema de Inventario
+ * Problema: Se requiere un sistema que administre productos, stock y precios,
+ * permitiendo agregar, listar y actualizar la información.
+ * Autora: Ing. Diana Arias
+ */
+class Producto {
+    private String nombre;
+    private double precio;
+    private int cantidad;
+
+    public Producto(String nombre, double precio, int cantidad) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.cantidad = cantidad;
+    }
+
+    public String getNombre() { return nombre; }
+    public double getPrecio() { return precio; }
+    public int getCantidad() { return cantidad; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
+
+    public void mostrarInfo() {
+        System.out.println("Producto: " + nombre + ", Precio: " + precio + ", Cantidad: " + cantidad);
+    }
+}
+
+public class SistemaInventario {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<Producto> inventario = new ArrayList<>();
+        int opcion;
+        
+        do {
+            System.out.println("1. Agregar producto");
+            System.out.println("2. Mostrar inventario");
+            System.out.println("3. Modificar stock");
+            System.out.println("4. Salir");
+            opcion = sc.nextInt();
+            sc.nextLine();
+            
+            switch (opcion) {
+                case 1:
+                    System.out.print("Nombre del producto: ");
+                    String nombre = sc.nextLine();
+                    System.out.print("Precio: ");
+                    double precio = sc.nextDouble();
+                    System.out.print("Cantidad: ");
+                    int cantidad = sc.nextInt();
+                    inventario.add(new Producto(nombre, precio, cantidad));
+                    break;
+                case 2:
+                    for (Producto p : inventario) {
+                        p.mostrarInfo();
+                    }
+                    break;
+                case 3:
+                    System.out.print("Ingrese el índice del producto a modificar: ");
+                    int index = sc.nextInt();
+                    System.out.print("Nueva cantidad: ");
+                    int nuevaCantidad = sc.nextInt();
+                    inventario.get(index).setCantidad(nuevaCantidad);
+                    break;
+            }
+        } while (opcion != 4);
+        sc.close();
+    }
+}
