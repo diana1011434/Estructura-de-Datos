@@ -1,0 +1,59 @@
+/**
+ * Programa 5: Sistema de Empleados
+ * Problema: Se necesita un sistema para calcular salarios y bonificaciones.
+ * Autora: Ing. Diana Arias
+ */
+class Empleado {
+    private String nombre;
+    private double salario;
+
+    public Empleado(String nombre, double salario) {
+        this.nombre = nombre;
+        this.salario = salario;
+    }
+
+    public String getNombre() { return nombre; }
+    public double getSalario() { return salario; }
+
+    public void aplicarBono(double porcentaje) {
+        salario += salario * (porcentaje / 100);
+    }
+
+    public void mostrarInfo() {
+        System.out.println("Empleado: " + nombre + ", Salario: " + salario);
+    }
+}
+
+public class SistemaEmpleados {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<Empleado> empleados = new ArrayList<>();
+        empleados.add(new Empleado("Diana", 3000));
+        empleados.add(new Empleado("Carlos", 2500));
+        int opcion;
+
+        do {
+            System.out.println("1. Aplicar bonificación");
+            System.out.println("2. Mostrar empleados");
+            System.out.println("3. Salir");
+            opcion = sc.nextInt();
+            sc.nextLine();
+            
+            switch (opcion) {
+                case 1:
+                    System.out.println("Ingrese índice del empleado: ");
+                    int index = sc.nextInt();
+                    System.out.println("Ingrese porcentaje de bono: ");
+                    double bono = sc.nextDouble();
+                    empleados.get(index).aplicarBono(bono);
+                    break;
+                case 2:
+                    for (Empleado e : empleados) {
+                        e.mostrarInfo();
+                    }
+                    break;
+            }
+        } while (opcion != 3);
+        sc.close();
+    }
+}
