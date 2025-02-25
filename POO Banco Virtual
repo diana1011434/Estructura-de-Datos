@@ -1,0 +1,70 @@
+/**
+ * Programa 3: Banco Virtual
+ * Problema: Un banco necesita gestionar cuentas bancarias permitiendo depósitos,
+ * retiros y transferencias entre cuentas.
+ * Autora: Ing. Diana Arias
+ */
+class CuentaBancaria {
+    private String titular;
+    private double saldo;
+
+    public CuentaBancaria(String titular, double saldo) {
+        this.titular = titular;
+        this.saldo = saldo;
+    }
+
+    public String getTitular() { return titular; }
+    public double getSaldo() { return saldo; }
+
+    public void depositar(double monto) {
+        saldo += monto;
+    }
+
+    public boolean retirar(double monto) {
+        if (saldo >= monto) {
+            saldo -= monto;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void mostrarInfo() {
+        System.out.println("Titular: " + titular + ", Saldo: " + saldo);
+    }
+}
+
+public class BancoVirtual {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        CuentaBancaria cuenta = new CuentaBancaria("Diana", 1000);
+        int opcion;
+
+        do {
+            System.out.println("1. Depositar");
+            System.out.println("2. Retirar");
+            System.out.println("3. Mostrar saldo");
+            System.out.println("4. Salir");
+            opcion = sc.nextInt();
+            
+            switch (opcion) {
+                case 1:
+                    System.out.print("Monto a depositar: ");
+                    double monto = sc.nextDouble();
+                    cuenta.depositar(monto);
+                    break;
+                case 2:
+                    System.out.print("Monto a retirar: ");
+                    monto = sc.nextDouble();
+                    if (!cuenta.retirar(monto)) {
+                        System.out.println("Saldo insuficiente.");
+                    }
+                    break;
+                case 3:
+                    cuenta.mostrarInfo();
+                    break;
+            }
+        } while (opcion != 4);
+        sc.close();
+    }
+}
