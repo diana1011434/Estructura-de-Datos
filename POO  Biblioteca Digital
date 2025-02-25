@@ -1,0 +1,69 @@
+import java.util.*;
+
+/**
+ * Programa 4: Biblioteca Digital
+ * Problema: Se requiere un sistema para gestionar préstamos y devoluciones de libros.
+ * Autora: Ing. Diana Arias
+ */
+class Libro {
+    private String titulo;
+    private boolean prestado;
+
+    public Libro(String titulo) {
+        this.titulo = titulo;
+        this.prestado = false;
+    }
+
+    public String getTitulo() { return titulo; }
+    public boolean isPrestado() { return prestado; }
+
+    public void prestar() {
+        if (!prestado) {
+            prestado = true;
+            System.out.println("Libro prestado exitosamente.");
+        } else {
+            System.out.println("El libro ya está prestado.");
+        }
+    }
+
+    public void devolver() {
+        if (prestado) {
+            prestado = false;
+            System.out.println("Libro devuelto correctamente.");
+        } else {
+            System.out.println("El libro no estaba prestado.");
+        }
+    }
+}
+
+public class BibliotecaDigital {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<Libro> biblioteca = new ArrayList<>();
+        biblioteca.add(new Libro("Java para principiantes"));
+        biblioteca.add(new Libro("Estructuras de Datos"));
+        int opcion;
+
+        do {
+            System.out.println("1. Prestar libro");
+            System.out.println("2. Devolver libro");
+            System.out.println("3. Salir");
+            opcion = sc.nextInt();
+            sc.nextLine();
+            
+            switch (opcion) {
+                case 1:
+                    System.out.println("Ingrese índice del libro a prestar: ");
+                    int index = sc.nextInt();
+                    biblioteca.get(index).prestar();
+                    break;
+                case 2:
+                    System.out.println("Ingrese índice del libro a devolver: ");
+                    index = sc.nextInt();
+                    biblioteca.get(index).devolver();
+                    break;
+            }
+        } while (opcion != 3);
+        sc.close();
+    }
+}
