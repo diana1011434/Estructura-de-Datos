@@ -1,0 +1,76 @@
+import java.util.*;
+
+/**
+ * Programa 1: Gestión de Estudiantes
+ * Problema: Se necesita un sistema que permita registrar estudiantes,
+ * almacenar sus notas y realizar operaciones CRUD sobre ellos.
+ * Autora: Ing. Diana Arias
+ */
+class Estudiante {
+    private String nombre;
+    private int edad;
+    private double nota;
+
+    public Estudiante(String nombre, int edad, double nota) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.nota = nota;
+    }
+
+    public String getNombre() { return nombre; }
+    public int getEdad() { return edad; }
+    public double getNota() { return nota; }
+    public void setNota(double nota) { this.nota = nota; }
+
+    public void mostrarInfo() {
+        System.out.println("Nombre: " + nombre + ", Edad: " + edad + ", Nota: " + nota);
+    }
+}
+
+public class GestionEstudiantes {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<Estudiante> estudiantes = new ArrayList<>();
+        int opcion;
+        
+        do {
+            System.out.println("1. Agregar estudiante");
+            System.out.println("2. Mostrar estudiantes");
+            System.out.println("3. Modificar nota");
+            System.out.println("4. Eliminar estudiante");
+            System.out.println("5. Salir");
+            opcion = sc.nextInt();
+            sc.nextLine();
+            
+            switch (opcion) {
+                case 1:
+                    System.out.print("Nombre: ");
+                    String nombre = sc.nextLine();
+                    System.out.print("Edad: ");
+                    int edad = sc.nextInt();
+                    System.out.print("Nota: ");
+                    double nota = sc.nextDouble();
+                    estudiantes.add(new Estudiante(nombre, edad, nota));
+                    break;
+                case 2:
+                    for (Estudiante e : estudiantes) {
+                        e.mostrarInfo();
+                    }
+                    break;
+                case 3:
+                    System.out.print("Ingrese el índice del estudiante a modificar: ");
+                    int index = sc.nextInt();
+                    System.out.print("Nueva nota: ");
+                    double nuevaNota = sc.nextDouble();
+                    estudiantes.get(index).setNota(nuevaNota);
+                    break;
+                case 4:
+                    System.out.print("Ingrese el índice del estudiante a eliminar: ");
+                    index = sc.nextInt();
+                    estudiantes.remove(index);
+                    break;
+            }
+        } while (opcion != 5);
+        sc.close();
+    }
+}
