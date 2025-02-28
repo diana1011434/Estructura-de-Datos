@@ -1,0 +1,32 @@
+1️⃣ Preguntas Teóricas (Responde en tus palabras)
+¿Qué es una clase en Programación Orientada a Objetos?
+¿Cuál es la diferencia entre una clase y un objeto?
+¿Qué es la herencia y cómo se usa en Java?
+¿Por qué se usa la encapsulación en POO?
+Explica el concepto de polimorfismo con un ejemplo.
+
+
+2️⃣ Implementación en Código
+📝 Ejercicio 1: ClaseCamion
+
+Crea una clase Camionque herede de Coche.
+Agrega un atributo capacidadCarga(en toneladas).
+Agregue un método mostrarInfo()para imprimir los datos del camión, incluida la carga máxima.
+Modifica Mainpara crear un objeto Camiony probar sus métodos.
+
+📝 Ejercicio 2: Métodos adicionales
+
+Agrega un método encenderLuces()en Cocheque imprime "Luces encendidas".
+Sobrescribe este método Motopara que imprima "Luces encendidas en modo motocicleta".
+Pruebe el método en Mainllamándolo desde un objeto Cochey otro Moto.
+
+
+
+📝 Ejercicio 3: Clase Bicicleta(sin herencia)
+
+Crea una clase Bicicletacon atributos marca, tipoy velocidad.
+Implementa métodos pedalear(int incremento), frenar(int decremento)y mostrarInfo().
+Prueba la clase Bicicletaen Main.
+
+
+
