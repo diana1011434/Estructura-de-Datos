@@ -1,0 +1,65 @@
+🏆 COMPETENCIA DE PROGRAMACIÓN - POO AVANZADA
+📌 Idioma: Java
+📌 Niveles: Fácil, Intermedio, Difícil
+📌 Habilidades evaluadas:
+✅ Clases y objetos
+✅ Herencia y polimorfismo
+✅ Encapsulación y validaciones
+✅ Estructuras de datos y algoritmos
+
+🔹 Caso 1: Sistema de Gestión de Vehículos  🚗
+📌 Descripción:
+Crea un sistema que gestiona vehículos y permite comparar su velocidad.
+
+Requisitos:
+Vehiculo: marca, modelo, velocidad.
+Automovily Motocicletaheredan de Vehiculo.
+Método acelerar(int incremento), pero la velocidad máxima es 200 km/h .
+Método compararVelocidad(Vehiculo otro): Devuelve cuál es más rápido.
+
+
+🔹 Caso 2: Tienda Virtual con Descuentos 🛒
+📌 Descripción:
+Gestión de productos con descuentos y stock limitado.
+
+Requisitos:
+Producto: nombre, precio, stock.
+CarritoCompra: agregarProducto(Producto p, int cantidad).
+Restricción: No se puede agregar más productos de los que hay en stock.
+Nuevo: Aplica un descuento del 10% si el total supera los $1000 .
+
+
+🔹 Caso 3: Sistema de Nómina con Bonificaciones 👨‍💼
+📌 Descripción:
+Administra empleados y calcula sus salarios con bonificaciones.
+
+Requisitos:
+Empleado: nombre, salarioBase, cargo.
+Gerente: bono(10% del salario si el salario base es mayor a $3000).
+Método calcularSalarioTotal().
+
+ Caso 4: Biblioteca con Límite de Préstamos  📚
+📌 Descripción:
+Controla la disponibilidad de libros y el número máximo de préstamos por usuario.
+
+Requisitos:
+Libro: titulo, autor, disponible(booleano).
+Usuario: Puede tomar hasta 3 libros .
+Método prestarLibro(Libro libro), verifique disponibilidad y límite .
+
+
+🔹 Caso 5: Gestión de Mascotas con Registro de Vacunas  🐶
+📌 Descripción:
+Registra mascotas y sus vacunas en una veterinaria.
+
+Requisitos:
+Mascota: nombre, edad, especie, vacunasAplicadas(lista).
+Método vacunar(String vacuna), no permite duplicados .
+Método mostrarInfo().
+
+
+
+
+
+
+
