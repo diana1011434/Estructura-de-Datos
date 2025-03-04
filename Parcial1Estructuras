@@ -1,0 +1,137 @@
+import java.util.*;
+
+public class OrdenamientoYBusqueda {
+
+    private static long operationCount; // Contador de operaciones para medir la eficiencia
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in); // Objeto para leer la entrada del usuario
+        Random random = new Random(); // Generador de números aleatorios
+
+        System.out.print("Ingrese la cantidad de elementos: "); // Solicita la cantidad de elementos
+        int n = scanner.nextInt(); // Captura la cantidad ingresada
+        int[] array = new int[n]; // Crea un arreglo de tamaño n
+
+        // Llena el arreglo con números aleatorios entre 0 y 999
+        for (int i = 0; i < n; i++) {
+            array[i] = random.nextInt(1000);
+        }
+
+        int option; // Variable para almacenar la opción del usuario
+        do {
+            // Menú de opciones para ordenar o buscar
+            System.out.println("\nSeleccione un método:");
+            System.out.println("1. Bubble Sort (Ordenamiento Burbuja)");
+            System.out.println("2. Insertion Sort (Ordenamiento por Inserción)");
+            System.out.println("3. Selection Sort (Ordenamiento por Selección)");
+            System.out.println("4. Búsqueda Secuencial");
+            System.out.println("5. Búsqueda Binaria (Requiere lista ordenada)");
+            System.out.println("6. Salir");
+            System.out.print("Opción: ");
+            option = scanner.nextInt(); // Lee la opción ingresada
+
+            // Copia del arreglo original para no modificarlo directamente
+            int[] copy = Arrays.copyOf(array, array.length);
+            operationCount = 0; // Reinicia el contador de operaciones
+            long startTime = System.nanoTime(); // Marca el inicio de la medición de tiempo
+
+            // Ejecuta el método seleccionado
+            switch (option) {
+                case 1 -> bubbleSort(copy);
+                case 2 -> insertionSort(copy);
+                case 3 -> selectionSort(copy);
+                case 4 -> {
+                    System.out.print("Ingrese número a buscar: ");
+                    int target = scanner.nextInt();
+                    linearSearch(copy, target);
+                }
+                case 5 -> {
+                    System.out.print("Ingrese número a buscar: ");
+                    int target = scanner.nextInt();
+                    Arrays.sort(copy); // Asegura que el arreglo esté ordenado antes de la búsqueda binaria
+                    binarySearch(copy, target);
+                }
+            }
+
+            long endTime = System.nanoTime(); // Marca el tiempo de finalización
+            System.out.println("Tiempo de ejecución: " + (endTime - startTime) + " nanosegundos");
+            System.out.println("Cantidad de operaciones: " + operationCount);
+        } while (option != 6);
+
+        scanner.close(); // Cierra el scanner
+    }
+
+    // Bubble Sort (Ordenamiento Burbuja)
+    private static void bubbleSort(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                operationCount++;
+                if (arr[j] > arr[j + 1]) { // Intercambia si el anterior es mayor que el siguiente
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    // Insertion Sort (Ordenamiento por Inserción)
+    private static void insertionSort(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int key = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key) {
+                operationCount++;
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
+        }
+    }
+
+    // Selection Sort (Ordenamiento por Selección)
+    private static void selectionSort(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                operationCount++;
+                if (arr[j] < arr[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            int temp = arr[minIndex];
+            arr[minIndex] = arr[i];
+            arr[i] = temp;
+        }
+    }
+
+    // Búsqueda Secuencial
+    private static void linearSearch(int[] arr, int target) {
+        for (int num : arr) {
+            operationCount++;
+            if (num == target) {
+                System.out.println("Elemento encontrado.");
+                return;
+            }
+        }
+        System.out.println("Elemento no encontrado.");
+    }
+
+    // Búsqueda Binaria
+    private static void binarySearch(int[] arr, int target) {
+        int left = 0, right = arr.length - 1;
+        while (left <= right) {
+            operationCount++;
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) {
+                System.out.println("Elemento encontrado.");
+                return;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        System.out.println("Elemento no encontrado.");
+    }
+}
