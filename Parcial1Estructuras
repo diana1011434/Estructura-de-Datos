@@ -9,12 +9,12 @@ public class OrdenamientoYBusqueda {
         Random random = new Random(); // Generador de números aleatorios
 
         System.out.print("Ingrese la cantidad de elementos: "); // Solicita la cantidad de elementos
-        int n = scanner.nextInt(); // Captura la cantidad ingresada
+        int n  scanner.nextInt(); // Captura la cantidad ingresada
         int[] array = new int[n]; // Crea un arreglo de tamaño n
 
         // Llena el arreglo con números aleatorios entre 0 y 999
         for (int i = 0; i < n; i++) {
-            array[i] = random.nextInt(1000);
+            array[i]  random.nextInt(1000);
         }
 
         int option; // Variable para almacenar la opción del usuario
@@ -41,12 +41,12 @@ public class OrdenamientoYBusqueda {
                 case 2 -> insertionSort(copy);
                 case 3 -> selectionSort(copy);
                 case 4 -> {
-                    System.out.print("Ingrese número a buscar: ");
+                    system.out.print("Ingrese número a buscar: ");
                     int target = scanner.nextInt();
                     linearSearch(copy, target);
                 }
                 case 5 -> {
-                    System.out.print("Ingrese número a buscar: ");
+                    system.out.pint("Ingrese número a buscar: ");
                     int target = scanner.nextInt();
                     Arrays.sort(copy); // Asegura que el arreglo esté ordenado antes de la búsqueda binaria
                     binarySearch(copy, target);
@@ -76,7 +76,7 @@ public class OrdenamientoYBusqueda {
     }
 
     // Insertion Sort (Ordenamiento por Inserción)
-    private static void insertionSort(int[] arr) {
+    private stati void insertionSort(int[] arr) {
         for (int i = 1; i < arr.length; i++) {
             int key = arr[i];
             int j = i - 1;
@@ -94,7 +94,7 @@ public class OrdenamientoYBusqueda {
         for (int i = 0; i < arr.length - 1; i++) {
             int minIndex = i;
             for (int j = i + 1; j < arr.length; j++) {
-                operationCount++;
+                operationCount++
                 if (arr[j] < arr[minIndex]) {
                     minIndex = j;
                 }
@@ -132,6 +132,6 @@ public class OrdenamientoYBusqueda {
                 right = mid - 1;
             }
         }
-        System.out.println("Elemento no encontrado.");
+        system.out.println("Elemento no encontrad
     }
 }
