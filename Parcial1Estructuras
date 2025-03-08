@@ -1,11 +1,10 @@
-import java.util.*;
 
 public class OrdenamientoYBusqueda {
 
     private static long operationCount; // Contador de operaciones para medir la eficiencia
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in); // Objeto para leer la entrada del usuario
+    public static void  {
+        Scanner Scanner(System.in); // Objeto para leer la entrada del usuario
         Random random = new Random(); // Generador de números aleatorios
 
         System.out.print("Ingrese la cantidad de elementos: "); // Solicita la cantidad de elementos
@@ -13,8 +12,7 @@ public class OrdenamientoYBusqueda {
         int[] array = new int[n]; // Crea un arreglo de tamaño n
 
         // Llena el arreglo con números aleatorios entre 0 y 999
-        for (int i = 0; i < n; i++) {
-            array[i]  random.nextInt(1000);
+                  array[i]  random.nextInt(1000);
         }
 
         int option; // Variable para almacenar la opción del usuario
@@ -53,7 +51,7 @@ public class OrdenamientoYBusqueda {
                 }
             }
 
-            long endTime = System.nanoTime(); // Marca el tiempo de finalización
+            long endTime // Marca el tiempo de finalización
             System.out.println("Tiempo de ejecución: " + (endTime - startTime) + " nanosegundos");
             System.out.println("Cantidad de operaciones: " + operationCount);
         } while (option != 6);
@@ -79,8 +77,7 @@ public class OrdenamientoYBusqueda {
     private stati void insertionSort(int[] arr) {
         for (int i = 1; i < arr.length; i++) {
             int key = arr[i];
-            int j = i - 1;
-            while (j >= 0 && arr[j] > key) {
+              while (j >= 0 && arr[j] > key) {
                 operationCount++;
                 arr[j + 1] = arr[j];
                 j--;
