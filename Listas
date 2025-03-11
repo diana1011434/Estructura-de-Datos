@@ -1,0 +1,81 @@
+// Taller 2
+
+1. Qué es una lista enlazada?
+2.	¿Cuáles son los tipos principales de listas enlazadas?
+3.	¿Qué es un nodo en una lista enlazada?
+4.	¿Cuáles son las ventajas y desventajas de las listas enlazadas en comparación con los arreglos?
+5.	¿Cómo se recorre una lista enlazada?
+6.	¿Qué es un apuntador?
+7.	¿Qué es cabeza?
+8.	¿Qué es cola?
+
+Taller Practico Estructura de Datos
+
+Las listas enlazadas son una estructura de datos fundamental que permite almacenar y organizar información de manera dinámica. A diferencia de los arreglos, las listas enlazadas pueden crecer o reducirse en tamaño sin necesidad de redefinir su tamaño. Esto se logra mediante el uso de nodos, donde cada nodo contiene un dato y un apuntador al siguiente nodo en la lista.
+
+Conceptos Clave:
+
+•	Nodo: Estructura básica que contiene un dato y un apuntador al siguiente nodo.
+•	Apuntador: Referencia que indica la posición de otro nodo en la lista.
+•	Lista Enlazada: Colección de nodos conectados mediante apuntadores.
+
+
+1. Cada estudiante deberá crear un diagrama de flujo que represente las operaciones básicas en una lista enlazada: agregar, eliminar, modificar y consultar nodos. Y después implementará un programa en Java que permita gestionar una lista enlazada. Las operaciones para implementar son:
+a)	Agregar un nodo.
+b)	Eliminar un nodo por dato.
+c)	Modificar un nodo en una posición específica.
+d)	Consultar y mostrar la lista completa.
+
+
+2. Situación Problemática
+Contexto: Imagina que eres un profesional que trabaja en ventas. Tu trabajo implica interactuar con numerosos clientes, colegas y proveedores. A medida que tu red de contactos crece, te das cuenta de que necesitas una forma eficiente de gestionar la información de cada persona con la que te comunicas.
+
+Problemas:
+
+Desorganización de Información:
+Tienes múltiples notas en papeles, tarjetas de presentación y correos electrónicos que contienen información de contacto. Esto hace que sea difícil encontrar los datos correctos cuando los necesitas.
+
+Pérdida de Oportunidades:
+Algunas veces, no puedes recordar detalles importantes sobre tus contactos, como su teléfono o email, lo que puede resultar en oportunidades perdidas para hacer seguimiento o cerrar ventas.
+
+Duplicación de Datos:
+Es fácil que se creen registros duplicados para la misma persona, ya que a menudo guardas la información en diferentes lugares sin saber que ya tienes un contacto con esos datos.
+
+Actualización de Información:
+Cuando un contacto cambia su número de teléfono o dirección de email, a menudo te enteras demasiado tarde, lo que significa que intentas comunicarte con información desactualizada.
+
+Falta de Consultas Eficientes:
+Buscar un contacto específico en tu colección de notas puede ser un proceso largo y tedioso. Necesitas una manera rápida y fácil de consultar información.
+
+Solución Propuesta
+Desarrollar un sistema de gestión de contactos que te permita:
+
+	Agregar, eliminar y modificar contactos de manera rápida y sencilla.
+	Consultar contactos eficientemente a través de una interfaz de usuario simple.
+	Mantener la información organizada y accesible, reduciendo la posibilidad de duplicaciones.
+	Facilitar la actualización de datos cuando sea necesario.
+
+
+
+// Ponencias
+
+Actividad:
+
+1.	Crear y Mostrar una Lista Enlazada: Escribe un algoritmo que cree una lista enlazada de números enteros y luego la muestre. Genere el código respectivo. (Santiago y Nicol).
+2.	Inserción en una Lista Enlazada: Añade un nodo al principio, al final y en una posición específica en una lista enlazada. (Julian)
+3.	Eliminar un Nodo: Desarrolla una función que elimine un nodo de una lista enlazada dada una clave específica.( Janah y Alejandra Cano).
+4.	Buscar un Elemento: Implementa una función que busque un elemento en una lista enlazada y devuelva su posición (Juan y Laura).
+5.	Invertir una Lista Enlazada: Escribe un algoritmo para invertir el orden de los nodos en una lista enlazada. (yerik vazquez y Tomas).
+6.	Detectar un Ciclo en una Lista Enlazada: Usa el algoritmo de Floyd para detectar un ciclo en una lista enlazada ( Sofia y Alejandra).
+7.	Encontrar el Penúltimo Nodo: Crea una función para encontrar y retornar el penúltimo nodo en una lista enlazada. ( Esteban y Santiago).
+8.	Lista Enlazada Doblemente Enlazada: Construye una lista doblemente enlazada e implementa inserciones y eliminaciones. (Palomino y Valentina).
+9.	Contar Nodos en una Lista Circular: Escribe un programa que cuente el número de nodos en una lista circular enlazada. (Juanita y Nicolas).
+10.	Combinar Dos Listas Enlazadas: Desarrolla una función para combinar dos listas enlazadas en una nueva lista enlazada. (David Sierra).
+11.	listas. Iteradores. Concepto y cómo funcionan. (Jean Carlos y Angela).
+12.	Caso de uso listas Iteradores. Santiago Avila
+13.	 Juego con listas  (Juan y Tomas).
+
+
+
+
+
