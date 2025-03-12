@@ -1,0 +1,81 @@
+class Pokemon {
+    String name;
+    int level;
+    Pokemon next;
+
+    public Pokemon(String name, int level) {
+        this.name = name;
+        this.level = level;
+        this.next = null;
+    }
+}
+
+class Pokedex {
+    private Pokemon head;
+
+    // Agregar un Pokémon a la Pokedex
+    public void addPokemon(String name, int level) {
+        Pokemon newPokemon = new Pokemon(name, level);
+        if (head == null) {
+            head = newPokemon;
+            return;
+        }
+        Pokemon temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = newPokemon;
+    }
+
+    // Eliminar un Pokémon por nombre
+    public void removePokemon(String name) {
+        Pokemon temp = head, prev = null;
+        if (temp != null && temp.name.equals(name)) {
+            head = temp.next;
+            return;
+        }
+        while (temp != null && !temp.name.equals(name)) {
+            prev = temp;
+            temp = temp.next;
+        }
+        if (temp == null) return;
+        prev.next = temp.next;
+    }
+
+    // Buscar un Pokémon
+    public boolean searchPokemon(String name) {
+        Pokemon temp = head;
+        while (temp != null) {
+            if (temp.name.equals(name)) return true;
+            temp = temp.next;
+        }
+        return false;
+    }
+
+    // Mostrar la lista de Pokémon
+    public void showPokedex() {
+        Pokemon temp = head;
+        while (temp != null) {
+            System.out.print(temp.name + " (Nivel " + temp.level + ") -> ");
+            temp = temp.next;
+        }
+        System.out.println("null");
+    }
+}
+
+public class PokedexDemo {
+    public static void main(String[] args) {
+        Pokedex pokedex = new Pokedex();
+        
+        pokedex.addPokemon("Pikachu", 10);
+        pokedex.addPokemon("Charizard", 36);
+        pokedex.addPokemon("Bulbasaur", 5);
+        pokedex.showPokedex(); // Pikachu (Nivel 10) -> Charizard (Nivel 36) -> Bulbasaur (Nivel 5) -> null
+        
+        pokedex.removePokemon("Charizard");
+        pokedex.showPokedex(); // Pikachu (Nivel 10) -> Bulbasaur (Nivel 5) -> null
+        
+        System.out.println("¿Está Bulbasaur en la Pokedex? " + pokedex.searchPokemon("Bulbasaur")); // true
+        System.out.println("¿Está Squirtle en la Pokedex? " + pokedex.searchPokemon("Squirtle")); // false
+    }
+}
