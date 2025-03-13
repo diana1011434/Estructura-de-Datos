@@ -13,21 +13,16 @@ Taller Practico Estructura de Datos
 
 Las listas enlazadas son una estructura de datos fundamental que permite almacenar y organizar información de manera dinámica. A diferencia de los arreglos, las listas enlazadas pueden crecer o reducirse en tamaño sin necesidad de redefinir su tamaño. Esto se logra mediante el uso de nodos, donde cada nodo contiene un dato y un apuntador al siguiente nodo en la lista.
 
-Conceptos Clave:
-
-•	Nodo: Estructura básica que contiene un dato y un apuntador al siguiente nodo.
-•	Apuntador: Referencia que indica la posición de otro nodo en la lista.
-•	Lista Enlazada: Colección de nodos conectados mediante apuntadores.
 
 
-1. Cada estudiante deberá crear un diagrama de flujo que represente las operaciones básicas en una lista enlazada: agregar, eliminar, modificar y consultar nodos. Y después implementará un programa en Java que permita gestionar una lista enlazada. Las operaciones para implementar son:
+9. Cada estudiante deberá realizar un programa en java que se refleje las operaciones básicas en una lista enlazada: agregar, eliminar, modificar y consultar nodos. Y después implementará un programa en Java que permita gestionar una lista enlazada. Las operaciones para implementar son:
 a)	Agregar un nodo.
 b)	Eliminar un nodo por dato.
 c)	Modificar un nodo en una posición específica.
 d)	Consultar y mostrar la lista completa.
 
 
-2. Situación Problemática
+10. Situación Problemática
 Contexto: Imagina que eres un profesional que trabaja en ventas. Tu trabajo implica interactuar con numerosos clientes, colegas y proveedores. A medida que tu red de contactos crece, te das cuenta de que necesitas una forma eficiente de gestionar la información de cada persona con la que te comunicas.
 
 Problemas:
@@ -50,10 +45,10 @@ Buscar un contacto específico en tu colección de notas puede ser un proceso la
 Solución Propuesta
 Desarrollar un sistema de gestión de contactos que te permita:
 
-	Agregar, eliminar y modificar contactos de manera rápida y sencilla.
-	Consultar contactos eficientemente a través de una interfaz de usuario simple.
-	Mantener la información organizada y accesible, reduciendo la posibilidad de duplicaciones.
-	Facilitar la actualización de datos cuando sea necesario.
+Agregar, eliminar y modificar contactos de manera rápida y sencilla.
+Consultar contactos eficientemente a través de una interfaz de usuario simple.
+Mantener la información organizada y accesible, reduciendo la posibilidad de duplicaciones.
+Facilitar la actualización de datos cuando sea necesario.
 
 
 
