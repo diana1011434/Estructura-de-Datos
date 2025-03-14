@@ -1,0 +1,117 @@
+### Aplicación en Java con NetBeans: Pilas, Colas y Listas Enlazadas
+
+#### Descripción:
+Este programa en Java utiliza una interfaz gráfica (Swing) en NetBeans para gestionar estructuras de datos como Pilas, Colas y Listas Enlazadas. El usuario podrá realizar operaciones de inserción, eliminación y visualización mediante botones y una interfaz colorida.
+
+#### Código Fuente:
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
+public class EstructurasDatosGUI extends JFrame {
+    private Stack<String> pila = new Stack<>();
+    private Queue<String> cola = new LinkedList<>();
+    private LinkedList<String> lista = new LinkedList<>();
+    
+    private JTextArea display;
+    private JTextField inputField;
+    
+    public EstructurasDatosGUI() {
+        setTitle("Gestor de Estructuras de Datos");
+        setSize(500, 400);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+        
+        // Panel superior
+        JPanel topPanel = new JPanel();
+        topPanel.setBackground(Color.LIGHT_GRAY);
+        inputField = new JTextField(15);
+        JButton addButton = new JButton("Agregar");
+        JButton removeButton = new JButton("Eliminar");
+        topPanel.add(new JLabel("Dato:"));
+        topPanel.add(inputField);
+        topPanel.add(addButton);
+        topPanel.add(removeButton);
+        
+        // Panel central
+        display = new JTextArea();
+        display.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(display);
+        
+        // Panel inferior
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(Color.CYAN);
+        JButton pilaButton = new JButton("Pila");
+        JButton colaButton = new JButton("Cola");
+        JButton listaButton = new JButton("Lista Enlazada");
+        bottomPanel.add(pilaButton);
+        bottomPanel.add(colaButton);
+        bottomPanel.add(listaButton);
+        
+        // Agregar componentes al frame
+        add(topPanel, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
+        add(bottomPanel, BorderLayout.SOUTH);
+        
+        // Eventos de botones
+        addButton.addActionListener(e -> agregarElemento());
+        removeButton.addActionListener(e -> eliminarElemento());
+        pilaButton.addActionListener(e -> mostrarPila());
+        colaButton.addActionListener(e -> mostrarCola());
+        listaButton.addActionListener(e -> mostrarLista());
+    }
+    
+    private void agregarElemento() {
+        String dato = inputField.getText();
+        if (!dato.isEmpty()) {
+            pila.push(dato);
+            cola.offer(dato);
+            lista.add(dato);
+            inputField.setText("");
+        }
+    }
+    
+    private void eliminarElemento() {
+        if (!pila.isEmpty()) pila.pop();
+        if (!cola.isEmpty()) cola.poll();
+        if (!lista.isEmpty()) lista.removeFirst();
+    }
+    
+    private void mostrarPila() {
+        display.setText("Pila:\n" + pila.toString());
+    }
+    
+    private void mostrarCola() {
+        display.setText("Cola:\n" + cola.toString());
+    }
+    
+    private void mostrarLista() {
+        display.setText("Lista Enlazada:\n" + lista.toString());
+    }
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new EstructurasDatosGUI().setVisible(true));
+    }
+}
+```
+
+### Funcionamiento:
+1. El usuario ingresa un dato en el campo de texto.
+2. Puede agregarlo a la estructura de datos seleccionada.
+3. Puede eliminar el último elemento agregado.
+4. Puede visualizar el contenido de cada estructura de datos mediante los botones respectivos.
+
+### Características:
+- Uso de `Stack` para la Pila.
+- Uso de `Queue` para la Cola.
+- Uso de `LinkedList` para la Lista Enlazada.
+- Interfaz amigable con `JFrame`, `JTextArea`, `JButton`, y `JPanel`.
+
+Este programa permite al usuario interactuar de manera sencilla con las estructuras de datos y observar su comportamiento dinámico. Se puede mejorar añadiendo validaciones, diseño más avanzado y persistencia de datos.
+
