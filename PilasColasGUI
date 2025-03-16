@@ -1,0 +1,205 @@
+package PilasColasGUI;
+/**
+ * Autor: Ing. Diana Arias
+ * Descripción: Aplicación gráfica para gestionar pedidos y devoluciones utilizando
+ * estructuras de datos (Colas y Pilas). La interfaz permite interactuar con los datos
+ * visualmente y con botones intuitivos.
+ */
+
+// Importación de librerías necesarias para la interfaz gráfica y estructuras de datos
+import javax.swing.*;   // Librería para crear la interfaz gráfica (ventanas, botones, cuadros de diálogo)
+import java.awt.*;      // Librería para manejo de gráficos, colores y diseño
+import java.util.LinkedList; // Implementación de una cola (FIFO - First In, First Out)
+import java.util.Stack; // Implementación de una pila (LIFO - Last In, First Out)
+
+public class PilasColasGUI {
+    
+    // Ventana principal de la aplicación
+    private JFrame frame;
+
+    // Área de texto donde se muestran las operaciones realizadas
+    private JTextArea textArea;
+
+    // Estructura de datos tipo Pila para almacenar devoluciones (LIFO)
+    private Stack<String> devoluciones;
+
+    // Estructura de datos tipo Cola para almacenar pedidos (FIFO)
+    private LinkedList<String> pedidos;
+
+    // Panel donde se dibujarán gráficamente los pedidos y devoluciones
+    private DibujosPanel dibujosPanel;
+
+    /**
+     * Constructor de la clase, inicializa las estructuras de datos y la interfaz gráfica.
+     */
+    public PilasColasGUI() {
+        devoluciones = new Stack<>(); // Inicialización de la pila de devoluciones
+        pedidos = new LinkedList<>(); // Inicialización de la cola de pedidos
+        initialize(); // Llamado al método que construye la interfaz gráfica
+    }
+
+    /**
+     * Método que configura la interfaz gráfica y los componentes de la aplicación.
+     */
+    private void initialize() {
+        // Creación de la ventana principal con título
+        frame = new JFrame("Gestión de Pedidos y Devoluciones - Ing. Diana Arias");
+
+        // Configuración para cerrar la aplicación al presionar la "X"
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(700, 500); // Dimensiones de la ventana
+        frame.setLayout(new BorderLayout()); // Establece el diseño en la ventana
+
+        // Cambia el color de fondo de la ventana principal
+        frame.getContentPane().setBackground(new Color(230, 240, 255));
+
+        // Área de texto para mostrar las operaciones realizadas
+        textArea = new JTextArea();
+        textArea.setEditable(false); // Evita que el usuario edite el texto manualmente
+        frame.add(new JScrollPane(textArea), BorderLayout.EAST); // Se agrega con desplazamiento
+
+        // Panel donde se dibujarán gráficamente las pilas y colas
+        dibujosPanel = new DibujosPanel();
+        frame.add(dibujosPanel, BorderLayout.CENTER);
+
+        // Creación del panel de botones con distribución de 2 filas y 3 columnas
+        JPanel panel = new JPanel(new GridLayout(2, 3));
+
+        // Creación de botones con texto y emojis para una interfaz más intuitiva
+        JButton agregarPedidoButton = new JButton("➕ Agregar Pedido");
+        JButton despacharPedidoButton = new JButton("🚚 Despachar Pedido");
+        JButton agregarDevolucionButton = new JButton("🔄 Agregar Devolución");
+        JButton procesarDevolucionButton = new JButton("✅ Procesar Devolución");
+        JButton limpiarButton = new JButton("🗑️ Limpiar");
+
+        // Agregar botones al panel
+        panel.add(agregarPedidoButton);
+        panel.add(despacharPedidoButton);
+        panel.add(agregarDevolucionButton);
+        panel.add(procesarDevolucionButton);
+        panel.add(limpiarButton);
+
+        // Agregar el panel de botones en la parte inferior de la ventana
+        frame.add(panel, BorderLayout.SOUTH);
+
+        // Asignación de eventos a cada botón para realizar las operaciones correspondientes
+        agregarPedidoButton.addActionListener(e -> agregarPedido());
+        despacharPedidoButton.addActionListener(e -> despacharPedido());
+        agregarDevolucionButton.addActionListener(e -> agregarDevolucion());
+        procesarDevolucionButton.addActionListener(e -> procesarDevolucion());
+        limpiarButton.addActionListener(e -> limpiarDatos());
+
+        // Hacer visible la ventana
+        frame.setVisible(true);
+    }
+
+    /**
+     * Método para agregar un pedido a la cola (FIFO).
+     */
+    private void agregarPedido() {
+        // Solicita al usuario que ingrese el número del pedido
+        String pedido = JOptionPane.showInputDialog("Ingrese el número del pedido:");
+        
+        // Verifica que el usuario no haya dejado el campo vacío
+        if (pedido != null && !pedido.trim().isEmpty()) {
+            pedidos.add(pedido); // Agrega el pedido a la cola
+            actualizarTexto("Nuevo pedido agregado: " + pedido); // Muestra mensaje en el área de texto
+            dibujosPanel.repaint(); // Redibuja la interfaz gráfica
+        }
+    }
+
+    /**
+     * Método para despachar un pedido de la cola (FIFO).
+     */
+    private void despacharPedido() {
+        // Verifica si hay pedidos en la cola
+        if (!pedidos.isEmpty()) {
+            String pedido = pedidos.removeFirst(); // Extrae el primer pedido de la cola
+            actualizarTexto("Pedido despachado: " + pedido); // Muestra mensaje en el área de texto
+            dibujosPanel.repaint(); // Redibuja la interfaz gráfica
+        } else {
+            JOptionPane.showMessageDialog(frame, "No hay pedidos pendientes.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    /**
+     * Método para agregar una devolución a la pila (LIFO).
+     */
+    private void agregarDevolucion() {
+        String devolucion = JOptionPane.showInputDialog("Ingrese el número de devolución:");
+        
+        if (devolucion != null && !devolucion.trim().isEmpty()) {
+            devoluciones.push(devolucion); // Agrega la devolución a la pila
+            actualizarTexto("Nueva devolución registrada: " + devolucion);
+            dibujosPanel.repaint();
+        }
+    }
+
+    /**
+     * Método para procesar una devolución de la pila (LIFO).
+     */
+    private void procesarDevolucion() {
+        if (!devoluciones.isEmpty()) {
+            String devolucion = devoluciones.pop(); // Extrae el último elemento de la pila
+            actualizarTexto("Devolución procesada: " + devolucion);
+            dibujosPanel.repaint();
+        } else {
+            JOptionPane.showMessageDialog(frame, "No hay devoluciones pendientes.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    /**
+     * Método para limpiar todas las estructuras de datos.
+     */
+    private void limpiarDatos() {
+        pedidos.clear(); // Elimina todos los elementos de la cola
+        devoluciones.clear(); // Elimina todos los elementos de la pila
+        actualizarTexto("Pedidos y devoluciones limpiados.");
+        dibujosPanel.repaint();
+    }
+
+    /**
+     * Método para actualizar el área de texto con los mensajes generados.
+     */
+    private void actualizarTexto(String mensaje) {
+        textArea.append(mensaje + "\n");
+    }
+
+    /**
+     * Clase interna que permite dibujar gráficamente la pila y la cola.
+     */
+    private class DibujosPanel extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            g.setColor(Color.BLACK);
+            g.drawString("Cola (Pedidos)", 50, 20);
+            g.drawString("Pila (Devoluciones)", 350, 20);
+
+            // Dibujar la cola (Pedidos)
+            int x = 50;
+            for (String pedido : pedidos) {
+                g.setColor(new Color(100, 200, 100));
+                g.fillRect(x, 50, 80, 40);
+                g.setColor(Color.BLACK);
+                g.drawString(pedido, x + 30, 75);
+                x += 90;
+            }
+
+            // Dibujar la pila (Devoluciones)
+            int y = 50;
+            for (String devolucion : devoluciones) {
+                g.setColor(new Color(200, 100, 100));
+                g.fillRect(350, y, 80, 40);
+                g.setColor(Color.BLACK);
+                g.drawString(devolucion, 380, y + 25);
+                y += 50;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(PilasColasGUI::new);
+    }
+}
