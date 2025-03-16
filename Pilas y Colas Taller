@@ -1,0 +1,121 @@
+Caso 1: Deshacer y Rehacer en un Editor de Texto (Pilas)
+Descripción:
+Un editor de texto permite a los usuarios escribir y modificar contenido. Implementa la funcionalidad de deshacer (Ctrl + Z) y rehacer (Ctrl + Y) usando pilas.
+
+Requerimientos:
+
+Al escribir una nueva palabra o frase, se almacena en una pila de acciones.
+Al presionar "Deshacer", la última acción se extrae de la pila y se guarda en otra pila de acciones deshechas.
+Al presionar "Rehacer", la acción deshecha se extrae de su pila y se vuelve a agregar al texto.
+Se debe mostrar el contenido actual del texto en cada operación.
+Conceptos aplicados: Pilas (LIFO – Last In, First Out).
+
+
+
+En Java, utilizamos la clase Stack para implementar las pilas de deshacer y rehacer.
+import java.util.Stack;
+
+public class EditorTexto {
+    private String texto;
+    private Stack<String> pilaUndo;
+    private Stack<String> pilaRedo;
+
+    public EditorTexto() {
+        this.texto = "";
+        this.pilaUndo = new Stack<>();
+        this.pilaRedo = new Stack<>();
+    }
+
+    public void escribir(String nuevoTexto) {
+        pilaUndo.push(texto); // Guardamos el estado actual antes de modificar
+        texto += nuevoTexto;  // Agregamos nuevo contenido
+        pilaRedo.clear(); // Se limpia la pila de rehacer
+        mostrarTexto();
+    }
+
+    public void deshacer() {
+        if (!pilaUndo.isEmpty()) {
+            pilaRedo.push(texto); // Guardamos el estado actual en la pila de rehacer
+            texto = pilaUndo.pop(); // Restauramos el último estado guardado
+        }
+        mostrarTexto();
+    }
+
+    public void rehacer() {
+        if (!pilaRedo.isEmpty()) {
+            pilaUndo.push(texto); // Guardamos el estado actual en la pila de deshacer
+            texto = pilaRedo.pop(); // Restauramos el estado desde la pila de rehacer
+        }
+        mostrarTexto();
+    }
+
+    public void mostrarTexto() {
+        System.out.println("Texto actual: \"" + texto + "\"");
+    }
+
+    public static void main(String[] args) {
+        EditorTexto editor = new EditorTexto();
+
+        editor.escribir("Hola, ");
+        editor.escribir("mundo!");
+        editor.deshacer();
+        editor.rehacer();
+    }
+}
+
+
+Caso de Uso 2: Gestión de Turnos en un Banco (Colas)
+Descripción:
+Un banco debe gestionar los turnos de atención de los clientes. Implementa un sistema que asigne y atienda turnos utilizando colas.
+
+Requerimientos:
+
+Cuando un cliente llega, se le asigna un número de turno y se encola en la lista de espera.
+A medida que los cajeros quedan disponibles, los clientes son atendidos en orden FIFO (First In, First Out).
+Se debe mostrar en pantalla el número del cliente que está siendo atendido y los que están en espera.
+Opción para consultar cuántos clientes están en la fila.
+Conceptos aplicados: Colas (FIFO – First In, First Out).
+
+Para este caso, usamos la clase Queue implementada con LinkedList para manejar los turnos.
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Banco {
+    private Queue<Integer> colaTurnos;
+    private int siguienteTurno;
+
+    public Banco() {
+        this.colaTurnos = new LinkedList<>();
+        this.siguienteTurno = 1;
+    }
+
+    public void generarTurno() {
+        colaTurnos.add(siguienteTurno);
+        System.out.println("Turno generado: " + siguienteTurno);
+        siguienteTurno++;
+    }
+
+    public void atenderCliente() {
+        if (!colaTurnos.isEmpty()) {
+            int turnoAtendido = colaTurnos.poll();
+            System.out.println("Atendiendo al cliente con turno: " + turnoAtendido);
+        } else {
+            System.out.println("No hay clientes en espera.");
+        }
+    }
+
+    public void mostrarCola() {
+        System.out.println("Turnos en espera: " + colaTurnos);
+    }
+
+    public static void main(String[] args) {
+        Banco banco = new Banco();
+
+        banco.generarTurno();
+        banco.generarTurno();
+        banco.mostrarCola();
+        banco.atenderCliente();
+        banco.mostrarCola();
+    }
+}
+
