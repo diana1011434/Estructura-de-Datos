@@ -1,0 +1,139 @@
+Operaciones de inserción, búsqueda y eliminación
+class Nodo {
+    int valor;
+    Nodo izquierdo;
+    Nodo derecho;
+
+    public Nodo(int valor) {
+        this.valor = valor;
+        this.izquierdo = null;
+        this.derecho = null;
+    }
+}
+
+class ArbolBinarioBusqueda {
+    Nodo raiz;
+
+    public ArbolBinarioBusqueda() {
+        this.raiz = null;
+    }
+
+    public void insertar(int valor) {
+        if (raiz == null) {
+            raiz = new Nodo(valor);
+        } else {
+            insertarRecursivo(raiz, valor);
+        }
+    }
+
+    private void insertarRecursivo(Nodo nodo, int valor) {
+        if (valor < nodo.valor) {
+            if (nodo.izquierdo == null) {
+                nodo.izquierdo = new Nodo(valor);
+            } else {
+                insertarRecursivo(nodo.izquierdo, valor);
+            }
+        } else {
+            if (nodo.derecho == null) {
+                nodo.derecho = new Nodo(valor);
+            } else {
+                insertarRecursivo(nodo.derecho, valor);
+            }
+        }
+    }
+
+    public boolean buscar(int valor) {
+        return buscarRecursivo(raiz, valor);
+    }
+
+    private boolean buscarRecursivo(Nodo nodo, int valor) {
+        if (nodo == null) {
+            return false; // No encontrado
+        }
+        if (valor == nodo.valor) {
+            return true; // Encontrado
+        }
+        return valor < nodo.valor 
+            ? buscarRecursivo(nodo.izquierdo, valor) 
+            : buscarRecursivo(nodo.derecho, valor);
+    }
+
+    public void eliminar(int valor) {
+        raiz = eliminarRecursivo(raiz, valor);
+    }
+
+    private Nodo eliminarRecursivo(Nodo nodo, int valor) {
+        if (nodo == null) {
+            return null; // No se encontró el nodo
+        }
+        if (valor < nodo.valor) {
+            nodo.izquierdo = eliminarRecursivo(nodo.izquierdo, valor);
+        } else if (valor > nodo.valor) {
+            nodo.derecho = eliminarRecursivo(nodo.derecho, valor);
+        } else {
+            // Nodo encontrado
+            if (nodo.izquierdo == null) return nodo.derecho;
+            else if (nodo.derecho == null) return nodo.izquierdo;
+
+            // Nodo con dos hijos: obtener el mínimo en el subárbol derecho
+            nodo.valor = minValue(nodo.derecho);
+
+            // Eliminar el nodo mínimo del subárbol derecho
+            nodo.derecho = eliminarRecursivo(nodo.derecho, nodo.valor);
+        }
+        return nodo;
+    }
+
+    private int minValue(Nodo nodo) {
+        int min = nodo.valor;
+        while (nodo.izquierdo != null) {
+            min = nodo.izquierdo.valor;
+            nodo = nodo.izquierdo;
+        }
+        return min;
+    }
+
+    public void inorden(Nodo nodo) {
+        if (nodo != null) {
+            inorden(nodo.izquierdo);
+            System.out.print(nodo.valor + " ");
+            inorden(nodo.derecho);
+        }
+    }
+
+    public static void main(String[] args) {
+        ArbolBinarioBusqueda arbol = new ArbolBinarioBusqueda();
+        
+        // Inserción
+        arbol.insertar(5);
+        arbol.insertar(3);
+        arbol.insertar(7);
+        arbol.insertar(2);
+        arbol.insertar(4);
+        arbol.insertar(6);
+        arbol.insertar(8);
+        
+        System.out.println("Recorrido en orden después de inserciones:");
+        arbol.inorden(arbol.raiz); // Salida: 2 3 4 5 6 7 8
+        System.out.println();
+
+        // Búsqueda
+        int buscarValor = 4;
+        System.out.println("Buscar " + buscarValor + ": " + arbol.buscar(buscarValor)); // Salida: true
+        
+        buscarValor = 10;
+        System.out.println("Buscar " + buscarValor + ": " + arbol.buscar(buscarValor)); // Salida: false
+        
+        // Eliminación
+        arbol.eliminar(3);
+        System.out.println("Recorrido en orden después de eliminar 3:");
+        arbol.inorden(arbol.raiz); // Salida: 2 4 5 6 7 8
+        System.out.println();
+
+        arbol.eliminar(7);
+        System.out.println("Recorrido en orden después de eliminar 7:");
+        arbol.inorden(arbol.raiz); // Salida: 2 4 5 6 8
+    }
+}
+//Inserción:
+
