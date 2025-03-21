@@ -1,0 +1,88 @@
+//Gestión de Inventarios
+Caso de Uso: Un sistema de gestión de inventarios en una tienda que necesita organizar y buscar productos eficientemente por su código.//
+class Nodo {
+    int codigo;
+    Nodo izquierdo;
+    Nodo derecho;
+
+    public Nodo(int codigo) {
+        this.codigo = codigo;
+        this.izquierdo = null;
+        this.derecho = null;
+    }
+}
+
+class ArbolBinarioBusqueda {
+    Nodo raiz;
+
+    public ArbolBinarioBusqueda() {
+        this.raiz = null;
+    }
+
+    public void insertar(int codigo) {
+        if (raiz == null) {
+            raiz = new Nodo(codigo);
+        } else {
+            insertarRecursivo(raiz, codigo);
+        }
+    }
+
+    private void insertarRecursivo(Nodo nodo, int codigo) {
+        if (codigo < nodo.codigo) {
+            if (nodo.izquierdo == null) {
+                nodo.izquierdo = new Nodo(codigo);
+            } else {
+                insertarRecursivo(nodo.izquierdo, codigo);
+            }
+        } else {
+            if (nodo.derecho == null) {
+                nodo.derecho = new Nodo(codigo);
+            } else {
+                insertarRecursivo(nodo.derecho, codigo);
+            }
+        }
+    }
+
+    public boolean buscar(int codigo) {
+        return buscarRecursivo(raiz, codigo);
+    }
+
+    private boolean buscarRecursivo(Nodo nodo, int codigo) {
+        if (nodo == null) {
+            return false; // No encontrado
+        }
+        if (codigo == nodo.codigo) {
+            return true; // Encontrado
+        }
+        return codigo < nodo.codigo
+            ? buscarRecursivo(nodo.izquierdo, codigo)
+            : buscarRecursivo(nodo.derecho, codigo);
+    }
+
+    public void inorden(Nodo nodo) {
+        if (nodo != null) {
+            inorden(nodo.izquierdo);
+            System.out.print(nodo.codigo + " ");
+            inorden(nodo.derecho);
+        }
+    }
+
+    public static void main(String[] args) {
+        ArbolBinarioBusqueda arbolInventario = new ArbolBinarioBusqueda();
+        
+        // Inserción de productos
+        arbolInventario.insertar(101);
+        arbolInventario.insertar(105);
+        arbolInventario.insertar(103);
+        arbolInventario.insertar(102);
+        arbolInventario.insertar(104);
+
+        System.out.println("Recorrido en orden de los códigos de productos:");
+        arbolInventario.inorden(arbolInventario.raiz); // Salida: 101 102 103 104 105
+        System.out.println();
+
+        // Búsqueda de un producto
+        int buscarCodigo = 103;
+        System.out.println("Buscar producto con código " + buscarCodigo + ": " + arbolInventario.buscar(buscarCodigo)); // Salida: true
+    }
+}
