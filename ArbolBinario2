@@ -1,0 +1,98 @@
+Código del Árbol Binario en Java
+class Nodo {
+    int valor; // Valor del nodo
+    Nodo izquierdo; // Referencia al hijo izquierdo
+    Nodo derecho; // Referencia al hijo derecho
+
+    public Nodo(int valor) {
+        this.valor = valor; // Inicializa el valor del nodo
+        this.izquierdo = null; // Inicializa el hijo izquierdo como nulo
+        this.derecho = null; // Inicializa el hijo derecho como nulo
+    }
+}
+
+class ArbolBinario {
+    Nodo raiz; // Nodo raíz del árbol
+
+    public ArbolBinario() {
+        this.raiz = null; // Inicializa el árbol vacío
+    }
+
+    // Método público para insertar un nuevo valor
+    public void insertar(int valor) {
+        if (raiz == null) {
+            raiz = new Nodo(valor); // Si el árbol está vacío, el nuevo nodo es la raíz
+        } else {
+            insertarRecursivo(raiz, valor); // Llama al método recursivo para insertar
+        }
+    }
+
+    // Método privado que maneja la inserción recursiva
+    private void insertarRecursivo(Nodo nodo, int valor) {
+        if (valor < nodo.valor) { // Si el valor es menor que el nodo actual
+            if (nodo.izquierdo == null) {
+                nodo.izquierdo = new Nodo(valor); // Inserta a la izquierda si está vacío
+            } else {
+                insertarRecursivo(nodo.izquierdo, valor); // Recurre hacia la izquierda
+            }
+        } else { // Si el valor es mayor o igual
+            if (nodo.derecho == null) {
+                nodo.derecho = new Nodo(valor); // Inserta a la derecha si está vacío
+            } else {
+                insertarRecursivo(nodo.derecho, valor); // Recurre hacia la derecha
+            }
+        }
+    }
+
+    // Método que realiza un recorrido en orden del árbol
+    public void inorden(Nodo nodo) {
+        if (nodo != null) {
+            inorden(nodo.izquierdo); // Recorre el subárbol izquierdo
+            System.out.print(nodo.valor + " "); // Imprime el valor del nodo
+            inorden(nodo.derecho); // Recorre el subárbol derecho
+        }
+    }
+
+    // Método main para probar el árbol
+    public static void main(String[] args) {
+        ArbolBinario arbol = new ArbolBinario(); // Crea una instancia del árbol
+        arbol.insertar(5); // Inserta el valor 5
+        arbol.insertar(3); // Inserta el valor 3
+        arbol.insertar(7); // Inserta el valor 7
+        
+        System.out.println("Recorrido en orden:");
+        arbol.inorden(arbol.raiz); // Realiza el recorrido en orden e imprime: 3 5 7
+    }
+}
+//Clase Nodo:
+
+Atributos:
+int valor: Almacena el valor del nodo.
+Nodo izquierdo: Referencia al hijo izquierdo del nodo.
+Nodo derecho: Referencia al hijo derecho del nodo.
+Constructor: Inicializa el valor del nodo y establece los hijos izquierdo y derecho como null.
+Clase ArbolBinario:
+
+Atributo:
+Nodo raiz: Representa la raíz del árbol.
+Constructor: Inicializa el árbol vacío (la raíz es null).
+Método insertar(int valor):
+
+Método público que agrega un nuevo nodo al árbol.
+Si la raíz es null, crea un nuevo nodo que se convierte en la raíz.
+Si la raíz ya existe, llama al método privado insertarRecursivo.
+Método insertarRecursivo(Nodo nodo, int valor):
+
+Este método maneja la lógica de inserción recursivamente.
+Compara el valor a insertar con el valor del nodo actual:
+Si es menor, verifica si el hijo izquierdo es null. Si lo es, inserta ahí. Si no, llama recursivamente a la izquierda.
+Si es mayor o igual, realiza el mismo procedimiento con el hijo derecho.
+Método inorden(Nodo nodo):
+
+Realiza un recorrido en orden (inorden) del árbol, que imprime los valores en orden ascendente.
+Primero recorre el subárbol izquierdo, luego imprime el valor del nodo actual y finalmente recorre el subárbol derecho.
+Método main:
+
+Crea una instancia de ArbolBinario.
+Inserta algunos valores en el árbol (5, 3, 7).
+Llama al método inorden para imprimir los valores en orden.
