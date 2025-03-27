@@ -1,0 +1,89 @@
+//Sistema de Gestión de Estudiantes
+Caso de Uso: En una universidad, se necesita un sistema para gestionar los registros de los estudiantes, donde cada estudiante tiene un ID único. 
+//Los árboles binarios permiten realizar inserciones y búsquedas rápidas de estudiantes.
+class NodoEstudiante {
+    int id;
+    String nombre;
+    NodoEstudiante izquierdo;
+    NodoEstudiante derecho;
+
+    public NodoEstudiante(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+        this.izquierdo = null;
+        this.derecho = null;
+    }
+}
+
+class ArbolEstudiantes {
+    NodoEstudiante raiz;
+
+    public ArbolEstudiantes() {
+        this.raiz = null;
+    }
+
+    public void insertar(int id, String nombre) {
+        if (raiz == null) {
+            raiz = new NodoEstudiante(id, nombre);
+        } else {
+            insertarRecursivo(raiz, id, nombre);
+        }
+    }
+
+    private void insertarRecursivo(NodoEstudiante nodo, int id, String nombre) {
+        if (id < nodo.id) {
+            if (nodo.izquierdo == null) {
+                nodo.izquierdo = new NodoEstudiante(id, nombre);
+            } else {
+                insertarRecursivo(nodo.izquierdo, id, nombre);
+            }
+        } else {
+            if (nodo.derecho == null) {
+                nodo.derecho = new NodoEstudiante(id, nombre);
+            } else {
+                insertarRecursivo(nodo.derecho, id, nombre);
+            }
+        }
+    }
+
+    public boolean buscar(int id) {
+        return buscarRecursivo(raiz, id);
+    }
+
+    private boolean buscarRecursivo(NodoEstudiante nodo, int id) {
+        if (nodo == null) {
+            return false;
+        }
+        if (id == nodo.id) {
+            return true;
+        }
+        return id < nodo.id
+            ? buscarRecursivo(nodo.izquierdo, id)
+            : buscarRecursivo(nodo.derecho, id);
+    }
+
+    public void inorden(NodoEstudiante nodo) {
+        if (nodo != null) {
+            inorden(nodo.izquierdo);
+            System.out.print(nodo.id + ":" + nodo.nombre + " ");
+            inorden(nodo.derecho);
+        }
+    }
+
+    public static void main(String[] args) {
+        ArbolEstudiantes arbolEstudiantes = new ArbolEstudiantes();
+        
+        // Inserción de estudiantes
+        arbolEstudiantes.insertar(1001, "Alice");
+        arbolEstudiantes.insertar(1003, "Bob");
+        arbolEstudiantes.insertar(1002, "Charlie");
+
+        System.out.println("Recorrido en orden de los estudiantes:");
+        arbolEstudiantes.inorden(arbolEstudiantes.raiz); // Salida: 1001:Alice 1002:Charlie 1003:Bob
+        System.out.println();
+
+        // Búsqueda de un estudiante
+        int buscarId = 1002;
+        System.out.println("Buscar estudiante con ID " + buscarId + ": " + arbolEstudiantes.buscar(buscarId)); // Salida: true
+    }
+}
