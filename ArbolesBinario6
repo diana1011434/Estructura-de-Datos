@@ -1,0 +1,87 @@
+//Motor de Búsqueda
+Caso de Uso: Un motor de búsqueda que utiliza un árbol binario para almacenar y buscar palabras clave o términos de búsqueda.
+class NodoPalabra {
+    String palabra;
+    NodoPalabra izquierdo;
+    NodoPalabra derecho;
+
+    public NodoPalabra(String palabra) {
+        this.palabra = palabra;
+        this.izquierdo = null;
+        this.derecho = null;
+    }
+}
+
+class ArbolBusquedaPalabras {
+    NodoPalabra raiz;
+
+    public ArbolBusquedaPalabras() {
+        this.raiz = null;
+    }
+
+    public void insertar(String palabra) {
+        if (raiz == null) {
+            raiz = new NodoPalabra(palabra);
+        } else {
+            insertarRecursivo(raiz, palabra);
+        }
+    }
+
+    private void insertarRecursivo(NodoPalabra nodo, String palabra) {
+        if (palabra.compareTo(nodo.palabra) < 0) {
+            if (nodo.izquierdo == null) {
+                nodo.izquierdo = new NodoPalabra(palabra);
+            } else {
+                insertarRecursivo(nodo.izquierdo, palabra);
+            }
+        } else {
+            if (nodo.derecho == null) {
+                nodo.derecho = new NodoPalabra(palabra);
+            } else {
+                insertarRecursivo(nodo.derecho, palabra);
+            }
+        }
+    }
+
+    public boolean buscar(String palabra) {
+        return buscarRecursivo(raiz, palabra);
+    }
+
+    private boolean buscarRecursivo(NodoPalabra nodo, String palabra) {
+        if (nodo == null) {
+            return false; // No encontrado
+        }
+        if (palabra.equals(nodo.palabra)) {
+            return true; // Encontrado
+        }
+        return palabra.compareTo(nodo.palabra) < 0
+            ? buscarRecursivo(nodo.izquierdo, palabra)
+            : buscarRecursivo(nodo.derecho, palabra);
+    }
+
+    public void inorden(NodoPalabra nodo) {
+        if (nodo != null) {
+            inorden(nodo.izquierdo);
+            System.out.print(nodo.palabra + " ");
+            inorden(nodo.derecho);
+        }
+    }
+
+    public static void main(String[] args) {
+        ArbolBusquedaPalabras arbolPalabras = new ArbolBusquedaPalabras();
+        
+        // Inserción de palabras clave
+        arbolPalabras.insertar("gato");
+        arbolPalabras.insertar("perro");
+        arbolPalabras.insertar("elefante");
+        arbolPalabras.insertar("león");
+        
+        System.out.println("Recorrido en orden de las palabras clave:");
+        arbolPalabras.inorden(arbolPalabras.raiz); // Salida: elefante gato león perro
+        System.out.println();
+
+        // Búsqueda de una palabra
+        String buscarPalabra = "león";
+        System.out.println("Buscar palabra " + buscarPalabra + ": " + arbolPalabras.buscar(buscarPalabra)); // Salida: true
+    }
+}
