@@ -1,0 +1,86 @@
+//Sistema de Bibliotecas
+Caso de Uso: Un sistema para gestionar libros en una biblioteca, donde los libros se organizan por su código ISBN.
+class NodoLibro {
+    String isbn;
+    NodoLibro izquierdo;
+    NodoLibro derecho;
+
+    public NodoLibro(String isbn) {
+        this.isbn = isbn;
+        this.izquierdo = null;
+        this.derecho = null;
+    }
+}
+
+class ArbolBiblioteca {
+    NodoLibro raiz;
+
+    public ArbolBiblioteca() {
+        this.raiz = null;
+    }
+
+    public void insertar(String isbn) {
+        if (raiz == null) {
+            raiz = new NodoLibro(isbn);
+        } else {
+            insertarRecursivo(raiz, isbn);
+        }
+    }
+
+    private void insertarRecursivo(NodoLibro nodo, String isbn) {
+        if (isbn.compareTo(nodo.isbn) < 0) {
+            if (nodo.izquierdo == null) {
+                nodo.izquierdo = new NodoLibro(isbn);
+            } else {
+                insertarRecursivo(nodo.izquierdo, isbn);
+            }
+        } else {
+            if (nodo.derecho == null) {
+                nodo.derecho = new NodoLibro(isbn);
+            } else {
+                insertarRecursivo(nodo.derecho, isbn);
+            }
+        }
+    }
+
+    public boolean buscar(String isbn) {
+        return buscarRecursivo(raiz, isbn);
+    }
+
+    private boolean buscarRecursivo(NodoLibro nodo, String isbn) {
+        if (nodo == null) {
+            return false; // No encontrado
+        }
+        if (isbn.equals(nodo.isbn)) {
+            return true; // Encontrado
+        }
+        return isbn.compareTo(nodo.isbn) < 0
+            ? buscarRecursivo(nodo.izquierdo, isbn)
+            : buscarRecursivo(nodo.derecho, isbn);
+    }
+
+    public void inorden(NodoLibro nodo) {
+        if (nodo != null) {
+            inorden(nodo.izquierdo);
+            System.out.print(nodo.isbn + " ");
+            inorden(nodo.derecho);
+        }
+    }
+
+    public static void main(String[] args) {
+        ArbolBiblioteca arbolLibros = new ArbolBiblioteca();
+        
+        // Inserción de libros
+        arbolLibros.insertar("978-3-16-148410-0");
+        arbolLibros.insertar("978-1-56619-909-4");
+        arbolLibros.insertar("978-0-262-03384-8");
+        
+        System.out.println("Recorrido en orden de los códigos ISBN de los libros:");
+        arbolLibros.inorden(arbolLibros.raiz); // Salida: 978-0-262-03384-8 978-1-56619-909-4 978-3-16-148410-0
+        System.out.println();
+
+        // Búsqueda de un libro
+        String buscarISBN = "978-1-56619-909-4";
+        System.out.println("Buscar libro con ISBN " + buscarISBN + ": " + arbolLibros.buscar(buscarISBN)); // Salida: true
+    }
+}
