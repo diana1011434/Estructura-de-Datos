@@ -1,0 +1,87 @@
+//Sistema de Archivos
+Caso de Uso: Un sistema de archivos donde los archivos se organizan por su nombre. 
+//Un árbol binario puede ayudar a mantener la estructura de directorios y facilitar la búsqueda de archivos.
+class NodoArchivo {
+    String nombre;
+    NodoArchivo izquierdo;
+    NodoArchivo derecho;
+
+    public NodoArchivo(String nombre) {
+        this.nombre = nombre;
+        this.izquierdo = null;
+        this.derecho = null;
+    }
+}
+
+class ArbolArchivos {
+    NodoArchivo raiz;
+
+    public ArbolArchivos() {
+        this.raiz = null;
+    }
+
+    public void insertar(String nombre) {
+        if (raiz == null) {
+            raiz = new NodoArchivo(nombre);
+        } else {
+            insertarRecursivo(raiz, nombre);
+        }
+    }
+
+    private void insertarRecursivo(NodoArchivo nodo, String nombre) {
+        if (nombre.compareTo(nodo.nombre) < 0) {
+            if (nodo.izquierdo == null) {
+                nodo.izquierdo = new NodoArchivo(nombre);
+            } else {
+                insertarRecursivo(nodo.izquierdo, nombre);
+            }
+        } else {
+            if (nodo.derecho == null) {
+                nodo.derecho = new NodoArchivo(nombre);
+            } else {
+                insertarRecursivo(nodo.derecho, nombre);
+            }
+        }
+    }
+
+    public boolean buscar(String nombre) {
+        return buscarRecursivo(raiz, nombre);
+    }
+
+    private boolean buscarRecursivo(NodoArchivo nodo, String nombre) {
+        if (nodo == null) {
+            return false;
+        }
+        if (nombre.equals(nodo.nombre)) {
+            return true;
+        }
+        return nombre.compareTo(nodo.nombre) < 0
+            ? buscarRecursivo(nodo.izquierdo, nombre)
+            : buscarRecursivo(nodo.derecho, nombre);
+    }
+
+    public void inorden(NodoArchivo nodo) {
+        if (nodo != null) {
+            inorden(nodo.izquierdo);
+            System.out.print(nodo.nombre + " ");
+            inorden(nodo.derecho);
+        }
+    }
+
+    public static void main(String[] args) {
+        ArbolArchivos arbolArchivos = new ArbolArchivos();
+        
+        // Inserción de archivos
+        arbolArchivos.insertar("documento.txt");
+        arbolArchivos.insertar("imagen.png");
+        arbolArchivos.insertar("musica.mp3");
+        
+        System.out.println("Recorrido en orden de los archivos:");
+        arbolArchivos.inorden(arbolArchivos.raiz); // Salida: documento.txt imagen.png musica.mp3
+        System.out.println();
+
+        // Búsqueda de un archivo
+        String buscarNombre = "imagen.png";
+        System.out.println("Buscar archivo " + buscarNombre + ": " + arbolArchivos.buscar(buscarNombre)); // Salida: true
+    }
+}
