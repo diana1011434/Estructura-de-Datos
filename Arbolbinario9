@@ -1,0 +1,88 @@
+//Sistema de Recomendaciones
+//Caso de Uso: Un sistema de recomendaciones de productos que utiliza un árbol binario para almacenar productos por su ID, permitiendo búsquedas rápidas y recomendaciones basadas en los productos cercanos en el árbol.
+class NodoProducto {
+    int id;
+    String nombre;
+    NodoProducto izquierdo;
+    NodoProducto derecho;
+
+    public NodoProducto(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+        this.izquierdo = null;
+        this.derecho = null;
+    }
+}
+
+class ArbolRecomendaciones {
+    NodoProducto raiz;
+
+    public ArbolRecomendaciones() {
+        this.raiz = null;
+    }
+
+    public void insertar(int id, String nombre) {
+        if (raiz == null) {
+            raiz = new NodoProducto(id, nombre);
+        } else {
+            insertarRecursivo(raiz, id, nombre);
+        }
+    }
+
+    private void insertarRecursivo(NodoProducto nodo, int id, String nombre) {
+        if (id < nodo.id) {
+            if (nodo.izquierdo == null) {
+                nodo.izquierdo = new NodoProducto(id, nombre);
+            } else {
+                insertarRecursivo(nodo.izquierdo, id, nombre);
+            }
+        } else {
+            if (nodo.derecho == null) {
+                nodo.derecho = new NodoProducto(id, nombre);
+            } else {
+                insertarRecursivo(nodo.derecho, id, nombre);
+            }
+        }
+    }
+
+    public boolean buscar(int id) {
+        return buscarRecursivo(raiz, id);
+    }
+
+    private boolean buscarRecursivo(NodoProducto nodo, int id) {
+        if (nodo == null) {
+            return false;
+        }
+        if (id == nodo.id) {
+            return true;
+        }
+        return id < nodo.id
+            ? buscarRecursivo(nodo.izquierdo, id)
+            : buscarRecursivo(nodo.derecho, id);
+    }
+
+    public void inorden(NodoProducto nodo) {
+        if (nodo != null) {
+            inorden(nodo.izquierdo);
+            System.out.print(nodo.id + ":" + nodo.nombre + " ");
+            inorden(nodo.derecho);
+        }
+    }
+
+    public static void main(String[] args) {
+        ArbolRecomendaciones arbolProductos = new ArbolRecomendaciones();
+        
+        // Inserción de productos
+        arbolProductos.insertar(1001, "Laptop");
+        arbolProductos.insertar(1003, "Teléfono");
+        arbolProductos.insertar(1002, "Tablet");
+
+        System.out.println("Recorrido en orden de los productos:");
+        arbolProductos.inorden(arbolProductos.raiz); // Salida: 1001:Laptop 1002:Tablet 1003:Teléfono
+        System.out.println();
+
+        // Búsqueda de un producto
+        int buscarId = 1002;
+        System.out.println("Buscar producto con ID " + buscarId + ": " + arbolProductos.buscar(buscarId)); // Salida: true
+    }
+}
