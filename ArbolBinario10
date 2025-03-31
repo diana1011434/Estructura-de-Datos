@@ -1,0 +1,86 @@
+//Análisis de Datos
+//Caso de Uso: En un sistema de análisis de datos, donde se necesita almacenar y buscar rápidamente valores numéricos, como estadísticas de ventas.
+class NodoDatos {
+    int valor;
+    NodoDatos izquierdo;
+    NodoDatos derecho;
+
+    public NodoDatos(int valor) {
+        this.valor = valor;
+        this.izquierdo = null;
+        this.derecho = null;
+    }
+}
+
+class ArbolDatos {
+    NodoDatos raiz;
+
+    public ArbolDatos() {
+        this.raiz = null;
+    }
+
+    public void insertar(int valor) {
+        if (raiz == null) {
+            raiz = new NodoDatos(valor);
+        } else {
+            insertarRecursivo(raiz, valor);
+        }
+    }
+
+    private void insertarRecursivo(NodoDatos nodo, int valor) {
+        if (valor < nodo.valor) {
+            if (nodo.izquierdo == null) {
+                nodo.izquierdo = new NodoDatos(valor);
+            } else {
+                insertarRecursivo(nodo.izquierdo, valor);
+            }
+        } else {
+            if (nodo.derecho == null) {
+                nodo.derecho = new NodoDatos(valor);
+            } else {
+                insertarRecursivo(nodo.derecho, valor);
+            }
+        }
+    }
+
+    public boolean buscar(int valor) {
+        return buscarRecursivo(raiz, valor);
+    }
+
+    private boolean buscarRecursivo(NodoDatos nodo, int valor) {
+        if (nodo == null) {
+            return false;
+        }
+        if (valor == nodo.valor) {
+            return true;
+        }
+        return valor < nodo.valor
+            ? buscarRecursivo(nodo.izquierdo, valor)
+            : buscarRecursivo(nodo.derecho, valor);
+    }
+
+    public void inorden(NodoDatos nodo) {
+        if (nodo != null) {
+            inorden(nodo.izquierdo);
+            System.out.print(nodo.valor + " ");
+            inorden(nodo.derecho);
+        }
+    }
+
+    public static void main(String[] args) {
+        ArbolDatos arbolEstadisticas = new ArbolDatos();
+        
+        // Inserción de datos
+        arbolEstadisticas.insertar(150);
+        arbolEstadisticas.insertar(100);
+        arbolEstadisticas.insertar(200);
+        
+        System.out.println("Recorrido en orden de los datos:");
+        arbolEstadisticas.inorden(arbolEstadisticas.raiz); // Salida: 100 150 200
+        System.out.println();
+
+        // Búsqueda de un dato
+        int buscarValor = 200;
+        System.out.println("Buscar dato " + buscarValor + ": " + arbolEstadisticas.buscar(buscarValor)); // Salida: true
+    }
+}
