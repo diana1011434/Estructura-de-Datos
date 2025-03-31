@@ -1,0 +1,196 @@
+//Caso de Uso: Sistema de Gestión de Directorio Telefónico
+//Funcionalidades
+//Agregar Contactos: Permitir agregar nuevos contactos al árbol.
+//Buscar Contactos: Buscar un contacto por su nombre.
+//Eliminar Contactos: Eliminar un contacto del árbol.
+//Recorridos:
+//Recorrido en orden (inorden).
+//Recorrido preorden.
+//Recorrido postorden.
+//Mostrar Todos los Contactos: Imprimir todos los contactos en orden alfabético.
+import java.util.Scanner;
+
+class Nodo {
+    String nombre;
+    String telefono;
+    Nodo izquierdo;
+    Nodo derecho;
+
+    public Nodo(String nombre, String telefono) {
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.izquierdo = null;
+        this.derecho = null;
+    }
+}
+
+class ArbolDirector {
+    Nodo raiz;
+
+    public ArbolDirector() {
+        this.raiz = null;
+    }
+
+    // Método para insertar un nuevo contacto
+    public void insertar(String nombre, String telefono) {
+        raiz = insertarRecursivo(raiz, nombre, telefono);
+    }
+
+    private Nodo insertarRecursivo(Nodo nodo, String nombre, String telefono) {
+        if (nodo == null) {
+            return new Nodo(nombre, telefono);
+        }
+        if (nombre.compareTo(nodo.nombre) < 0) {
+            nodo.izquierdo = insertarRecursivo(nodo.izquierdo, nombre, telefono);
+        } else if (nombre.compareTo(nodo.nombre) > 0) {
+            nodo.derecho = insertarRecursivo(nodo.derecho, nombre, telefono);
+        } else {
+            // Si el nombre ya existe, actualiza el teléfono
+            nodo.telefono = telefono;
+        }
+        return nodo;
+    }
+
+    // Método para buscar un contacto por nombre
+    public String buscar(String nombre) {
+        return buscarRecursivo(raiz, nombre);
+    }
+
+    private String buscarRecursivo(Nodo nodo, String nombre) {
+        if (nodo == null) {
+            return null; // No encontrado
+        }
+        if (nombre.equals(nodo.nombre)) {
+            return nodo.telefono; // Contacto encontrado
+        }
+        return nombre.compareTo(nodo.nombre) < 0
+                ? buscarRecursivo(nodo.izquierdo, nombre)
+                : buscarRecursivo(nodo.derecho, nombre);
+    }
+
+    // Método para eliminar un contacto
+    public void eliminar(String nombre) {
+        raiz = eliminarRecursivo(raiz, nombre);
+    }
+
+    private Nodo eliminarRecursivo(Nodo nodo, String nombre) {
+        if (nodo == null) {
+            return null; // No encontrado
+        }
+        if (nombre.compareTo(nodo.nombre) < 0) {
+            nodo.izquierdo = eliminarRecursivo(nodo.izquierdo, nombre);
+        } else if (nombre.compareTo(nodo.nombre) > 0) {
+            nodo.derecho = eliminarRecursivo(nodo.derecho, nombre);
+        } else {
+            // Nodo encontrado
+            if (nodo.izquierdo == null) {
+                return nodo.derecho; // Reemplaza con el hijo derecho
+            } else if (nodo.derecho == null) {
+                return nodo.izquierdo; // Reemplaza con el hijo izquierdo
+            }
+            // Nodo con dos hijos: encuentra el mínimo en el subárbol derecho
+            nodo.nombre = encontrarMinimo(nodo.derecho).nombre;
+            nodo.telefono = encontrarMinimo(nodo.derecho).telefono;
+            nodo.derecho = eliminarRecursivo(nodo.derecho, nodo.nombre);
+        }
+        return nodo;
+    }
+
+    private Nodo encontrarMinimo(Nodo nodo) {
+        while (nodo.izquierdo != null) {
+            nodo = nodo.izquierdo;
+        }
+        return nodo;
+    }
+
+    // Recorrido en orden
+    public void inorden(Nodo nodo) {
+        if (nodo != null) {
+            inorden(nodo.izquierdo);
+            System.out.println(nodo.nombre + ": " + nodo.telefono);
+            inorden(nodo.derecho);
+        }
+    }
+
+    // Recorrido preorden
+    public void preorden(Nodo nodo) {
+        if (nodo != null) {
+            System.out.println(nodo.nombre + ": " + nodo.telefono);
+            preorden(nodo.izquierdo);
+            preorden(nodo.derecho);
+        }
+    }
+
+    // Recorrido postorden
+    public void postorden(Nodo nodo) {
+        if (nodo != null) {
+            postorden(nodo.izquierdo);
+            postorden(nodo.derecho);
+            System.out.println(nodo.nombre + ": " + nodo.telefono);
+        }
+    }
+
+    public static void main(String[] args) {
+        ArbolDirector directorio = new ArbolDirector();
+        Scanner scanner = new Scanner(System.in);
+        String opcion;
+
+        do {
+            System.out.println("Opciones:");
+            System.out.println("1. Agregar contacto");
+            System.out.println("2. Buscar contacto");
+            System.out.println("3. Eliminar contacto");
+            System.out.println("4. Mostrar contactos (inorden)");
+            System.out.println("5. Mostrar contactos (preorden)");
+            System.out.println("6. Mostrar contactos (postorden)");
+            System.out.println("0. Salir");
+            System.out.print("Selecciona una opción: ");
+            opcion = scanner.nextLine();
+
+            switch (opcion) {
+                case "1":
+                    System.out.print("Nombre: ");
+                    String nombreAgregar = scanner.nextLine();
+                    System.out.print("Teléfono: ");
+                    String telefonoAgregar = scanner.nextLine();
+                    directorio.insertar(nombreAgregar, telefonoAgregar);
+                    break;
+                case "2":
+                    System.out.print("Nombre a buscar: ");
+                    String nombreBuscar = scanner.nextLine();
+                    String telefonoEncontrado = directorio.buscar(nombreBuscar);
+                    if (telefonoEncontrado != null) {
+                        System.out.println("Teléfono de " + nombreBuscar + ": " + telefonoEncontrado);
+                    } else {
+                        System.out.println("Contacto no encontrado.");
+                    }
+                    break;
+                case "3":
+                    System.out.print("Nombre a eliminar: ");
+                    String nombreEliminar = scanner.nextLine();
+                    directorio.eliminar(nombreEliminar);
+                    break;
+                case "4":
+                    System.out.println("Contactos (inorden):");
+                    directorio.inorden(directorio.raiz);
+                    break;
+                case "5":
+                    System.out.println("Contactos (preorden):");
+                    directorio.preorden(directorio.raiz);
+                    break;
+                case "6":
+                    System.out.println("Contactos (postorden):");
+                    directorio.postorden(directorio.raiz);
+                    break;
+                case "0":
+                    System.out.println("Saliendo...");
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+            System.out.println();
+        } while (!opcion.equals("0"));
+
+        scanner.close();
+    }
+}
