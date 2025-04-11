@@ -1,0 +1,50 @@
+1. El Viajero del Tiempo
+Un viajero puede ir del año actual hacia el futuro o el pasado, pero solo puede "deshacer" o "rehacer" sus viajes.
+Problema: Diseña un sistema para registrar los viajes temporales del usuario y permitirle deshacer o rehacer cada paso.
+
+
+2. La Cola del Cine
+En un cine, las personas hacen fila para comprar entradas. Las personas con prioridad (embarazadas o personas mayores) deben ser atendidas primero, sin eliminar el orden entre ellas.
+Problema: Diseña una estructura que permita manejar la cola y priorizar ciertos usuarios.
+
+
+3. El Ascensor
+Un ascensor recibe solicitudes de piso (número del 1 al 20) en el orden en que los usuarios las presionan.
+Problema: Simula el comportamiento del ascensor usando la estructura adecuada para que atienda las solicitudes por orden.
+
+
+4. Los Libros de la Biblioteca
+Una pila de libros permite solo poner o quitar el libro superior.
+Problema: Simula las acciones de apilar y desapilar libros según las acciones de los usuarios.
+
+
+5. El Bosque de Decisiones
+Una criatura mágica debe tomar decisiones en un bosque encantado. Cada decisión lleva a otra, formando un árbol de posibilidades.
+Problema: Modela el camino más corto desde la entrada del bosque hasta la salida.
+
+
+6. El Inventario del Jugador
+Un jugador de videojuego tiene un inventario de objetos ordenado. Puede agregar, quitar, buscar y listar los objetos.
+Problema: Implementa la estructura que maneje estas operaciones eficientemente.
+
+
+7. El Cajero Automático
+Un cajero guarda los billetes como una pila (los billetes más nuevos arriba).
+Problema: Implementa un simulador de retiro de dinero donde el cajero siempre da los billetes más recientes.
+
+
+8. La Cadena de Mensajes
+Cada usuario envía un mensaje y estos se van acumulando en orden, esperando a ser entregados.
+Problema: Diseña el sistema de entrega para que se respeten los turnos.
+
+
+9. El Árbol Genealógico
+Construye el árbol genealógico de una familia con sus relaciones padre-hijo.
+Problema: Permite consultar ancestros, descendientes, y recorrido del árbol.
+
+
+10. El Menú Interactivo
+Un restaurante tiene un menú con opciones anidadas (Comidas → Bebidas → Jugos → Naturales).
+Problema: Diseña un menú que permita al usuario navegar entre opciones y subopciones.
+
+
