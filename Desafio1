@@ -1,0 +1,56 @@
+//Desafío 1: Tablas Hash - Resolución de Colisiones (Encadenamiento)
+Pregunta: ¿Cómo manejarías colisiones en una tabla hash utilizando el método de encadenamiento? ¿Qué ventajas y desventajas tiene este enfoque en comparación con otros métodos?
+
+Caso de Uso: Imagina que estás creando una aplicación que almacena productos en un inventario. Cada producto tiene un ID único, y debes buscar rápidamente si un producto está en el inventario. Si dos productos tienen el mismo ID (colisión), ¿cómo lo manejarías?
+
+Código en Java (Encadenamiento):
+import java.util.LinkedList;
+
+class HashTable {
+    static class Node {
+        int key;
+        String value;
+
+        public Node(int key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private LinkedList<Node>[] table;
+    private int size;
+
+    public HashTable(int size) {
+        this.size = size;
+        table = new LinkedList[size];
+        for (int i = 0; i < size; i++) {
+            table[i] = new LinkedList<>();
+        }
+    }
+
+    private int hash(int key) {
+        return key % size;
+    }
+
+    public void insert(int key, String value) {
+        int index = hash(key);
+        table[index].add(new Node(key, value));
+    }
+
+    public String search(int key) {
+        int index = hash(key);
+        for (Node node : table[index]) {
+            if (node.key == key) {
+                return node.value;
+            }
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        HashTable hashTable = new HashTable(10);
+        hashTable.insert(101, "Producto A");
+        hashTable.insert(102, "Producto B");
+        System.out.println(hashTable.search(101));  // Producto A
+    }
+}
