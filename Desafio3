@@ -1,0 +1,40 @@
+Desafío 3: Grafo - Recorrido DFS (Depth-First Search)
+Pregunta: ¿Qué estrategia sigue el DFS al recorrer un grafo? ¿Cómo maneja los ciclos en los grafos? ¿Cómo implementas una búsqueda en profundidad (DFS) utilizando recursión?
+
+Caso de Uso: Implementa un algoritmo DFS para recorrer un grafo que representa un sistema de red social, donde los nodos son personas y las aristas son relaciones de amistad.
+
+Código en Java (DFS Recursivo):
+import java.util.*;
+
+class Grafo {
+    private Map<String, List<String>> adjList = new HashMap<>();
+
+    public void agregarArista(String origen, String destino) {
+        adjList.putIfAbsent(origen, new ArrayList<>());
+        adjList.get(origen).add(destino);
+    }
+
+    public void dfs(String inicio) {
+        Set<String> visitados = new HashSet<>();
+        dfsHelper(inicio, visitados);
+    }
+
+    private void dfsHelper(String nodo, Set<String> visitados) {
+        if (visitados.contains(nodo)) return;
+
+        System.out.print(nodo + " ");
+        visitados.add(nodo);
+
+        for (String vecino : adjList.getOrDefault(nodo, new ArrayList<>())) {
+            dfsHelper(vecino, visitados);
+        }
+    }
+
+    public static void main(String[] args) {
+        Grafo grafo = new Grafo();
+        grafo.agregarArista("Juan", "Ana");
+        grafo.agregarArista("Ana", "Pedro");
+        grafo.agregarArista("Pedro", "Luis");
+        grafo.dfs("Juan");
+    }
+}
