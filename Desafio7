@@ -1,0 +1,45 @@
+Desafío 7: Grafo - Recorrido DFS (Profundidad)
+Pregunta: ¿Cuál es la diferencia entre un recorrido DFS y un recorrido BFS? ¿Cómo implementas una búsqueda en profundidad (DFS) sin recurrir a la recursión? ¿En qué situaciones prefieres usar DFS?
+
+Caso de Uso: Imagina que estás creando un sistema para analizar un mapa de una ciudad en el que las intersecciones son nodos y las calles son aristas. Usarás DFS para encontrar todos los caminos posibles entre dos nodos.
+
+Código en Java (DFS Iterativo):
+import java.util.*;
+
+class Grafo {
+    private Map<String, List<String>> adjList = new HashMap<>();
+
+    public void agregarArista(String origen, String destino) {
+        adjList.putIfAbsent(origen, new ArrayList<>());
+        adjList.get(origen).add(destino);
+    }
+
+    public void dfsIterativo(String inicio) {
+        Set<String> visitados = new HashSet<>();
+        Stack<String> stack = new Stack<>();
+        stack.push(inicio);
+
+        while (!stack.isEmpty()) {
+            String nodo = stack.pop();
+            if (!visitados.contains(nodo)) {
+                visitados.add(nodo);
+                System.out.print(nodo + " ");
+
+                // Agregar los vecinos no visitados a la pila
+                for (String vecino : adjList.getOrDefault(nodo, new ArrayList<>())) {
+                    if (!visitados.contains(vecino)) {
+                        stack.push(vecino);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Grafo grafo = new Grafo();
+        grafo.agregarArista("A", "B");
+        grafo.agregarArista("A", "C");
+        grafo.agregarArista("B", "D");
+        grafo.dfsIterativo("A");
+    }
+}
