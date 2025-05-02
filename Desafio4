@@ -1,0 +1,42 @@
+Desafío 4: Grafo - Recorrido BFS (Breadth-First Search)
+Pregunta: ¿Qué diferencia hay entre el DFS y el BFS? ¿Cómo implementas una búsqueda en anchura (BFS) utilizando una cola?
+
+Caso de Uso: Crea un algoritmo BFS para recorrer el mapa de una ciudad, donde los nodos son las intersecciones y las aristas son las calles. Utiliza BFS para encontrar la ruta más corta entre dos puntos.
+
+Código en Java (BFS):
+import java.util.*;
+
+class Grafo {
+    private Map<String, List<String>> adjList = new HashMap<>();
+
+    public void agregarArista(String origen, String destino) {
+        adjList.putIfAbsent(origen, new ArrayList<>());
+        adjList.get(origen).add(destino);
+    }
+
+    public void bfs(String inicio) {
+        Set<String> visitados = new HashSet<>();
+        Queue<String> cola = new LinkedList<>();
+        cola.add(inicio);
+        visitados.add(inicio);
+
+        while (!cola.isEmpty()) {
+            String nodo = cola.poll();
+            System.out.print(nodo + " ");
+            for (String vecino : adjList.getOrDefault(nodo, new ArrayList<>())) {
+                if (!visitados.contains(vecino)) {
+                    cola.add(vecino);
+                    visitados.add(vecino);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Grafo grafo = new Grafo();
+        grafo.agregarArista("A", "B");
+        grafo.agregarArista("A", "C");
+        grafo.agregarArista("B", "D");
+        grafo.bfs("A");
+    }
+}
