@@ -1,0 +1,46 @@
+Desafío 2: Tablas Hash - Direccionamiento Abierto
+Pregunta: ¿Cómo implementarías la resolución de colisiones por direccionamiento abierto en una tabla hash? ¿Qué estrategias usarías para manejar las colisiones, como la sonda lineal o doble hash?
+
+Caso de Uso: Diseñar una tabla hash que almacene números de identificación de usuarios y sus nombres. Si hay una colisión, utiliza direccionamiento abierto con sonda lineal para encontrar un espacio vacío en la tabla.
+
+Código en Java (Direccionamiento Abierto con Sonda Lineal):
+
+class HashTable {
+    private String[] table;
+    private int size;
+
+    public HashTable(int size) {
+        this.size = size;
+        table = new String[size];
+    }
+
+    private int hash(int key) {
+        return key % size;
+    }
+
+    public void insert(int key, String value) {
+        int index = hash(key);
+        while (table[index] != null) {
+            index = (index + 1) % size;  // Sonda lineal
+        }
+        table[index] = value;
+    }
+
+    public String search(int key) {
+        int index = hash(key);
+        while (table[index] != null) {
+            if (table[index].equals("key" + key)) {
+                return table[index];
+            }
+            index = (index + 1) % size;
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        HashTable hashTable = new HashTable(10);
+        hashTable.insert(101, "Juan");
+        hashTable.insert(102, "Ana");
+        System.out.println(hashTable.search(101));  // Juan
+    }
+}
