@@ -1,0 +1,48 @@
+Desafío 12: Tablas Hash - Hashing Universal
+Pregunta: ¿Qué es el hashing universal y cómo utiliza funciones hash aleatorias para mejorar el rendimiento? ¿Por qué es importante en la resolución de colisiones?
+
+Caso de Uso: Implementa un sistema para almacenar las calificaciones de los estudiantes en un curso. Utiliza hashing universal para evitar colisiones frecuentes y mejorar la eficiencia de las búsquedas.
+
+Código en Java (Hashing Universal):
+import java.util.*;
+
+class HashTableUniversal {
+    private String[] table;
+    private Random rand = new Random();
+    private int a, b;
+
+    public HashTableUniversal(int size) {
+        this.table = new String[size];
+        this.a = rand.nextInt(size - 1) + 1;  // Aleatorio
+        this.b = rand.nextInt(size);
+    }
+
+    public int hash(String key) {
+        int hash = 0;
+        for (int i = 0; i < key.length(); i++) {
+            hash = (a * hash + key.charAt(i)) + b;
+        }
+        return Math.abs(hash) % table.length;
+    }
+
+    public void insert(String key) {
+        int index = hash(key);
+        if (table[index] != null) {
+            System.out.println("Colisión detectada.");
+        } else {
+            table[index] = key;
+        }
+    }
+
+    public String search(String key) {
+        int index = hash(key);
+        return table[index];
+    }
+
+    public static void main(String[] args) {
+        HashTableUniversal ht = new HashTableUniversal(10);
+        ht.insert("Estudiante1");
+        ht.insert("Estudiante2");
+        System.out.println(ht.search("Estudiante1"));
+    }
+}
