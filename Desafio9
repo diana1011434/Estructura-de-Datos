@@ -1,0 +1,48 @@
+Desafío 9: Camino más Corto con Dijkstra
+Pregunta: ¿Cómo puede Dijkstra encontrar el camino más corto en un grafo ponderado? ¿Qué estructuras de datos puedes usar para mejorar el rendimiento del algoritmo?
+
+Caso de Uso: Imagina que eres un planificador de rutas en una ciudad, y necesitas encontrar el camino más corto entre dos puntos en un grafo donde las aristas tienen diferentes pesos (distancias o tiempos).
+
+Código en Java (Dijkstra):
+import java.util.*;
+
+class Grafo {
+    private Map<String, List<int[]>> adjList = new HashMap<>();
+
+    public void agregarArista(String origen, String destino, int peso) {
+        adjList.putIfAbsent(origen, new ArrayList<>());
+        adjList.get(origen).add(new int[]{peso, destino});
+    }
+
+    public void dijkstra(String inicio) {
+        Map<String, Integer> distancias = new HashMap<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+
+        distancias.put(inicio, 0);
+        pq.add(new int[]{0, inicio});
+
+        while (!pq.isEmpty()) {
+            int[] nodo = pq.poll();
+            int distancia = nodo[0];
+            String actual = nodo[1];
+
+            for (int[] vecino : adjList.get(actual)) {
+                String vecinoNodo = vecino[1];
+                int peso = vecino[0];
+                int nuevaDistancia = distancia + peso;
+                if (nuevaDistancia < distancias.getOrDefault(vecinoNodo, Integer.MAX_VALUE)) {
+                    distancias.put(vecinoNodo, nuevaDistancia);
+                    pq.add(new int[]{nuevaDistancia, vecinoNodo});
+                }
+            }
+        }
+        distancias.forEach((key, value) -> System.out.println(key + ": " + value));
+    }
+
+    public static void main(String[] args) {
+        Grafo grafo = new Grafo();
+        grafo.agregarArista("A", "B", 10);
+        grafo.agregarArista("B", "C", 5);
+        grafo.dijkstra("A");
+    }
+}
