@@ -1,0 +1,45 @@
+Desafío 5: Árbol de Expansión Mínima con Prim
+Pregunta: ¿Cómo se utiliza el algoritmo de Prim para encontrar el árbol de expansión mínima? ¿Qué tipo de estructura de datos es más eficiente para implementar este algoritmo?
+
+Caso de Uso: Imagina que eres un ingeniero que necesita conectar ciudades con la menor cantidad de cables posibles. Usa el algoritmo de Prim para encontrar la red más económica.
+
+Código en Java (Prim):
+import java.util.*;
+
+class Grafo {
+    private Map<Integer, List<int[]>> adjList = new HashMap<>();
+
+    public void agregarArista(int origen, int destino, int peso) {
+        adjList.putIfAbsent(origen, new ArrayList<>());
+        adjList.get(origen).add(new int[]{destino, peso});
+    }
+
+    public void prim(int inicio) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        Set<Integer> visitados = new HashSet<>();
+        pq.add(new int[]{inicio, 0});
+
+        while (!pq.isEmpty()) {
+            int[] arista = pq.poll();
+            int nodo = arista[0], peso = arista[1];
+            if (visitados.contains(nodo)) continue;
+
+            visitados.add(nodo);
+            System.out.println("Nodo: " + nodo + ", Peso: " + peso);
+
+            for (int[] vecino : adjList.getOrDefault(nodo, new ArrayList<>())) {
+                if (!visitados.contains(vecino[0])) {
+                    pq.add(vecino);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Grafo grafo = new Grafo();
+        grafo.agregarArista(0, 1, 10);
+        grafo.agregarArista(0, 2, 6);
+        grafo.agregarArista(1, 2, 5);
+        grafo.prim(0);
+    }
+}
