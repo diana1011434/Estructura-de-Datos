@@ -1,0 +1,48 @@
+Desafío 6: Camino más Corto con Dijkstra
+Pregunta: ¿Qué hace el algoritmo de Dijkstra y cómo encuentra el camino más corto entre dos nodos en un grafo ponderado?
+
+Caso de Uso: Diseña un sistema que calcule el camino más corto entre dos estaciones de metro en una ciudad utilizando el algoritmo de Dijkstra.
+
+Código en Java (Dijkstra):
+import java.util.*;
+
+class Grafo {
+    private Map<String, List<int[]>> adjList = new HashMap<>();
+
+    public void agregarArista(String origen, String destino, int peso) {
+        adjList.putIfAbsent(origen, new ArrayList<>());
+        adjList.get(origen).add(new int[]{peso, destino});
+    }
+
+    public void dijkstra(String inicio) {
+        Map<String, Integer> distancias = new HashMap<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+
+        distancias.put(inicio, 0);
+        pq.add(new int[]{0, inicio});
+
+        while (!pq.isEmpty()) {
+            int[] nodo = pq.poll();
+            int distancia = nodo[0];
+            String actual = nodo[1];
+
+            for (int[] vecino : adjList.get(actual)) {
+                String vecinoNodo = vecino[1];
+                int peso = vecino[0];
+                int nuevaDistancia = distancia + peso;
+                if (nuevaDistancia < distancias.getOrDefault(vecinoNodo, Integer.MAX_VALUE)) {
+                    distancias.put(vecinoNodo, nuevaDistancia);
+                    pq.add(new int[]{nuevaDistancia, vecinoNodo});
+                }
+            }
+        }
+        distancias.forEach((key, value) -> System.out.println(key + ": " + value));
+    }
+
+    public static void main(String[] args) {
+        Grafo grafo = new Grafo();
+        grafo.agregarArista("A", "B", 10);
+        grafo.agregarArista("B", "C", 5);
+        grafo.dijkstra("A");
+    }
+}
