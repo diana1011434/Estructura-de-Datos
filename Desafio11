@@ -1,0 +1,38 @@
+Desafío 11: Tablas Hash - Hashing Perfecto
+Pregunta: ¿Qué es el hashing perfecto y cómo asegura que no haya colisiones en una tabla hash? ¿Qué condiciones son necesarias para lograr hashing perfecto?
+
+Caso de Uso: Implementa un sistema que almacene una lista de identificadores únicos de productos en una tienda online. Utiliza hashing perfecto para garantizar que no haya colisiones al almacenar los productos.
+
+Código en Java (Hashing Perfecto - Simplificado):
+class HashTablePerfecto {
+    private String[] table;
+
+    public HashTablePerfecto(int size) {
+        this.table = new String[size];
+    }
+
+    public int hash(String key) {
+        return key.hashCode() % table.length;
+    }
+
+    public void insert(String key) {
+        int index = hash(key);
+        if (table[index] != null) {
+            System.out.println("Colisión detectada, el hash no es perfecto para esta clave.");
+        } else {
+            table[index] = key;
+        }
+    }
+
+    public String search(String key) {
+        int index = hash(key);
+        return table[index];
+    }
+
+    public static void main(String[] args) {
+        HashTablePerfecto ht = new HashTablePerfecto(10);
+        ht.insert("Producto123");
+        ht.insert("Producto456");
+        System.out.println(ht.search("Producto123"));
+    }
+}
