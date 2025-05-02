@@ -1,0 +1,183 @@
+esafío: Sistema de Gestión de Redes de Transporte Público
+Problema: Imagina que eres parte de un equipo que debe diseñar un sistema para gestionar y optimizar una red de transporte público en una ciudad. La red está formada por diferentes estaciones de tren, autobuses y paradas (puntos en el grafo) conectadas por rutas (aristas), cada una con un tiempo de viaje (peso). Los usuarios deben poder consultar las rutas más rápidas entre dos puntos de la red de transporte y ver las estaciones intermedias que deben tomar.
+
+El objetivo es utilizar tablas hash para almacenar la red de transporte y representar la información en un grafo. Luego, debes aplicar algoritmos para resolver distintos problemas como la búsqueda del camino más corto entre dos estaciones, encontrar el camino con menor número de paradas, y obtener un subgrafo de las estaciones más cercanas a una estación específica.
+
+Requisitos:
+Estaciones: Cada estación o parada de transporte tiene un identificador único (por ejemplo, un nombre o código).
+Rutas: Las conexiones entre estaciones tienen un tiempo de viaje o coste asociado.
+Operaciones: Debes permitir:
+Consultar el camino más corto entre dos estaciones utilizando Dijkstra.
+Encontrar el camino con menor número de paradas (utilizando una estrategia de BFS).
+Obtener las estaciones cercanas a una estación dada.
+Pasos a seguir:
+Representación del grafo:
+
+Usa una tabla hash (HashMap<String, List<int[]>>) para almacenar las estaciones y sus conexiones. Cada entrada en la tabla tendrá el nombre de la estación como clave, y el valor será una lista de aristas representadas por un array que contiene el peso y el nombre de la estación conectada.
+Algoritmos a implementar:
+
+Dijkstra para el camino más corto.
+BFS para el camino con el menor número de paradas.
+Funciones auxiliares para obtener las estaciones cercanas.
+Código en Java:
+
+import java.util.*;
+
+class Grafo {
+    private Map<String, List<int[]>> adjList = new HashMap<>();
+
+    // Agregar una arista entre dos estaciones con un tiempo de viaje (peso)
+    public void agregarRuta(String origen, String destino, int tiempo) {
+        adjList.putIfAbsent(origen, new ArrayList<>());
+        adjList.get(origen).add(new int[]{tiempo, destino});
+    }
+
+    // Algoritmo de Dijkstra para encontrar el camino más corto
+    public void dijkstra(String inicio, String destino) {
+        Map<String, Integer> distancias = new HashMap<>();
+        Map<String, String> predecesores = new HashMap<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+
+        distancias.put(inicio, 0);
+        pq.add(new int[]{0, inicio});
+
+        while (!pq.isEmpty()) {
+            int[] nodo = pq.poll();
+            int distancia = nodo[0];
+            String actual = nodo[1];
+
+            if (actual.equals(destino)) {
+                break;
+            }
+
+            for (int[] vecino : adjList.get(actual)) {
+                String vecinoNodo = vecino[1];
+                int peso = vecino[0];
+                int nuevaDistancia = distancia + peso;
+
+                if (nuevaDistancia < distancias.getOrDefault(vecinoNodo, Integer.MAX_VALUE)) {
+                    distancias.put(vecinoNodo, nuevaDistancia);
+                    predecesores.put(vecinoNodo, actual);
+                    pq.add(new int[]{nuevaDistancia, vecinoNodo});
+                }
+            }
+        }
+
+        // Imprimir el camino más corto
+        if (distancias.containsKey(destino)) {
+            System.out.println("Distancia más corta desde " + inicio + " a " + destino + ": " + distancias.get(destino));
+            System.out.print("Ruta: ");
+            imprimirRuta(predecesores, destino);
+        } else {
+            System.out.println("No hay ruta disponible.");
+        }
+    }
+
+    // Función auxiliar para imprimir el camino
+    private void imprimirRuta(Map<String, String> predecesores, String destino) {
+        if (predecesores.containsKey(destino)) {
+            imprimirRuta(predecesores, predecesores.get(destino));
+        }
+        System.out.print(destino + " ");
+    }
+
+    // BFS para encontrar el camino con el menor número de paradas
+    public void bfs(String inicio, String destino) {
+        Map<String, Integer> distancias = new HashMap<>();
+        Queue<String> queue = new LinkedList<>();
+        Map<String, String> predecesores = new HashMap<>();
+
+        distancias.put(inicio, 0);
+        queue.add(inicio);
+
+        while (!queue.isEmpty()) {
+            String nodo = queue.poll();
+
+            for (int[] vecino : adjList.get(nodo)) {
+                String vecinoNodo = vecino[1];
+                if (!distancias.containsKey(vecinoNodo)) {
+                    distancias.put(vecinoNodo, distancias.get(nodo) + 1);
+                    predecesores.put(vecinoNodo, nodo);
+                    queue.add(vecinoNodo);
+                    if (vecinoNodo.equals(destino)) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Imprimir el camino con el menor número de paradas
+        if (distancias.containsKey(destino)) {
+            System.out.println("Número de paradas desde " + inicio + " a " + destino + ": " + distancias.get(destino));
+            System.out.print("Ruta: ");
+            imprimirRuta(predecesores, destino);
+        } else {
+            System.out.println("No hay ruta disponible.");
+        }
+    }
+
+    // Obtener las estaciones cercanas a una estación específica
+    public void estacionesCercanas(String estacion) {
+        if (adjList.containsKey(estacion)) {
+            System.out.println("Estaciones cercanas a " + estacion + ": ");
+            for (int[] vecino : adjList.get(estacion)) {
+                System.out.println(vecino[1]);
+            }
+        } else {
+            System.out.println("La estación no existe.");
+        }
+    }
+
+    public static void main(String[] args) {
+        Grafo grafo = new Grafo();
+        
+        // Agregar rutas entre estaciones
+        grafo.agregarRuta("Estación A", "Estación B", 5);
+        grafo.agregarRuta("Estación A", "Estación C", 8);
+        grafo.agregarRuta("Estación B", "Estación D", 3);
+        grafo.agregarRuta("Estación C", "Estación D", 2);
+        grafo.agregarRuta("Estación D", "Estación E", 4);
+        
+        // Consultar camino más corto (Dijkstra)
+        grafo.dijkstra("Estación A", "Estación E");
+        
+        // Consultar camino con el menor número de paradas (BFS)
+        grafo.bfs("Estación A", "Estación E");
+        
+        // Consultar estaciones cercanas
+        grafo.estacionesCercanas("Estación A");
+    }
+}
+
+
+Explicación del código:
+
+Representación del Grafo:
+
+Utilizamos un HashMap para almacenar la red de transporte público. Las claves del mapa son los nombres de las estaciones, y los valores son listas de aristas, donde cada arista es un array de dos elementos: el peso (tiempo de viaje) y el nombre de la estación de destino.
+Método agregarRuta:
+
+Este método agrega rutas (aristas) entre estaciones con el tiempo de viaje como peso.
+Método dijkstra:
+
+Implementa el algoritmo de Dijkstra para encontrar el camino más corto entre dos estaciones. Usa una PriorityQueue para asegurar que siempre procesamos el nodo con la distancia más corta.
+El mapa predecesores se utiliza para reconstruir la ruta una vez que se ha encontrado el camino más corto.
+Método bfs:
+
+Implementa el algoritmo BFS para encontrar el camino con el menor número de paradas entre dos estaciones. Aquí, no nos importa el peso de las aristas, solo contar cuántas paradas se deben hacer.
+Método estacionesCercanas:
+
+Este método recibe el nombre de una estación y muestra las estaciones que están directamente conectadas a ella.
+main:
+
+En la función main, se crean algunas estaciones y se agregan rutas entre ellas. Luego, se llaman a las funciones de Dijkstra, BFS y estaciones cercanas para probar el sistema.
+
+Caso de Uso:
+Este sistema puede ser utilizado por los usuarios del transporte público para:
+
+Encontrar la ruta más rápida entre dos estaciones (con el algoritmo de Dijkstra).
+Encontrar la ruta con el menor número de paradas (utilizando BFS).
+Ver qué estaciones están cerca de una estación dada (por ejemplo, estaciones cercanas a una parada de metro).
+
+Conclusión:
+Este desafío combina el uso de tablas hash para representar un grafo y las operaciones más comunes en grafos, como encontrar caminos más cortos y caminos con menor número de paradas, todo mientras se gestionan redes de transporte público de manera eficiente.
