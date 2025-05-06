@@ -1,0 +1,70 @@
+//TALLER: Tablas Hash en Java con HashMap
+¿Qué es una Tabla Hash (HashMap en Java)?
+Una tabla hash es una estructura de datos que asocia claves únicas con valores. En Java, esto se implementa con la clase HashMap, que permite almacenar, buscar, modificar y eliminar datos de manera muy eficiente.
+Tablas Hash: Fundamentos, Aplicaciones y Ejemplos en Java
+Resumen
+Las tablas hash son estructuras de datos ampliamente utilizadas en programación por su eficiencia en la gestión de información. Permiten almacenar y recuperar datos de manera casi instantánea, haciendo uso de una función hash que convierte claves en índices. Este artículo presenta los conceptos fundamentales, ventajas, funcionamiento interno y aplicaciones prácticas de las tablas hash, complementado con ejemplos desarrollados en el lenguaje Java.
+
+1. Introducción
+En el contexto del desarrollo de software y la estructura de datos, las tablas hash (o hash tables) representan una de las soluciones más eficientes para almacenar pares clave-valor. Se destacan por ofrecer tiempos de acceso promedio de O(1), lo que las convierte en una opción preferida para sistemas que requieren consultas rápidas, como motores de búsqueda, bases de datos en memoria, caches y compiladores.
+
+2. ¿Qué es una Tabla Hash?
+Una tabla hash es una estructura que almacena datos mediante una asociación entre claves y valores. La clave se convierte en un índice mediante una función hash, y ese índice determina la ubicación del valor correspondiente dentro de un arreglo.
+
+Terminología clave:
+Clave (Key): Identificador único que se utiliza para acceder al valor.
+
+Valor (Value): Información asociada a la clave.
+
+Función hash: Algoritmo que transforma la clave en una posición válida dentro del arreglo.
+
+Colisiones: Situación en la que dos claves distintas generan el mismo índice.
+
+3. Funcionamiento Interno
+El funcionamiento de una tabla hash se basa en tres operaciones esenciales:
+
+Inserción: Se aplica la función hash a la clave y se almacena el par clave-valor en la posición resultante.
+
+Búsqueda: Se calcula el índice usando la función hash y se recupera el valor en esa posición.
+
+Eliminación: Se localiza el índice mediante la clave y se remueve el par correspondiente.
+
+Manejo de colisiones:
+Cuando varias claves generan el mismo índice, se emplean técnicas como:
+
+Encadenamiento (Chaining): Usar listas enlazadas en cada posición.
+
+Dirección abierta (Open Addressing): Buscar la siguiente posición libre.
+
+4. Implementación en Java
+En Java, las tablas hash se implementan con la clase Hashtable<K, V> y su evolución moderna HashMap<K, V>. Ambas pertenecen al paquete java.util.
+
+Ejemplo básico:
+import java.util.Hashtable;
+public class EjemploHash {
+    public static void main(String[] args) {
+        Hashtable<String, String> capitales = new Hashtable<>();
+        capitales.put("Colombia", "Bogotá");
+        capitales.put("Perú", "Lima");
+        capitales.put("Argentina", "Buenos Aires");
+
+        System.out.println("Capital de Perú: " + capitales.get("Perú"));
+    }
+}
+5. Ventajas de las Tablas Hash
+ Acceso muy rápido a los datos (casi tiempo constante).
+ Adecuadas para grandes volúmenes de información.
+ Fáciles de implementar para estructuras tipo diccionario.
+ Eficientes para verificación de existencia (por ejemplo, claves duplicadas).
+
+Aplicaciones Comunes
+Gestión de usuarios (usuario-contraseña)
+
+Cachés y almacenamiento temporal
+
+Compiladores (tablas de símbolos)
+
+Sistemas de puntuación y ranking
+
+Procesamiento de lenguaje natural (conteo de palabras)
+
