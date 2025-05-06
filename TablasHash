@@ -68,3 +68,246 @@ Sistemas de puntuación y ranking
 
 Procesamiento de lenguaje natural (conteo de palabras)
 
+
+// Ejercicios pràctico
+
+1. Agenda de Contactos con Búsqueda y Eliminación
+Objetivo: Crear una agenda de contactos que permita añadir, buscar, mostrar y eliminar contactos.
+
+import java.util.Hashtable;
+import java.util.Scanner;
+
+public class AgendaContactos {
+    public static void main(String[] args) {
+        Hashtable<String, String> agenda = new Hashtable<>();
+        Scanner scanner = new Scanner(System.in);
+        int opcion;
+
+        do {
+            System.out.println("\n--- AGENDA DE CONTACTOS ---");
+            System.out.println("1. Agregar contacto");
+            System.out.println("2. Buscar contacto");
+            System.out.println("3. Eliminar contacto");
+            System.out.println("4. Mostrar todos los contactos");
+            System.out.println("5. Salir");
+            System.out.print("Seleccione una opción: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpiar buffer
+
+            switch (opcion) {
+                case 1:
+                    System.out.print("Nombre del contacto: ");
+                    String nombre = scanner.nextLine();
+                    System.out.print("Número telefónico: ");
+                    String telefono = scanner.nextLine();
+                    agenda.put(nombre, telefono);
+                    System.out.println("Contacto guardado.");
+                    break;
+
+                case 2:
+                    System.out.print("Ingrese el nombre del contacto a buscar: ");
+                    String buscar = scanner.nextLine();
+                    if (agenda.containsKey(buscar)) {
+                        System.out.println("Teléfono: " + agenda.get(buscar));
+                    } else {
+                        System.out.println("Contacto no encontrado.");
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("Nombre del contacto a eliminar: ");
+                    String eliminar = scanner.nextLine();
+                    if (agenda.remove(eliminar) != null) {
+                        System.out.println("Contacto eliminado.");
+                    } else {
+                        System.out.println("No se encontró el contacto.");
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Listado de contactos:");
+                    for (String key : agenda.keySet()) {
+                        System.out.println(key + " → " + agenda.get(key));
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Saliendo...");
+                    break;
+
+                default:
+                    System.out.println("Opción inválida.");
+            }
+        } while (opcion != 5);
+    }
+}
+
+
+2. Inventario de Productos con Reabastecimiento
+Objetivo: Llevar el control de unidades en inventario y permitir actualizar cantidades de productos.
+
+import java.util.Hashtable;
+import java.util.Scanner;
+
+public class InventarioProductos {
+    public static void main(String[] args) {
+        Hashtable<String, Integer> inventario = new Hashtable<>();
+        Scanner scanner = new Scanner(System.in);
+        int opcion;
+
+        // Inventario inicial
+        inventario.put("Arroz", 50);
+        inventario.put("Frijoles", 30);
+        inventario.put("Aceite", 20);
+
+        do {
+            System.out.println("\n--- INVENTARIO DE PRODUCTOS ---");
+            System.out.println("1. Consultar producto");
+            System.out.println("2. Reabastecer producto");
+            System.out.println("3. Mostrar inventario");
+            System.out.println("4. Salir");
+            System.out.print("Seleccione una opción: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcion) {
+                case 1:
+                    System.out.print("Nombre del producto: ");
+                    String producto = scanner.nextLine();
+                    if (inventario.containsKey(producto)) {
+                        System.out.println("Cantidad en stock: " + inventario.get(producto));
+                    } else {
+                        System.out.println("Producto no encontrado.");
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("Producto a reabastecer: ");
+                    String nombre = scanner.nextLine();
+                    System.out.print("Cantidad a añadir: ");
+                    int cantidad = scanner.nextInt();
+                    if (inventario.containsKey(nombre)) {
+                        inventario.put(nombre, inventario.get(nombre) + cantidad);
+                    } else {
+                        inventario.put(nombre, cantidad);
+                    }
+                    System.out.println("Inventario actualizado.");
+                    break;
+
+                case 3:
+                    System.out.println("Inventario completo:");
+                    for (String key : inventario.keySet()) {
+                        System.out.println(key + ": " + inventario.get(key) + " unidades");
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Saliendo...");
+                    break;
+
+                default:
+                    System.out.println("Opción inválida.");
+            }
+        } while (opcion != 4);
+    }
+}
+
+
+3. Registro de Notas de Estudiantes
+Objetivo: Permitir el registro y consulta de notas, identificando si el estudiante aprueba o no.
+
+import java.util.Hashtable;
+import java.util.Scanner;
+
+public class RegistroNotas {
+    public static void main(String[] args) {
+        Hashtable<String, Double> notas = new Hashtable<>();
+        Scanner scanner = new Scanner(System.in);
+
+        // Agregar estudiantes
+        notas.put("Laura", 4.3);
+        notas.put("Andrés", 2.8);
+        notas.put("Camila", 3.7);
+
+        System.out.print("Ingrese el nombre del estudiante: ");
+        String estudiante = scanner.nextLine();
+
+        if (notas.containsKey(estudiante)) {
+            double nota = notas.get(estudiante);
+            System.out.println("Nota final de " + estudiante + ": " + nota);
+            if (nota >= 3.0) {
+                System.out.println("Estado: Aprobado");
+            } else {
+                System.out.println("Estado: Reprobado");
+            }
+        } else {
+            System.out.println("Estudiante no registrado.");
+        }
+    }
+}
+
+
+4. Gestión de Cuentas Bancarias con Retiros
+Objetivo: Simular operaciones básicas en cuentas bancarias: consulta y retiro.
+
+import java.util.Hashtable;
+import java.util.Scanner;
+
+public class Banco {
+    public static void main(String[] args) {
+        Hashtable<String, Double> cuentas = new Hashtable<>();
+        Scanner scanner = new Scanner(System.in);
+
+        // Cuentas creadas
+        cuentas.put("12345", 5000.0);
+        cuentas.put("23456", 3200.5);
+        cuentas.put("34567", 150.0);
+
+        System.out.print("Ingrese número de cuenta: ");
+        String cuenta = scanner.nextLine();
+
+        if (cuentas.containsKey(cuenta)) {
+            System.out.println("Saldo actual: $" + cuentas.get(cuenta));
+            System.out.print("Valor a retirar: ");
+            double retiro = scanner.nextDouble();
+
+            if (retiro <= cuentas.get(cuenta)) {
+                cuentas.put(cuenta, cuentas.get(cuenta) - retiro);
+                System.out.println("Retiro exitoso. Saldo restante: $" + cuentas.get(cuenta));
+            } else {
+                System.out.println("Fondos insuficientes.");
+            }
+        } else {
+            System.out.println("Cuenta no encontrada.");
+        }
+    }
+}
+
+5. Diccionario Español-Inglés
+Objetivo: Traducir palabras entre dos idiomas utilizando una estructura tipo clave-valor.
+
+
+import java.util.Hashtable;
+import java.util.Scanner;
+
+public class Traductor {
+    public static void main(String[] args) {
+        Hashtable<String, String> diccionario = new Hashtable<>();
+        Scanner scanner = new Scanner(System.in);
+
+        // Palabras iniciales
+        diccionario.put("Casa", "House");
+        diccionario.put("Perro", "Dog");
+        diccionario.put("Libro", "Book");
+        diccionario.put("Escuela", "School");
+
+        System.out.print("Ingrese una palabra en español: ");
+        String palabra = scanner.nextLine();
+
+        if (diccionario.containsKey(palabra)) {
+            System.out.println("Traducción: " + diccionario.get(palabra));
+        } else {
+            System.out.println("Palabra no registrada en el diccionario.");
+        }
+    }
+}
