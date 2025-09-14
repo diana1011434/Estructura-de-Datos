@@ -56,19 +56,19 @@ Facilitar la actualización de datos cuando sea necesario.
 
 Actividad:
 
-1.	Crear y Mostrar una Lista Enlazada: Escribe un algoritmo que cree una lista enlazada de números enteros y luego la muestre. Genere el código respectivo. (Santiago y Nicol).
-2.	Inserción en una Lista Enlazada: Añade un nodo al principio, al final y en una posición específica en una lista enlazada. (Julian)
-3.	Eliminar un Nodo: Desarrolla una función que elimine un nodo de una lista enlazada dada una clave específica.( Janah y Alejandra Cano).
-4.	Buscar un Elemento: Implementa una función que busque un elemento en una lista enlazada y devuelva su posición (Juan y Laura).
-5.	Invertir una Lista Enlazada: Escribe un algoritmo para invertir el orden de los nodos en una lista enlazada. (yerik vazquez y Tomas).
-6.	Detectar un Ciclo en una Lista Enlazada: Usa el algoritmo de Floyd para detectar un ciclo en una lista enlazada ( Sofia y Alejandra).
-7.	Encontrar el Penúltimo Nodo: Crea una función para encontrar y retornar el penúltimo nodo en una lista enlazada. ( Esteban y Santiago).
-8.	Lista Enlazada Doblemente Enlazada: Construye una lista doblemente enlazada e implementa inserciones y eliminaciones. (Palomino y Valentina).
-9.	Contar Nodos en una Lista Circular: Escribe un programa que cuente el número de nodos en una lista circular enlazada. (Juanita y Nicolas).
-10.	Combinar Dos Listas Enlazadas: Desarrolla una función para combinar dos listas enlazadas en una nueva lista enlazada. (David Sierra).
-11.	listas. Iteradores. Concepto y cómo funcionan. (Jean Carlos y Angela).
-12.	Caso de uso listas Iteradores. Santiago Avila
-13.	 Juego con listas  (Juan y Tomas).
+1.	Crear y Mostrar una Lista Enlazada: Escribe un algoritmo que cree una lista enlazada de números enteros y luego la muestre. Genere el código respectivo. 
+2.	Inserción en una Lista Enlazada: Añade un nodo al principio, al final y en una posición específica en una lista enlazada.
+3.	Eliminar un Nodo: Desarrolla una función que elimine un nodo de una lista enlazada dada una clave específica.
+4.	Buscar un Elemento: Implementa una función que busque un elemento en una lista enlazada y devuelva su posición 
+5.	Invertir una Lista Enlazada: Escribe un algoritmo para invertir el orden de los nodos en una lista enlazada. 
+6.	Detectar un Ciclo en una Lista Enlazada: Usa el algoritmo de Floyd para detectar un ciclo en una lista enlazada 
+7.	Encontrar el Penúltimo Nodo: Crea una función para encontrar y retornar el penúltimo nodo en una lista enlazada. 
+8.	Lista Enlazada Doblemente Enlazada: Construye una lista doblemente enlazada e implementa inserciones y eliminaciones. 
+9.	Contar Nodos en una Lista Circular: Escribe un programa que cuente el número de nodos en una lista circular enlazada. 
+10.	Combinar Dos Listas Enlazadas: Desarrolla una función para combinar dos listas enlazadas en una nueva lista enlazada.
+11.	listas. Iteradores. Concepto y cómo funcionan. 
+12.	Caso de uso listas Iteradores. 
+13.	 Juego con listas  
 
 
 
