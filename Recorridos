@@ -79,3 +79,8 @@ public class Main {
         System.out.println();
     }
 }
+//Preorden: D A I A N A R I A S
+
+Inorden: A A A D I I N R S
+
+Postorden: A A A I S R N I D
