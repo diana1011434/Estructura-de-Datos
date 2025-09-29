@@ -1,0 +1,81 @@
+class Nodo {
+    String dato;
+    Nodo izq, der;
+
+    public Nodo(String dato) {
+        this.dato = dato;
+        izq = der = null;
+    }
+}
+
+class ArbolBinario {
+    Nodo raiz;
+
+    // Insertar en el árbol
+    public void insertar(String dato) {
+        raiz = insertarRec(raiz, dato);
+    }
+
+    private Nodo insertarRec(Nodo raiz, String dato) {
+        if (raiz == null) {
+            raiz = new Nodo(dato);
+            return raiz;
+        }
+        if (dato.compareTo(raiz.dato) < 0)
+            raiz.izq = insertarRec(raiz.izq, dato);
+        else
+            raiz.der = insertarRec(raiz.der, dato);
+        return raiz;
+    }
+
+    // Recorrido PREORDEN (Raíz - Izq - Der)
+    public void preorden(Nodo nodo) {
+        if (nodo != null) {
+            System.out.print(nodo.dato + " ");
+            preorden(nodo.izq);
+            preorden(nodo.der);
+        }
+    }
+
+    // Recorrido INORDEN (Izq - Raíz - Der)
+    public void inorden(Nodo nodo) {
+        if (nodo != null) {
+            inorden(nodo.izq);
+            System.out.print(nodo.dato + " ");
+            inorden(nodo.der);
+        }
+    }
+
+    // Recorrido POSTORDEN (Izq - Der - Raíz)
+    public void postorden(Nodo nodo) {
+        if (nodo != null) {
+            postorden(nodo.izq);
+            postorden(nodo.der);
+            System.out.print(nodo.dato + " ");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ArbolBinario arbol = new ArbolBinario();
+
+        // Insertamos tu nombre "DIANA ARIAS" letra por letra
+        String nombre = "DIANAARIAS";
+        for (char c : nombre.toCharArray()) {
+            arbol.insertar(String.valueOf(c));
+        }
+
+        System.out.println("Recorrido Preorden:");
+        arbol.preorden(arbol.raiz);
+        System.out.println();
+
+        System.out.println("Recorrido Inorden:");
+        arbol.inorden(arbol.raiz);
+        System.out.println();
+
+        System.out.println("Recorrido Postorden:");
+        arbol.postorden(arbol.raiz);
+        System.out.println();
+    }
+}
