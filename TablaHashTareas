@@ -1,0 +1,156 @@
+package GestordeTareas;
+import java.util.HashMap;
+import java.util.Scanner;
+
+/**
+ *  PROGRAMA EDUCATIVO: GESTOR DE TAREAS CON TABLA HASH (CONSOLa)
+ *
+ * Permite:
+ * Agregar tareas
+ * Consultarlas
+ * Eliminarlas
+ * Mostrar todas las tareas
+ *
+ * Uso académico: enseñar cómo funciona internamente una tabla hash.
+ * Autor: Diana Carolina Arias Sosa
+ */
+public class GestorTareasHashConsola {
+
+    // === Clase interna: modelo de datos ===
+    static class Tarea {
+        private String id;
+        private String descripcion;
+        private String estado;
+
+        public Tarea(String id, String descripcion, String estado) {
+            this.id = id;
+            this.descripcion = descripcion;
+            this.estado = estado;
+        }
+
+        public String getId() { return id; }
+        public String getDescripcion() { return descripcion; }
+        public String getEstado() { return estado; }
+
+        @Override
+        public String toString() {
+            return "ID: " + id + " | Descripción: " + descripcion + " | Estado: " + estado;
+        }
+    }
+
+    // === Estructura principal: tabla hash ===
+    private static HashMap<String, Tarea> tablaTareas = new HashMap<>();
+
+    // === Métodos funcionales ===
+    private static void agregarTarea(Scanner sc) {
+        System.out.print("Ingrese ID de la tarea: ");
+        String id = sc.nextLine();
+        System.out.print("Ingrese descripción: ");
+        String desc = sc.nextLine();
+        System.out.print("Ingrese estado: ");
+        String estado = sc.nextLine();
+
+        Tarea tarea = new Tarea(id, desc, estado);
+        tablaTareas.put(id, tarea);  // inserta usando el hash del ID
+
+        System.out.println("\n Tarea agregada correctamente (almacenada según su hash).");
+    }
+
+    private static void buscarTarea(Scanner sc) {
+        System.out.print("Ingrese ID de la tarea a buscar: ");
+        String id = sc.nextLine();
+
+        Tarea tarea = tablaTareas.get(id);
+        if (tarea != null) {
+            System.out.println("\n Tarea encontrada:");
+            System.out.println(tarea);
+        } else {
+            System.out.println("\n No se encontró una tarea con ese ID.");
+        }
+    }
+
+    private static void eliminarTarea(Scanner sc) {
+        System.out.print("Ingrese ID de la tarea a eliminar: ");
+        String id = sc.nextLine();
+
+        if (tablaTareas.remove(id) != null) {
+            System.out.println("\n Tarea eliminada correctamente.");
+        } else {
+            System.out.println("\n No existe una tarea con ese ID.");
+        }
+    }
+
+    private static void mostrarTareas() {
+        if (tablaTareas.isEmpty()) {
+            System.out.println("\nNo hay tareas registradas.");
+            return;
+        }
+
+        System.out.println("\n LISTA DE TAREAS (almacenadas en la tabla hash):");
+        for (Tarea t : tablaTareas.values()) {
+            System.out.println(t);
+        }
+    }
+
+    private static void mostrarInfoTeorica() {
+        System.out.println("""
+        \n ¿CÓMO FUNCIONA UNA TABLA HASH?
+
+        Una tabla hash almacena datos en pares clave-valor.
+        En este programa:
+            - La CLAVE es el ID de la tarea.
+            - El VALOR es el objeto Tarea.
+
+        Cuando agregas una tarea:
+            ➤ Java calcula un número (hash) a partir del ID.
+            ➤ Ese hash indica en qué posición se guarda el dato.
+            ➤ Si dos claves generan el mismo hash, ocurre una "colisión".
+              (Java la maneja internamente con listas enlazadas).
+
+        Complejidad:
+             Inserción: O(1)
+             Búsqueda: O(1)
+             Eliminación: O(1)
+
+        Así funcionan estructuras como HashMap, HashSet o tablas en bases de datos.
+        """);
+    }
+
+    // === Método principal ===
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int opcion = 0;
+
+        do {
+            System.out.println("""
+            \n===== GESTOR DE TAREAS - TABLA HASH =====
+            1. Agregar tarea
+            2. Buscar tarea
+            3. Eliminar tarea
+            4. Mostrar todas las tareas
+            5. Ver explicación de la tabla hash
+            0. Salir
+            =======================================
+            Elija una opción: """);
+
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Opción inválida. Intente de nuevo.");
+                continue;
+            }
+
+            switch (opcion) {
+                case 1 -> agregarTarea(sc);
+                case 2 -> buscarTarea(sc);
+                case 3 -> eliminarTarea(sc);
+                case 4 -> mostrarTareas();
+                case 5 -> mostrarInfoTeorica();
+                case 0 -> System.out.println(" Saliendo del programa...");
+                default -> System.out.println(" Opción no válida.");
+            }
+
+        } while (true && opcion != 0);
+
+        sc.close();
+    }
