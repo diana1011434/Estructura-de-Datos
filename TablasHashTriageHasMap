@@ -1,0 +1,183 @@
+package Triaje;
+
+/**
+ * Programa: Sistema de Triage con HashMap
+ * Autora: Diana Carolina Arias Sosa
+ * Descripción:
+ * Este programa permite registrar pacientes en un sistema de urgencias usando una tabla hash (HashMap).
+ * Cada paciente se identifica con su número de cédula (clave única).
+ * Si un paciente ya está registrado, el sistema no permite volverlo a agregar.
+ * También permite mostrar todos los pacientes registrados con su nivel de prioridad.
+ */
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
+
+public class TriageUrgenciasGUI extends JFrame {
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	// HashMap para almacenar los pacientes, usando la cédula como clave
+    private HashMap<String, Paciente> pacientes = new HashMap<>();
+
+    // Componentes de la interfaz gráfica
+    private JTextField txtCedula, txtNombre;
+    private JComboBox<String> comboPrioridad;
+    private JTextArea areaPacientes;
+    private JButton btnAgregar, btnMostrar;
+
+    public TriageUrgenciasGUI() {
+        // Configuración básica de la ventana principal
+        setTitle("Sistema de Triage - Urgencias");
+        setSize(500, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null); // Centrar ventana
+        setLayout(new BorderLayout(10, 10));
+
+        // Panel superior con el formulario de registro
+        JPanel panelFormulario = new JPanel(new GridLayout(4, 2, 5, 5));
+        panelFormulario.setBorder(BorderFactory.createTitledBorder("Registrar Paciente"));
+
+        // Campos de entrada
+        panelFormulario.add(new JLabel("Cédula:"));
+        txtCedula = new JTextField();
+        panelFormulario.add(txtCedula);
+
+        panelFormulario.add(new JLabel("Nombre:"));
+        txtNombre = new JTextField();
+        panelFormulario.add(txtNombre);
+
+        panelFormulario.add(new JLabel("Prioridad:"));
+        comboPrioridad = new JComboBox<>(new String[]{"Alta", "Media", "Baja"});
+        panelFormulario.add(comboPrioridad);
+
+        // Botones
+        btnAgregar = new JButton("Agregar Paciente");
+        btnMostrar = new JButton("Mostrar Todos");
+        panelFormulario.add(btnAgregar);
+        panelFormulario.add(btnMostrar);
+
+        add(panelFormulario, BorderLayout.NORTH);
+
+        // Área de texto para mostrar los pacientes
+        areaPacientes = new JTextArea();
+        areaPacientes.setEditable(false);
+        areaPacientes.setBorder(BorderFactory.createTitledBorder("Pacientes Registrados"));
+        add(new JScrollPane(areaPacientes), BorderLayout.CENTER);
+
+        // Acción del botón "Agregar"
+        btnAgregar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                agregarPaciente();
+            }
+        });
+
+        // Acción del botón "Mostrar"
+        btnMostrar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mostrarPacientes();
+            }
+        });
+    }
+
+    /**
+     * Método para agregar un paciente nuevo.
+     * Si la cédula ya existe en la tabla hash, se muestra un mensaje de error.
+     */
+    private void agregarPaciente() {
+        String cedula = txtCedula.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String prioridad = (String) comboPrioridad.getSelectedItem();
+
+        // Validar campos vacíos
+        if (cedula.isEmpty() || nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Verificar si el paciente ya existe en el HashMap
+        if (pacientes.containsKey(cedula)) {
+            JOptionPane.showMessageDialog(this, "El paciente con cédula " + cedula + " ya está registrado.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Crear nuevo paciente y agregarlo al HashMap
+        Paciente p = new Paciente(cedula, nombre, prioridad);
+        pacientes.put(cedula, p);
+
+        // Confirmar registro
+        JOptionPane.showMessageDialog(this, "Paciente registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        // Limpiar campos
+        txtCedula.setText("");
+        txtNombre.setText("");
+        comboPrioridad.setSelectedIndex(0);
+    }
+
+    /**
+     * Método para mostrar todos los pacientes registrados en el área de texto.
+     */
+    private void mostrarPacientes() {
+        if (pacientes.isEmpty()) {
+            areaPacientes.setText("No hay pacientes registrados.");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("LISTA DE PACIENTES REGISTRADOS:\n");
+        sb.append("-----------------------------------\n");
+
+        // Recorrer el HashMap y mostrar los datos de cada paciente
+        for (Paciente p : pacientes.values()) {
+            sb.append("Cédula: ").append(p.getCedula()).append("\n");
+            sb.append("Nombre: ").append(p.getNombre()).append("\n");
+            sb.append("Prioridad: ").append(p.getPrioridad()).append("\n");
+            sb.append("-----------------------------------\n");
+        }
+
+        areaPacientes.setText(sb.toString());
+    }
+
+    /**
+     * Clase interna que representa un Paciente.
+     * Cada paciente tiene una cédula, nombre y prioridad.
+     */
+    class Paciente {
+        private String cedula;
+        private String nombre;
+        private String prioridad;
+
+        public Paciente(String cedula, String nombre, String prioridad) {
+            this.cedula = cedula;
+            this.nombre = nombre;
+            this.prioridad = prioridad;
+        }
+
+        public String getCedula() {
+            return cedula;
+        }
+
+        public String getNombre() {
+            return nombre;
+        }
+
+        public String getPrioridad() {
+            return prioridad;
+        }
+    }
+
+    // Método principal (punto de entrada del programa)
+    public static void main(String[] args) {
+        // Ejecutar la interfaz gráfica en el hilo principal de Swing
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new TriageUrgenciasGUI().setVisible(true);
+            }
+        });
+    }
+}
