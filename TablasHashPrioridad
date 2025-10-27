@@ -1,0 +1,184 @@
+package Prioridad;
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
+
+class Paciente {
+    private String nombre;
+    private int edad;
+    private String sintoma;
+
+    public Paciente(String nombre, int edad, String sintoma) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.sintoma = sintoma;
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " (" + edad + " años) - " + sintoma;
+    }
+}
+
+public class TriajeGUIColor extends JFrame {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private HashMap<String, java.util.List<Paciente>> triaje;
+    private JComboBox<String> comboPrioridad;
+    private JTextArea areaPacientes;
+    private JTextField txtNombre, txtEdad, txtSintoma;
+
+    public TriajeGUIColor() {
+        setTitle(" Sistema de Triaje Hospitalario");
+        setSize(520, 480);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+        setLocationRelativeTo(null);
+
+        // Inicializar tabla hash
+        triaje = new HashMap<>();
+        triaje.put("ROJO", new ArrayList<>());
+        triaje.put("AMARILLO", new ArrayList<>());
+        triaje.put("VERDE", new ArrayList<>());
+
+        // === PANEL SUPERIOR: Formulario ===
+        JPanel panelSuperior = new JPanel(new GridLayout(4, 2, 5, 5));
+        panelSuperior.setBorder(BorderFactory.createTitledBorder("Registrar Paciente"));
+        panelSuperior.setBackground(new Color(240, 248, 255)); // Azul suave
+
+        txtNombre = new JTextField();
+        txtEdad = new JTextField();
+        txtSintoma = new JTextField();
+        comboPrioridad = new JComboBox<>(new String[]{"ROJO", "AMARILLO", "VERDE"});
+
+        panelSuperior.add(new JLabel("Nombre:"));
+        panelSuperior.add(txtNombre);
+        panelSuperior.add(new JLabel("Edad:"));
+        panelSuperior.add(txtEdad);
+        panelSuperior.add(new JLabel("Síntoma:"));
+        panelSuperior.add(txtSintoma);
+        panelSuperior.add(new JLabel("Prioridad:"));
+        panelSuperior.add(comboPrioridad);
+
+        add(panelSuperior, BorderLayout.NORTH);
+
+        // === PANEL CENTRAL: Área de visualización ===
+        areaPacientes = new JTextArea();
+        areaPacientes.setEditable(false);
+        areaPacientes.setFont(new Font("Consolas", Font.PLAIN, 13));
+        areaPacientes.setBorder(BorderFactory.createTitledBorder("Pacientes Registrados"));
+        areaPacientes.setBackground(new Color(250, 250, 250));
+        add(new JScrollPane(areaPacientes), BorderLayout.CENTER);
+
+        // === PANEL INFERIOR: Botones ===
+        JPanel panelInferior = new JPanel();
+        panelInferior.setBackground(new Color(230, 230, 250));
+        JButton btnAgregar = new JButton("Agregar Paciente");
+        JButton btnMostrar = new JButton("Mostrar Pacientes");
+        JButton btnAtender = new JButton("Atender Paciente");
+
+        // Botones con estilo
+        btnAgregar.setBackground(new Color(144, 238, 144));
+        btnMostrar.setBackground(new Color(173, 216, 230));
+        btnAtender.setBackground(new Color(255, 182, 193));
+
+        panelInferior.add(btnAgregar);
+        panelInferior.add(btnMostrar);
+        panelInferior.add(btnAtender);
+        add(panelInferior, BorderLayout.SOUTH);
+
+        // === EVENTOS ===
+        btnAgregar.addActionListener(e -> agregarPaciente());
+        btnMostrar.addActionListener(e -> mostrarPacientes());
+        btnAtender.addActionListener(e -> atenderPaciente());
+
+        // Cambiar color de fondo según prioridad seleccionada
+        comboPrioridad.addActionListener(e -> actualizarColorPrioridad());
+    }
+
+    private void agregarPaciente() {
+        try {
+            String nombre = txtNombre.getText().trim();
+            int edad = Integer.parseInt(txtEdad.getText().trim());
+            String sintoma = txtSintoma.getText().trim();
+            String prioridad = (String) comboPrioridad.getSelectedItem();
+
+            if (nombre.isEmpty() || sintoma.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Paciente p = new Paciente(nombre, edad, sintoma);
+            triaje.get(prioridad).add(p);
+
+            JOptionPane.showMessageDialog(this, 
+                "Paciente agregado con prioridad " + prioridad + ".", 
+                "Registro exitoso", 
+                JOptionPane.INFORMATION_MESSAGE);
+
+            limpiarCampos();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Edad inválida.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void mostrarPacientes() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== LISTADO DE PACIENTES ===\n");
+
+        for (String prioridad : triaje.keySet()) {
+            sb.append("\n ").append(prioridad).append(":\n");
+            java.util.List<Paciente> lista = triaje.get(prioridad);
+            if (lista.isEmpty()) {
+                sb.append("   (Sin pacientes)\n");
+            } else {
+                for (Paciente p : lista) {
+                    sb.append("   - ").append(p.toString()).append("\n");
+                }
+            }
+        }
+        areaPacientes.setText(sb.toString());
+    }
+
+    private void atenderPaciente() {
+        String prioridad = (String) comboPrioridad.getSelectedItem();
+        java.util.List<Paciente> lista = triaje.get(prioridad);
+
+        if (lista.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay pacientes en prioridad " + prioridad + ".");
+        } else {
+            Paciente atendido = lista.remove(0);
+            JOptionPane.showMessageDialog(this, 
+                "Atendiendo a: " + atendido.toString(), 
+                "Atención médica", 
+                JOptionPane.INFORMATION_MESSAGE);
+        }
+        mostrarPacientes();
+    }
+
+    private void limpiarCampos() {
+        txtNombre.setText("");
+        txtEdad.setText("");
+        txtSintoma.setText("");
+        comboPrioridad.setSelectedIndex(0);
+        actualizarColorPrioridad();
+    }
+
+    private void actualizarColorPrioridad() {
+        String prioridad = (String) comboPrioridad.getSelectedItem();
+        Color color;
+        switch (prioridad) {
+            case "ROJO" -> color = new Color(255, 102, 102);
+            case "AMARILLO" -> color = new Color(255, 255, 153);
+            case "VERDE" -> color = new Color(153, 255, 153);
+            default -> color = Color.WHITE;
+        }
+        getContentPane().setBackground(color);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new TriajeGUIColor().setVisible(true));
+    }
+}
