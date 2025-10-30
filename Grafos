@@ -1,0 +1,178 @@
+package Grafos;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+
+// Programa Java simple para visualizar grafos (nodos y aristas) con Swing.
+// Características:
+// - Crear nodos con clic izquierdo.
+// - Crear aristas con clic derecho: seleccionar nodo origen y destino.
+// - Mover nodos arrastrando.
+// - Borrar nodos con tecla Supr cuando están seleccionados.
+
+public class ProgramaGrafosVisual extends JFrame {
+    private GraphPanel graphPanel;
+
+    public ProgramaGrafosVisual() {
+        super("Visualizador de Grafos - Simple");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(900, 600);
+        setLocationRelativeTo(null);
+
+        graphPanel = new GraphPanel();
+        add(graphPanel, BorderLayout.CENTER);
+
+        JPanel controls = new JPanel();
+        JButton clearBtn = new JButton("Limpiar");
+        clearBtn.addActionListener(e -> graphPanel.clear());
+        controls.add(clearBtn);
+
+        JLabel info = new JLabel("Clic izquierdo: crear nodo | Clic derecho: crear arista (seleccionar 2 nodos) | Arrastrar: mover nodo");
+        controls.add(info);
+
+        add(controls, BorderLayout.SOUTH);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            ProgramaGrafosVisual frame = new ProgramaGrafosVisual();
+            frame.setVisible(true);
+        });
+    }
+
+    // -------------------- Clases internas --------------------
+    static class GraphPanel extends JPanel {
+        java.util.List<Node> nodes = new ArrayList<>();
+        java.util.List<Edge> edges = new ArrayList<>();
+        Node selectedNode = null;
+        Node edgeStartNode = null;
+        Point dragOffset = null;
+
+        public GraphPanel() {
+            setBackground(Color.WHITE);
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (SwingUtilities.isLeftMouseButton(e)) {
+                        Node n = findNode(e.getPoint());
+                        if (n == null) {
+                            Node newNode = new Node(e.getX(), e.getY());
+                            nodes.add(newNode);
+                            selectedNode = newNode;
+                            repaint();
+                        } else {
+                            selectedNode = n;
+                            dragOffset = new Point(e.getX() - n.x, e.getY() - n.y);
+                        }
+                    } else if (SwingUtilities.isRightMouseButton(e)) {
+                        Node n = findNode(e.getPoint());
+                        if (n != null) {
+                            if (edgeStartNode == null) {
+                                edgeStartNode = n;
+                            } else if (edgeStartNode != n) {
+                                edges.add(new Edge(edgeStartNode, n));
+                                edgeStartNode = null;
+                                repaint();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    dragOffset = null;
+                }
+            });
+
+            addMouseMotionListener(new MouseMotionAdapter() {
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    if (selectedNode != null && dragOffset != null) {
+                        selectedNode.x = e.getX() - dragOffset.x;
+                        selectedNode.y = e.getY() - dragOffset.y;
+                        repaint();
+                    }
+                }
+            });
+
+            addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    if (e.getKeyCode() == KeyEvent.VK_DELETE && selectedNode != null) {
+                        // eliminar aristas asociadas
+                        edges.removeIf(edge -> edge.a == selectedNode || edge.b == selectedNode);
+                        nodes.remove(selectedNode);
+                        selectedNode = null;
+                        repaint();
+                    }
+                }
+            });
+
+            setFocusable(true);
+            requestFocusInWindow();
+        }
+
+        private Node findNode(Point p) {
+            for (Node n : nodes) {
+                if (p.distance(n.x, n.y) <= Node.RADIUS) return n;
+            }
+            return null;
+        }
+
+        public void clear() {
+            nodes.clear();
+            edges.clear();
+            selectedNode = null;
+            edgeStartNode = null;
+            repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            // dibujar aristas
+            for (Edge edge : edges) {
+                g2.setStroke(new BasicStroke(2));
+                g2.setColor(Color.GRAY);
+                g2.drawLine(edge.a.x, edge.a.y, edge.b.x, edge.b.y);
+            }
+
+            // dibujar nodos
+            for (Node n : nodes) {
+                if (n == selectedNode) g2.setColor(Color.ORANGE);
+                else g2.setColor(Color.CYAN);
+                g2.fillOval(n.x - Node.RADIUS, n.y - Node.RADIUS, Node.RADIUS * 2, Node.RADIUS * 2);
+                g2.setColor(Color.BLACK);
+                g2.drawOval(n.x - Node.RADIUS, n.y - Node.RADIUS, Node.RADIUS * 2, Node.RADIUS * 2);
+                g2.drawString(String.valueOf(n.id), n.x - 4, n.y + 4);
+            }
+
+            // si se está creando una arista, destacar el nodo de inicio
+            if (edgeStartNode != null) {
+                g2.setColor(Color.RED);
+                g2.drawOval(edgeStartNode.x - Node.RADIUS - 4, edgeStartNode.y - Node.RADIUS - 4, (Node.RADIUS + 4) * 2, (Node.RADIUS + 4) * 2);
+            }
+        }
+    }
+
+    static class Node {
+        static int counter = 1;
+        static final int RADIUS = 20;
+        int id;
+        int x, y;
+
+        Node(int x, int y) {
+            this.x = x;
+            this.y = y;
+            this.id = counter++;
+        }
+    }
+
+    static class Edge {
+        Node a, b;
+        Edge(Node a, Node b) { this.a = a; this.b = b; }
+    }
+}
