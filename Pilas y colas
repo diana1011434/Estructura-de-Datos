@@ -1,3 +1,6 @@
+1) Evaluar expresiones matemáticas en notación
+posfija (postfix).
+
 // Importa la clase Stack que permite usar estructuras tipo pila (LIFO)
 import java.util.Stack;
 
@@ -60,6 +63,9 @@ public class EvaluadorExpresion {
         return pila.pop();
     }
 
+2) Implementar la funcionalidad de deshacer (undo)
+y rehacer (redo) en un editor de texto.
+
     // Método principal donde inicia el programa
     public static void main(String[] args) {
 
@@ -69,5 +75,92 @@ public class EvaluadorExpresion {
 
         // Llama al método evaluar y muestra el resultado
         System.out.println("Resultado: " + evaluar(expresion));
+    }
+}
+
+
+
+
+import java.util.Stack; 
+// Importa la clase Stack que permite trabajar con pilas (LIFO).
+
+// Definición de la clase principal
+public class EditorTexto {
+
+    // Pila para guardar acciones realizadas (historial)
+    private Stack<String> acciones = new Stack<>();
+
+    // Pila para guardar acciones deshechas (rehacer)
+    private Stack<String> rehacer = new Stack<>();
+
+    // Método para escribir texto
+    public void escribir(String texto) {
+        acciones.push(texto);  
+        // Guarda el texto en la pila de acciones realizadas
+
+        rehacer.clear();       
+        // Si escribimos algo nuevo, se borra el historial de rehacer
+        // porque ya cambió la secuencia de acciones
+    }
+
+    // Método DESHACER (Undo)
+    public String deshacer() {
+
+        if (!acciones.isEmpty()) {  
+            // Verifica que existan acciones para deshacer
+
+            String texto = acciones.pop();  
+            // Quita el último elemento escrito (LIFO)
+
+            rehacer.push(texto);  
+            // Guarda ese elemento en la pila de rehacer
+
+            return "Deshacer: " + texto;  
+            // Retorna mensaje indicando qué se deshizo
+        }
+
+        return "Nada que deshacer"; 
+        // Si la pila está vacía
+    }
+
+    // Método REHACER (Redo)
+    public String rehacer() {
+
+        if (!rehacer.isEmpty()) {  
+            // Verifica que exista algo para rehacer
+
+            String texto = rehacer.pop();  
+            // Toma el último elemento deshecho
+
+            acciones.push(texto);  
+            // Lo vuelve a colocar en acciones
+
+            return "Rehacer: " + texto;  
+            // Retorna mensaje indicando qué se rehizo
+        }
+
+        return "Nada que rehacer";  
+        // Si no hay elementos
+    }
+
+    // Método principal (inicio del programa)
+    public static void main(String[] args) {
+
+        EditorTexto editor = new EditorTexto();
+        // Se crea un objeto del editor
+
+        editor.escribir("Hola");
+        // Guarda "Hola" en la pila acciones
+
+        editor.escribir("Mundo");
+        // Guarda "Mundo" encima de "Hola"
+
+        System.out.println(editor.deshacer());
+        // Elimina "Mundo" y lo pasa a la pila rehacer
+        // Salida: Deshacer: Mundo
+
+        System.out.println(editor.rehacer());
+        // Recupera "Mundo" desde rehacer
+        // Salida: Rehacer: Mundo
     }
 }
