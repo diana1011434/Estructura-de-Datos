@@ -1,0 +1,73 @@
+// Importa la clase Stack que permite usar estructuras tipo pila (LIFO)
+import java.util.Stack;
+
+// Clase principal del programa
+public class EvaluadorExpresion {
+
+    // Método que evalúa una expresión en notación postfija
+    public static int evaluar(String expresion) {
+
+        // Se crea una pila para almacenar números enteros
+        Stack<Integer> pila = new Stack<>();
+
+        // Divide la expresión en partes usando el espacio como separador
+        // Ejemplo: "5 3 + 2 *" → ["5","3","+","2","*"]
+        String[] tokens = expresion.split(" ");
+
+        // Recorre cada elemento (token) de la expresión
+        for (String token : tokens) {
+
+            // Verifica si el token es un número (uno o más dígitos)
+            if (token.matches("\\d+")) {
+
+                // Convierte el texto a entero y lo guarda en la pila
+                pila.push(Integer.parseInt(token));
+
+            } else {
+
+                // Si no es número, entonces es un operador
+                // Se sacan los últimos dos números ingresados (LIFO)
+                int b = pila.pop(); // último valor ingresado
+                int a = pila.pop(); // valor anterior
+
+                // Evalúa qué operación realizar
+                switch (token) {
+
+                    case "+":
+                        // Suma y guarda el resultado en la pila
+                        pila.push(a + b);
+                        break;
+
+                    case "-":
+                        // Resta respetando el orden (a - b)
+                        pila.push(a - b);
+                        break;
+
+                    case "*":
+                        // Multiplicación
+                        pila.push(a * b);
+                        break;
+
+                    case "/":
+                        // División entera
+                        pila.push(a / b);
+                        break;
+                }
+            }
+        }
+
+        // Al finalizar solo queda un valor en la pila: el resultado final
+        return pila.pop();
+    }
+
+    // Método principal donde inicia el programa
+    public static void main(String[] args) {
+
+        // Expresión en notación postfija
+        // Equivale a: (5 + 3) * 2
+        String expresion = "5 3 + 2 *";
+
+        // Llama al método evaluar y muestra el resultado
+        System.out.println("Resultado: " + evaluar(expresion));
+    }
+}
