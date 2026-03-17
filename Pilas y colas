@@ -63,8 +63,6 @@ public class EvaluadorExpresion {
         return pila.pop();
     }
 
-2) Implementar la funcionalidad de deshacer (undo)
-y rehacer (redo) en un editor de texto.
 
     // Método principal donde inicia el programa
     public static void main(String[] args) {
@@ -80,6 +78,8 @@ y rehacer (redo) en un editor de texto.
 
 
 
+2) Implementar la funcionalidad de deshacer (undo)
+y rehacer (redo) en un editor de texto.
 
 import java.util.Stack; 
 // Importa la clase Stack que permite trabajar con pilas (LIFO).
