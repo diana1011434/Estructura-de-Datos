@@ -1,0 +1,210 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+// ===================================================
+// SISTEMA BIBLIOTECA AVL CON INTERFAZ GRAFICA
+// ===================================================
+
+public class BibliotecaAVL_GUI extends JFrame {
+
+    // ================= NODO =================
+    static class Nodo {
+        int codigo;
+        String titulo;
+        String autor;
+        int altura;
+        Nodo izq, der;
+
+        Nodo(int c, String t, String a) {
+            codigo = c;
+            titulo = t;
+            autor = a;
+            altura = 1;
+        }
+    }
+
+    // ================= AVL =================
+    static class AVL {
+
+        Nodo raiz;
+
+        int altura(Nodo n) {
+            return (n == null) ? 0 : n.altura;
+        }
+
+        int balance(Nodo n) {
+            return (n == null) ? 0 : altura(n.izq) - altura(n.der);
+        }
+
+        Nodo rotDer(Nodo y) {
+            Nodo x = y.izq;
+            Nodo t2 = x.der;
+
+            x.der = y;
+            y.izq = t2;
+
+            y.altura = Math.max(altura(y.izq), altura(y.der)) + 1;
+            x.altura = Math.max(altura(x.izq), altura(x.der)) + 1;
+
+            return x;
+        }
+
+        Nodo rotIzq(Nodo x) {
+            Nodo y = x.der;
+            Nodo t2 = y.izq;
+
+            y.izq = x;
+            x.der = t2;
+
+            x.altura = Math.max(altura(x.izq), altura(x.der)) + 1;
+            y.altura = Math.max(altura(y.izq), altura(y.der)) + 1;
+
+            return y;
+        }
+
+        Nodo insertar(Nodo n, int c, String t, String a) {
+
+            if (n == null)
+                return new Nodo(c, t, a);
+
+            if (c < n.codigo)
+                n.izq = insertar(n.izq, c, t, a);
+            else if (c > n.codigo)
+                n.der = insertar(n.der, c, t, a);
+            else
+                return n;
+
+            n.altura = 1 + Math.max(altura(n.izq), altura(n.der));
+
+            int balance = balance(n);
+
+            // LL
+            if (balance > 1 && c < n.izq.codigo)
+                return rotDer(n);
+
+            // RR
+            if (balance < -1 && c > n.der.codigo)
+                return rotIzq(n);
+
+            // LR
+            if (balance > 1 && c > n.izq.codigo) {
+                n.izq = rotIzq(n.izq);
+                return rotDer(n);
+            }
+
+            // RL
+            if (balance < -1 && c < n.der.codigo) {
+                n.der = rotDer(n.der);
+                return rotIzq(n);
+            }
+
+            return n;
+        }
+
+        Nodo buscar(Nodo n, int codigo) {
+
+            if (n == null || n.codigo == codigo)
+                return n;
+
+            if (codigo < n.codigo)
+                return buscar(n.izq, codigo);
+
+            return buscar(n.der, codigo);
+        }
+
+        void inorder(Nodo n, JTextArea area) {
+            if (n != null) {
+                inorder(n.izq, area);
+                area.append(n.codigo + " | " + n.titulo +
+                        " | " + n.autor + "\n");
+                inorder(n.der, area);
+            }
+        }
+    }
+
+    // ================= GUI =================
+
+    AVL arbol = new AVL();
+
+    JTextField txtCodigo = new JTextField(10);
+    JTextField txtTitulo = new JTextField(15);
+    JTextField txtAutor = new JTextField(15);
+    JTextArea area = new JTextArea(12, 30);
+
+    public BibliotecaAVL_GUI() {
+
+        setTitle("Sistema Biblioteca AVL");
+        setSize(420, 420);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        add(new JLabel("Código:"));
+        add(txtCodigo);
+
+        add(new JLabel("Título:"));
+        add(txtTitulo);
+
+        add(new JLabel("Autor:"));
+        add(txtAutor);
+
+        JButton btnInsertar = new JButton("Insertar Libro");
+        JButton btnBuscar = new JButton("Buscar Libro");
+        JButton btnMostrar = new JButton("Mostrar Ordenados");
+
+        add(btnInsertar);
+        add(btnBuscar);
+        add(btnMostrar);
+
+        area.setEditable(false);
+        add(new JScrollPane(area));
+
+        // ========= EVENTOS =========
+
+        btnInsertar.addActionListener(e -> insertarLibro());
+
+        btnBuscar.addActionListener(e -> buscarLibro());
+
+        btnMostrar.addActionListener(e -> mostrarLibros());
+    }
+
+    void insertarLibro() {
+        try {
+            int codigo = Integer.parseInt(txtCodigo.getText());
+            String titulo = txtTitulo.getText();
+            String autor = txtAutor.getText();
+
+            arbol.raiz =
+                    arbol.insertar(arbol.raiz, codigo, titulo, autor);
+
+            area.setText("Libro insertado y árbol balanceado\n");
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Datos inválidos");
+        }
+    }
+
+    void buscarLibro() {
+
+        int codigo = Integer.parseInt(txtCodigo.getText());
+        Nodo n = arbol.buscar(arbol.raiz, codigo);
+
+        if (n != null)
+            area.setText("Encontrado:\n" +
+                    n.codigo + " - " + n.titulo +
+                    " - " + n.autor);
+        else
+            area.setText("Libro no encontrado");
+    }
+
+    void mostrarLibros() {
+        area.setText("LIBROS ORDENADOS\n");
+        arbol.inorder(arbol.raiz, area);
+    }
+
+    // ================= MAIN =================
+    public static void main(String[] args) {
+        new BibliotecaAVL_GUI().setVisible(true);
+    }
+}
