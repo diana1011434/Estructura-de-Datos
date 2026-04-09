@@ -1,0 +1,186 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class SistemaCRUD {
+
+    // ===============================
+    // MODELO (Entidad)
+    // ===============================
+    static class Estudiante {
+        int id;
+        String nombre;
+        double nota;
+
+        public Estudiante(int id, String nombre, double nota) {
+            this.id = id;
+            this.nombre = nombre;
+            this.nota = nota;
+        }
+
+        public String toString() {
+            return id + " - " + nombre + " - Nota: " + nota;
+        }
+    }
+
+    // ===============================
+    // BASE DE DATOS EN MEMORIA
+    // ===============================
+    static ArrayList<Estudiante> lista = new ArrayList<>();
+
+
+    // ===============================
+    // UTILIDADES
+    // ===============================
+    static void limpiarPantalla() {
+        for(int i = 0; i < 40; i++)
+            System.out.println();
+    }
+
+    static void pausa() {
+        System.out.println("\nPresione ENTER para continuar...");
+        try { System.in.read(); } catch(Exception e){}
+    }
+
+    // ===============================
+    // CASOS DE USO (CRUD)
+    // ===============================
+
+    // CREATE
+    static void registrar(Scanner sc) {
+
+        limpiarPantalla();
+        System.out.println("=== Registrar Estudiante ===");
+
+        System.out.print("ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        // Validar ID único
+        for(Estudiante e : lista) {
+            if(e.id == id) {
+                System.out.println(" ID ya existe");
+                pausa();
+                return;
+            }
+        }
+
+        System.out.print("Nombre: ");
+        String nombre = sc.nextLine();
+
+        System.out.print("Nota: ");
+        double nota = sc.nextDouble();
+
+        lista.add(new Estudiante(id, nombre, nota));
+
+        // LIMPIAR VARIABLES
+        id = 0;
+        nombre = "";
+        nota = 0;
+
+        System.out.println(" Estudiante registrado");
+        pausa();
+    }
+
+    // READ
+    static void listar() {
+        limpiarPantalla();
+
+        System.out.println("=== Lista de Estudiantes ===");
+
+        if(lista.isEmpty()) {
+            System.out.println("No hay registros.");
+        } else {
+            for(Estudiante e : lista)
+                System.out.println(e);
+        }
+
+        pausa();
+    }
+
+    // UPDATE
+    static void actualizar(Scanner sc) {
+
+        limpiarPantalla();
+        System.out.print("ID a actualizar: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        for(Estudiante e : lista) {
+            if(e.id == id) {
+
+                System.out.print("Nuevo nombre: ");
+                e.nombre = sc.nextLine();
+
+                System.out.print("Nueva nota: ");
+                e.nota = sc.nextDouble();
+
+                System.out.println("Actualizado");
+                pausa();
+                return;
+            }
+        }
+
+        System.out.println(" Estudiante no encontrado");
+        pausa();
+    }
+
+    // DELETE
+    static void eliminar(Scanner sc) {
+
+        limpiarPantalla();
+        System.out.print("ID a eliminar: ");
+        int id = sc.nextInt();
+
+        boolean eliminado = lista.removeIf(e -> e.id == id);
+
+        if(eliminado)
+            System.out.println(" Eliminado");
+        else
+            System.out.println(" No existe");
+
+        pausa();
+    }
+
+    // LIMPIAR DATOS
+    static void limpiarSistema() {
+        lista.clear();
+        System.out.println(" Sistema reiniciado (datos eliminados)");
+        pausa();
+    }
+
+  
+    // MAIN
+  
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        int opcion;
+
+        do {
+            limpiarPantalla();
+
+            System.out.println("===== SISTEMA CRUD ESTUDIANTES =====");
+            System.out.println("1. Registrar");
+            System.out.println("2. Listar");
+            System.out.println("3. Actualizar");
+            System.out.println("4. Eliminar");
+            System.out.println("5. Limpiar sistema");
+            System.out.println("0. Salir");
+            System.out.print("Opción: ");
+
+            opcion = sc.nextInt();
+            sc.nextLine();
+
+            switch(opcion) {
+                case 1: registrar(sc); break;
+                case 2: listar(); break;
+                case 3: actualizar(sc); break;
+                case 4: eliminar(sc); break;
+                case 5: limpiarSistema(); break;
+            }
+
+        } while(opcion != 0);
+
+        System.out.println("Sistema finalizado");
+    }
+}
