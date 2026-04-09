@@ -132,3 +132,261 @@ class ArbolAVL {
         arbol.inOrden(); // Salida: 10 20 25 30 40 50
     }
 }
+******************************************************************************************
+******************************************************************************************
+
+// CASO 1 — Rotación LL (Simple Derecha)
+Notas ingresadas en orden descendente
+
+public static void main(String[] args) {
+    ArbolAVL avl = new ArbolAVL();
+
+    avl.raiz = avl.insertar(avl.raiz, 30);
+    avl.raiz = avl.insertar(avl.raiz, 20);
+    avl.raiz = avl.insertar(avl.raiz, 10); // activa LL
+
+    avl.inorder(avl.raiz);
+}
+
+// CASO 2 — Rotación RR (Simple Izquierda)
+Datos cronológicos.
+avl.raiz = null;
+
+avl.raiz = avl.insertar(avl.raiz, 10);
+avl.raiz = avl.insertar(avl.raiz, 20);
+avl.raiz = avl.insertar(avl.raiz, 30); // RR
+
+//CASO 3 — Rotación LR (Doble Derecha)
+Valor intermedio rompe balance.
+avl.raiz = null;
+
+avl.raiz = avl.insertar(avl.raiz, 30);
+avl.raiz = avl.insertar(avl.raiz, 10);
+avl.raiz = avl.insertar(avl.raiz, 20); // LR
+
+//CASO 4 — Rotación RL (Doble Izquierda)
+avl.raiz = null;
+
+avl.raiz = avl.insertar(avl.raiz, 10);
+avl.raiz = avl.insertar(avl.raiz, 30);
+avl.raiz = avl.insertar(avl.raiz, 20); // RL
+
+//Caso Completo (Varias rotaciones)
+Simulación sistema universitario
+
+avl.raiz = null;
+
+int[] datos = {50, 30, 70, 20, 40, 10};
+
+for (int d : datos)
+    avl.raiz = avl.insertar(avl.raiz, d);
+
+avl.inorder(avl.raiz);
+
+//Sistema de Gestión de Estudiantes con Árbol AVL en Java
+Objetivo del ejercicio
+
+Desarrollar un sistema en Java que utilice un Árbol AVL para gestionar códigos de estudiantes, garantizando que la información siempre permanezca balanceada para búsquedas eficientes.
+
+ Inserción balanceada
+ Rotaciones AVL automáticas
+ Búsqueda eficiente O(log n)
+ Recorridos del árbol
+ Menú interactivo
+
+
+import java.util.Scanner;
+
+public class SistemaAVL {
+
+    // =========================
+    // CLASE NODO
+    // =========================
+    static class Nodo {
+        int codigo;
+        int altura;
+        Nodo izquierda, derecha;
+
+        Nodo(int codigo) {
+            this.codigo = codigo;
+            altura = 1;
+        }
+    }
+
+    // =========================
+    // CLASE AVL
+    // =========================
+    static class ArbolAVL {
+
+        Nodo raiz;
+
+        int altura(Nodo n) {
+            return (n == null) ? 0 : n.altura;
+        }
+
+        int balance(Nodo n) {
+            return (n == null) ? 0 : altura(n.izquierda) - altura(n.derecha);
+        }
+
+        // ROTACION DERECHA (LL)
+        Nodo rotacionDerecha(Nodo y) {
+            Nodo x = y.izquierda;
+            Nodo T2 = x.derecha;
+
+            x.derecha = y;
+            y.izquierda = T2;
+
+            y.altura = Math.max(altura(y.izquierda), altura(y.derecha)) + 1;
+            x.altura = Math.max(altura(x.izquierda), altura(x.derecha)) + 1;
+
+            System.out.println("Rotación LL aplicada");
+            return x;
+        }
+
+        // ROTACION IZQUIERDA (RR)
+        Nodo rotacionIzquierda(Nodo x) {
+            Nodo y = x.derecha;
+            Nodo T2 = y.izquierda;
+
+            y.izquierda = x;
+            x.derecha = T2;
+
+            x.altura = Math.max(altura(x.izquierda), altura(x.derecha)) + 1;
+            y.altura = Math.max(altura(y.izquierda), altura(y.derecha)) + 1;
+
+            System.out.println("Rotación RR aplicada");
+            return y;
+        }
+
+        // INSERTAR
+        Nodo insertar(Nodo nodo, int codigo) {
+
+            if (nodo == null)
+                return new Nodo(codigo);
+
+            if (codigo < nodo.codigo)
+                nodo.izquierda = insertar(nodo.izquierda, codigo);
+            else if (codigo > nodo.codigo)
+                nodo.derecha = insertar(nodo.derecha, codigo);
+            else
+                return nodo;
+
+            nodo.altura = 1 + Math.max(altura(nodo.izquierda),
+                                       altura(nodo.derecha));
+
+            int balance = balance(nodo);
+
+            // LL
+            if (balance > 1 && codigo < nodo.izquierda.codigo)
+                return rotacionDerecha(nodo);
+
+            // RR
+            if (balance < -1 && codigo > nodo.derecha.codigo)
+                return rotacionIzquierda(nodo);
+
+            // LR
+            if (balance > 1 && codigo > nodo.izquierda.codigo) {
+                nodo.izquierda = rotacionIzquierda(nodo.izquierda);
+                System.out.println("Rotación LR aplicada");
+                return rotacionDerecha(nodo);
+            }
+
+            // RL
+            if (balance < -1 && codigo < nodo.derecha.codigo) {
+                nodo.derecha = rotacionDerecha(nodo.derecha);
+                System.out.println("Rotación RL aplicada");
+                return rotacionIzquierda(nodo);
+            }
+
+            return nodo;
+        }
+
+        // BUSCAR
+        boolean buscar(Nodo nodo, int codigo) {
+
+            if (nodo == null)
+                return false;
+
+            if (codigo == nodo.codigo)
+                return true;
+
+            if (codigo < nodo.codigo)
+                return buscar(nodo.izquierda, codigo);
+
+            return buscar(nodo.derecha, codigo);
+        }
+
+        // RECORRIDO INORDER
+        void inorder(Nodo nodo) {
+            if (nodo != null) {
+                inorder(nodo.izquierda);
+                System.out.print(nodo.codigo + " ");
+                inorder(nodo.derecha);
+            }
+        }
+    }
+
+    // =========================
+    // MENU PRINCIPAL
+    // =========================
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        ArbolAVL avl = new ArbolAVL();
+
+        int opcion, codigo;
+
+        do {
+            System.out.println("\n========= SISTEMA AVL =========");
+            System.out.println("1. Insertar estudiante");
+            System.out.println("2. Buscar estudiante");
+            System.out.println("3. Mostrar estudiantes ordenados");
+            System.out.println("4. Salir");
+            System.out.print("Seleccione opción: ");
+
+            opcion = sc.nextInt();
+
+            switch (opcion) {
+
+                case 1:
+                    System.out.print("Ingrese código del estudiante: ");
+                    codigo = sc.nextInt();
+                    avl.raiz = avl.insertar(avl.raiz, codigo);
+                    System.out.println("Árbol balanceado correctamente");
+                    break;
+
+                case 2:
+                    System.out.print("Código a buscar: ");
+                    codigo = sc.nextInt();
+
+                    if (avl.buscar(avl.raiz, codigo))
+                        System.out.println("Estudiante encontrado");
+                    else
+                        System.out.println("Estudiante no existe");
+                    break;
+
+                case 3:
+                    System.out.println("Estudiantes ordenados:");
+                    avl.inorder(avl.raiz);
+                    System.out.println();
+                    break;
+
+                case 4:
+                    System.out.println("Programa finalizado");
+                    break;
+
+                default:
+                    System.out.println("Opción inválida");
+            }
+
+        } while (opcion != 4);
+
+        sc.close();
+    }
+}
+
+
+
+
+
+
