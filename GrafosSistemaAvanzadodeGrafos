@@ -1,0 +1,581 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import java.util.List;
+
+/*
+    =====================================================
+           SISTEMA AVANZADO DE GRAFOS EDUCATIVOS
+    =====================================================
+
+    TEMAS IMPLEMENTADOS:
+    ✔ Grafos dirigidos
+    ✔ Graficación visual de nodos y aristas
+    ✔ BFS
+    ✔ DFS
+    ✔ Dijkstra
+    ✔ Tabla Hash
+    ✔ Listas
+    ✔ Interfaz gráfica avanzada
+    ✔ Eventos visuales
+    ✔ Pesos en aristas
+    ✔ Dibujar grafos dinámicamente
+
+    CONTEXTO:
+    Mapa de materias universitarias.
+
+    =====================================================
+*/
+
+public class GrafoVisualAvanzado extends JFrame {
+
+    // =====================================================
+    // CLASE NODO
+    // =====================================================
+
+    class Nodo {
+
+        String nombre;
+        int x;
+        int y;
+
+        LinkedList<Arista> conexiones;
+
+        public Nodo(String nombre, int x, int y) {
+
+            this.nombre = nombre;
+            this.x = x;
+            this.y = y;
+
+            conexiones = new LinkedList<>();
+        }
+    }
+
+    // =====================================================
+    // CLASE ARISTA
+    // =====================================================
+
+    class Arista {
+
+        Nodo destino;
+        int peso;
+
+        public Arista(Nodo destino, int peso) {
+
+            this.destino = destino;
+            this.peso = peso;
+        }
+    }
+
+    // =====================================================
+    // GRAFO
+    // =====================================================
+
+    class Grafo {
+
+        HashMap<String, Nodo> nodos;
+
+        public Grafo() {
+
+            nodos = new HashMap<>();
+        }
+
+        // AGREGAR NODO
+        public void agregarNodo(
+                String nombre,
+                int x,
+                int y
+        ) {
+
+            nodos.put(
+                    nombre,
+                    new Nodo(nombre, x, y)
+            );
+        }
+
+        // CONECTAR NODOS
+        public void conectar(
+                String origen,
+                String destino,
+                int peso
+        ) {
+
+            Nodo o = nodos.get(origen);
+            Nodo d = nodos.get(destino);
+
+            if (o != null && d != null) {
+
+                o.conexiones.add(
+                        new Arista(d, peso)
+                );
+            }
+        }
+
+        // BFS
+        public String BFS(String inicio) {
+
+            StringBuilder sb =
+                    new StringBuilder();
+
+            Queue<Nodo> cola =
+                    new LinkedList<>();
+
+            HashSet<String> visitados =
+                    new HashSet<>();
+
+            Nodo inicial =
+                    nodos.get(inicio);
+
+            if (inicial == null) {
+
+                return "Nodo no encontrado.";
+            }
+
+            cola.add(inicial);
+            visitados.add(inicio);
+
+            while (!cola.isEmpty()) {
+
+                Nodo actual =
+                        cola.poll();
+
+                sb.append(actual.nombre)
+                        .append("\n");
+
+                for (Arista a :
+                        actual.conexiones) {
+
+                    if (!visitados.contains(
+                            a.destino.nombre)) {
+
+                        cola.add(a.destino);
+
+                        visitados.add(
+                                a.destino.nombre
+                        );
+                    }
+                }
+            }
+
+            return sb.toString();
+        }
+
+        // DFS
+        public String DFS(String inicio) {
+
+            StringBuilder sb =
+                    new StringBuilder();
+
+            HashSet<String> visitados =
+                    new HashSet<>();
+
+            Nodo inicial =
+                    nodos.get(inicio);
+
+            DFSRecursivo(
+                    inicial,
+                    visitados,
+                    sb
+            );
+
+            return sb.toString();
+        }
+
+        private void DFSRecursivo(
+                Nodo actual,
+                HashSet<String> visitados,
+                StringBuilder sb
+        ) {
+
+            if (actual == null) return;
+
+            visitados.add(actual.nombre);
+
+            sb.append(actual.nombre)
+                    .append("\n");
+
+            for (Arista a :
+                    actual.conexiones) {
+
+                if (!visitados.contains(
+                        a.destino.nombre)) {
+
+                    DFSRecursivo(
+                            a.destino,
+                            visitados,
+                            sb
+                    );
+                }
+            }
+        }
+
+        // DIJKSTRA
+        public String dijkstra(String inicio) {
+
+            HashMap<String, Integer> distancias =
+                    new HashMap<>();
+
+            PriorityQueue<String> cola =
+                    new PriorityQueue<>(
+                            Comparator.comparingInt(
+                                    distancias::get
+                            )
+                    );
+
+            for (String nodo :
+                    nodos.keySet()) {
+
+                distancias.put(
+                        nodo,
+                        Integer.MAX_VALUE
+                );
+            }
+
+            distancias.put(inicio, 0);
+
+            cola.add(inicio);
+
+            while (!cola.isEmpty()) {
+
+                String actual =
+                        cola.poll();
+
+                Nodo nodoActual =
+                        nodos.get(actual);
+
+                for (Arista a :
+                        nodoActual.conexiones) {
+
+                    int nuevaDistancia =
+                            distancias.get(actual)
+                                    + a.peso;
+
+                    if (nuevaDistancia <
+                            distancias.get(
+                                    a.destino.nombre
+                            )) {
+
+                        distancias.put(
+                                a.destino.nombre,
+                                nuevaDistancia
+                        );
+
+                        cola.add(
+                                a.destino.nombre
+                        );
+                    }
+                }
+            }
+
+            StringBuilder sb =
+                    new StringBuilder();
+
+            sb.append(
+                    "=== DISTANCIAS ===\n\n"
+            );
+
+            for (String nodo :
+                    distancias.keySet()) {
+
+                sb.append(nodo)
+                        .append(" -> ")
+                        .append(
+                                distancias.get(nodo)
+                        )
+                        .append("\n");
+            }
+
+            return sb.toString();
+        }
+    }
+
+    // =====================================================
+    // PANEL GRAFICO
+    // =====================================================
+
+    class PanelGrafo extends JPanel {
+
+        @Override
+        protected void paintComponent(Graphics g) {
+
+            super.paintComponent(g);
+
+            Graphics2D g2 =
+                    (Graphics2D) g;
+
+            // DIBUJAR ARISTAS
+            for (Nodo n :
+                    grafo.nodos.values()) {
+
+                for (Arista a :
+                        n.conexiones) {
+
+                    int x1 = n.x;
+                    int y1 = n.y;
+
+                    int x2 = a.destino.x;
+                    int y2 = a.destino.y;
+
+                    g2.drawLine(
+                            x1,
+                            y1,
+                            x2,
+                            y2
+                    );
+
+                    int medioX =
+                            (x1 + x2) / 2;
+
+                    int medioY =
+                            (y1 + y2) / 2;
+
+                    g2.drawString(
+                            String.valueOf(a.peso),
+                            medioX,
+                            medioY
+                    );
+                }
+            }
+
+            // DIBUJAR NODOS
+            for (Nodo n :
+                    grafo.nodos.values()) {
+
+                g2.setColor(
+                        new Color(
+                                100,
+                                149,
+                                237
+                        )
+                );
+
+                g2.fillOval(
+                        n.x - 25,
+                        n.y - 25,
+                        50,
+                        50
+                );
+
+                g2.setColor(Color.WHITE);
+
+                g2.drawString(
+                        n.nombre,
+                        n.x - 15,
+                        n.y + 5
+                );
+            }
+        }
+    }
+
+    // =====================================================
+    // VARIABLES GLOBALES
+    // =====================================================
+
+    Grafo grafo;
+
+    JTextArea area;
+
+    PanelGrafo panel;
+
+    // =====================================================
+    // CONSTRUCTOR
+    // =====================================================
+
+    public GrafoVisualAvanzado() {
+
+        setTitle(
+                "Sistema Avanzado de Grafos"
+        );
+
+        setSize(1200, 700);
+
+        setDefaultCloseOperation(
+                EXIT_ON_CLOSE
+        );
+
+        setLocationRelativeTo(null);
+
+        grafo = new Grafo();
+
+        area = new JTextArea();
+
+        area.setFont(
+                new Font(
+                        "Monospaced",
+                        Font.PLAIN,
+                        15
+                )
+        );
+
+        JScrollPane scroll =
+                new JScrollPane(area);
+
+        panel = new PanelGrafo();
+
+        panel.setBackground(Color.WHITE);
+
+        JSplitPane split =
+                new JSplitPane(
+                        JSplitPane.HORIZONTAL_SPLIT,
+                        panel,
+                        scroll
+                );
+
+        split.setDividerLocation(750);
+
+        // =====================================================
+        // BOTONES
+        // =====================================================
+
+        JPanel superior =
+                new JPanel();
+
+        JButton btnCrear =
+                new JButton("Crear Grafo");
+
+        JButton btnBFS =
+                new JButton("BFS");
+
+        JButton btnDFS =
+                new JButton("DFS");
+
+        JButton btnDijkstra =
+                new JButton("Dijkstra");
+
+        superior.add(btnCrear);
+        superior.add(btnBFS);
+        superior.add(btnDFS);
+        superior.add(btnDijkstra);
+
+        add(superior, BorderLayout.NORTH);
+
+        add(split, BorderLayout.CENTER);
+
+        // =====================================================
+        // EVENTO CREAR
+        // =====================================================
+
+        btnCrear.addActionListener(e -> {
+
+            // NODOS
+            grafo.agregarNodo(
+                    "P1",
+                    100,
+                    100
+            );
+
+            grafo.agregarNodo(
+                    "P2",
+                    300,
+                    100
+            );
+
+            grafo.agregarNodo(
+                    "ED",
+                    500,
+                    200
+            );
+
+            grafo.agregarNodo(
+                    "BD",
+                    300,
+                    350
+            );
+
+            grafo.agregarNodo(
+                    "IA",
+                    600,
+                    400
+            );
+
+            // ARISTAS
+            grafo.conectar(
+                    "P1",
+                    "P2",
+                    2
+            );
+
+            grafo.conectar(
+                    "P2",
+                    "ED",
+                    4
+            );
+
+            grafo.conectar(
+                    "ED",
+                    "BD",
+                    3
+            );
+
+            grafo.conectar(
+                    "BD",
+                    "IA",
+                    5
+            );
+
+            grafo.conectar(
+                    "P1",
+                    "BD",
+                    7
+            );
+
+            grafo.conectar(
+                    "P2",
+                    "IA",
+                    10
+            );
+
+            panel.repaint();
+
+            area.setText(
+                    "Grafo generado correctamente."
+            );
+        });
+
+        // BFS
+        btnBFS.addActionListener(e -> {
+
+            area.setText(
+                    "=== BFS ===\n\n"
+            );
+
+            area.append(
+                    grafo.BFS("P1")
+            );
+        });
+
+        // DFS
+        btnDFS.addActionListener(e -> {
+
+            area.setText(
+                    "=== DFS ===\n\n"
+            );
+
+            area.append(
+                    grafo.DFS("P1")
+            );
+        });
+
+        // DIJKSTRA
+        btnDijkstra.addActionListener(e -> {
+
+            area.setText(
+                    grafo.dijkstra("P1")
+            );
+        });
+    }
+
+    // =====================================================
+    // MAIN
+    // =====================================================
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(() -> {
+
+            new GrafoVisualAvanzado()
+                    .setVisible(true);
+        });
+    }
+}
